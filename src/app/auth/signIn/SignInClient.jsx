@@ -47,7 +47,7 @@ const SignInClient = () => {
       >
         <p className="text-center text-sm text-gray-300">
           Vous voulez créer un compte ?{" "}
-          <a href="/auth/signup" className="text-purple-400 hover:text-purple-300 hover:underline">
+          <a href="/auth/signUp" className="text-purple-400 hover:text-purple-300 hover:underline">
             Inscrivez-vous
           </a>
         </p>

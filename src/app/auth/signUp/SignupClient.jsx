@@ -49,7 +49,7 @@ const SignupClient = () => {
       >
         <p className="text-center text-sm text-gray-300">
           Vous avez déjà un compte ?{" "}
-          <a href="/auth/signin" className="text-purple-400 hover:text-purple-300 hover:underline">
+          <a href="/auth/signIn" className="text-purple-400 hover:text-purple-300 hover:underline">
             Connectez-vous
           </a>
         </p>
