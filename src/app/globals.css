@@ -1,45 +1,50 @@
 @import "tailwindcss";
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "CreateDisplay", sans-serif;
+
+:root {
+  --primary-text-color: #333333;
+  --secondary-text-color: #656565;
+  --light-gray: #B8B8B8;
+  --white-gray: #EBEBEB;
 }
 
-main{
-    padding:  70px 150px;
+body {
+  background: var(--background);
+  color: var(--text-color);
+  font-family: "CreatoDisplay", sans-serif;
+  overflow-x: hidden;
 }
-/* globals.css */
+
 @font-face {
-  font-family: "CreateDisplay";
-  src: url("/fonts/CreateDisplay-Regular.otf") format("opentype");
+  font-family: "CreatoDisplay";
+  src: url("/fonts/CreatoDisplay-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "CreateDisplay";
-  src: url("/fonts/CreateDisplay-Bold.otf") format("opentype");
+  font-family: "CreatoDisplay";
+  src: url("/fonts/CreatoDisplay-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "CreateDisplay";
-  src: url("/fonts/CreateDisplay-Medium.otf") format("opentype");
+  font-family: "CreatoDisplay";
+  src: url("/fonts/CreatoDisplay-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "CreateDisplay";
-  src: url("/fonts/CreateDisplay-Light.otf") format("opentype");
+  font-family: "CreatoDisplay";
+  src: url("/fonts/CreatoDisplay-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "CreateDisplay";
-  src: url("/fonts/CreateDisplay-Thin.otf") format("opentype");
+  font-family: "CreatoDisplay";
+  src: url("/fonts/CreatoDisplay-Thin.otf") format("opentype");
   font-weight: 100;
   font-style: normal;
 }

@@ -1,33 +1,31 @@
+/* ----------Header----------- */
+/* Juste ceux qui prennent 100vw */
+.header-nav,
+section {
+  padding: 0 150px;
+}
+
 .header-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-    align-items: flex-end;
+  align-items: flex-end;
+  margin-top: 50px;
+
 }
 
-.nav-list {
-  display: flex;
-  gap: 50px;
-  align-items: center;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
-.btn {
-  font-size: 19px;
-  background: none;
-  border: none;
-  cursor: pointer;
+.h1-header {
+  width: 50%;
+  font-size: 100px;
+  font-weight: 700;
+  margin: 110px 0;
+  padding-left: 150px;
 }
 
-.logo {
-  width: 150px;
-}
-
-.btn-creer {
-  border-radius: 25px;
-  padding: 12px 20px;
-  color: white;
-  background-color: black;
-}

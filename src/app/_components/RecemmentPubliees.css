@@ -1,0 +1,94 @@
+ /* ----------Section récemment publiées----------- */
+
+h2 {
+  font-size: 45px;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.swiper {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding-left: 160px;
+}
+
+.swiper-slide {
+  width: 670px;
+  height: 600px;
+}
+
+.card {
+  position: relative;
+}
+
+.img-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.slide-img {
+  border-radius: 25px;
+}
+
+.tags {
+  color: var(--primary-text-color);
+  position: absolute;
+  top: 18px;
+  left: 15px;
+  font-size: 18;
+  font-weight: 500;
+
+  span {
+    margin-right: 20px;
+    padding: 8px 20px;
+    border-radius: 15px;
+    background-color: white;
+
+  }
+}
+
+.read-button {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 15px;
+  border-radius: 100%;
+  transition: all 0.3s ease-out;
+
+  /* &:hover {
+    width: 100px;
+    transition: all 0.4s ease-out;
+  } */
+}
+
+.read-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* right: 8px; */
+}
+
+h3 {
+  font-size: 27px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+p {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--secondary-text-color);
+}
+
+hr {
+  margin: 100px 0;
+  color: #B8B8B8;
+}
