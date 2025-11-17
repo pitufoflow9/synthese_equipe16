@@ -57,7 +57,7 @@ const GridProvider = ({ children, initialNodes = [], initialEdges = [] }) => {
     };
 
     // ajoute la branche dans le state (addEdge s'occupe de faire une validation)
-    setEdges(addEdge(newEdgeData, edges));
+    setEdges((currentEdges) => addEdge(newEdgeData, currentEdges));
   };
 
   // useGridInternal gère la mécanique interne déjà préparée

@@ -7,6 +7,7 @@ import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useGrid } from "../_context/gridContext";
 import { useEffect } from "react";
 import { session } from "@/db/schemas";
+import HistoireTemp from "./HistoireTemp";
 
 const MainPageClient = ({ displayName }) => {
   const {
@@ -26,22 +27,11 @@ const MainPageClient = ({ displayName }) => {
 
   return (
     <div>
-      <h1>Main Page Client</h1>
+      <h1> Où Votre Imagination mène l'histoire </h1>
       <h2>Bienvenue, {displayName}</h2>
-      <button
-        className="mt-2 bg-amber-500 px-2 rounded"
-        onClick={() =>
-          addLocalNode({ id: "id-quatre", position: { x: 0, y: -30 } })
-        }
-      >
-        Ajouter un noeud
 
-      </button>
-
-
-
+      
       <div>
-        
         <Link href="/auth/signIn" className="text-purple-400 hover:text-purple-300 hover:underline">
         Se connecter 
         </Link>
@@ -49,19 +39,31 @@ const MainPageClient = ({ displayName }) => {
         <Link href="/auth/signUp" className="text-purple-400 hover:text-purple-300 hover:underline">
         S'inscrire
         </Link>
+      </div>
 
-      <form action={signOut}>
+        {/* Button pour se déconnecter
+        <form action={signOut}>
         <button
           type="submit"
           className="text-purple-400 hover:text-purple-300 hover:underline"
         >
           Se déconnecter
         </button>
-      </form>
-      </div>
+        </form> */}
+
+      <button
+        className="mt-2 bg-amber-500 px-2 rounded"
+        onClick={() =>
+          addLocalNode({ id: "id-quatre", position: { x: 0, y: -30 } })
+        }
+      >
+      Créer une histoire
+      </button>
 
 
-      <div style={{ width: 1000, height: 1000 }}>
+
+      
+      {/* <div style={{ width: 1000, height: 1000 }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -77,7 +79,29 @@ const MainPageClient = ({ displayName }) => {
         >
           <Background variant={BackgroundVariant.Dots} />
         </ReactFlow>
+      </div> */}
+
+      <div className="Recent">
+        <h3> Récement publié</h3>
+        { /* HistoiresTemp ajouter les histoires récentes ici en carroussel entre 5 et 7 histoire*/}
+        
+        <HistoireTemp title="L'aventure magique" genre="Fantastique" synopsis="Une histoire captivante d'un jeune héros découvrant un monde enchanté." Img="https://example.com/image1.jpg" />
+        <HistoireTemp title="Le mystère de la forêt" genre="Mystère" synopsis="Un groupe d'amis part à la découverte des secrets cachés dans une forêt mystérieuse." Img="https://example.com/image2.jpg" />
+        <HistoireTemp title="Voyage dans le temps" genre="Science-fiction" synopsis="Un scientifique invente une machine à voyager dans le temps et explore différentes époques." Img="https://example.com/image3.jpg" />
       </div>
+
+      <div className="Continue">
+        <h3> Reprenez votre aventure </h3>
+        { /* HistoiresTemp ajouter les histoires en cours ici en
+         carroussel entre 5 et 7 histoire rappel creer un en leture status dans la db*/}
+        </div>
+
+        <div className="Footer">
+          <h2 className="t_footer">Inkveil</h2>
+          <p className="p_footer">Site par Joseph Cesti Chamaya et Alexandre Dratton</p>
+          <p className="p_footer">© 2024 Inkveil. Tous droits réservés.</p>
+
+          </div>
 
     </div>
   );

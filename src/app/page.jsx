@@ -39,7 +39,7 @@ const HomePage = async () => {
   return (
     <GridProvider initialNodes={initialNodes} initialEdges={initialEdges}>
       <main className="flex flex-col items-center justify-center gap-2 py-5">
-        <h1>Gabarit de départ</h1>
+        <h1>Inkveil</h1>
         <MainPageClient displayName={displayName} />
 
       </main>
