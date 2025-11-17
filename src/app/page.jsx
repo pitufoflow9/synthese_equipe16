@@ -1,3 +1,4 @@
+import { redirect } from "next/dist/server/api-utils";
 import MainPageClient from "./_components/MainPageClient";
 import { GridProvider } from "./_context/gridContext";
 import { getSession } from "@/lib/auth";
@@ -32,6 +33,10 @@ const HomePage = async () => {
   const initialEdges = [{ id: "edge-un", source: "id-un", target: "id-deux" }];
 
   const session = await getSession();
+  console.log(session);
+  if (!session) {
+    redirect('/auth/signin');
+  }
   const displayName = session?.user?.name || "Invité";
 
   // Consulter la composante GridProvider

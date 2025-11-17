@@ -7,6 +7,7 @@ import { useGrid } from "../_context/gridContext";
 import { useEffect } from "react";
 import { session } from "@/db/schemas";
 // import useLenis from "../_hooks/useLenis.jsx";
+import HistoireTemp from "./HistoireTemp";
 import Swiper from 'swiper';
 import { useGSAP } from "@gsap/react";
 
@@ -25,7 +26,7 @@ import ReprendreLecture from "./KeepReading.jsx"
 
 const MainPageClient = ({ displayName }) => {
   // useLenis();
-  
+
   const {
     nodes,
     edges,
