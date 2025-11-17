@@ -1,33 +1,45 @@
 @import "tailwindcss";
-
-:root {
-  --color-cookie-bg: #ebd1da;
-  --color-cookie-darken: color-mix(
-    in hsl,
-    var(--color-cookie-bg) 60%,
-    #000 40%
-  );
-
-  --color-todo-text: #999;
-  --color-todo-border: #e4e4e4;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "CreateDisplay", sans-serif;
+}
+
+main{
+    padding:  70px 150px;
+}
+/* globals.css */
+@font-face {
+  font-family: "CreateDisplay";
+  src: url("/fonts/CreateDisplay-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CreateDisplay";
+  src: url("/fonts/CreateDisplay-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CreateDisplay";
+  src: url("/fonts/CreateDisplay-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CreateDisplay";
+  src: url("/fonts/CreateDisplay-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CreateDisplay";
+  src: url("/fonts/CreateDisplay-Thin.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
 }

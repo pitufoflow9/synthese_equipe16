@@ -8,6 +8,8 @@ import { useGrid } from "../_context/gridContext";
 import { useEffect } from "react";
 import { session } from "@/db/schemas";
 
+import "../_components/MainPageClient.css"
+
 const MainPageClient = ({ displayName }) => {
   const {
     nodes,
@@ -21,12 +23,12 @@ const MainPageClient = ({ displayName }) => {
     console.log(selection);
   }, [selection]);
 
-  
+
 
 
   return (
     <div>
-      <h1>Main Page Client</h1>
+      {/* <h1>Main Page Client</h1>
       <h2>Bienvenue, {displayName}</h2>
       <button
         className="mt-2 bg-amber-500 px-2 rounded"
@@ -36,32 +38,48 @@ const MainPageClient = ({ displayName }) => {
       >
         Ajouter un noeud
 
-      </button>
+      </button> */}
 
 
 
       <div>
-        
-        <Link href="/auth/signIn" className="text-purple-400 hover:text-purple-300 hover:underline">
-        Se connecter 
-        </Link>
-        {" | "}
-        <Link href="/auth/signUp" className="text-purple-400 hover:text-purple-300 hover:underline">
-        S'inscrire
-        </Link>
 
-      <form action={signOut}>
-        <button
-          type="submit"
-          className="text-purple-400 hover:text-purple-300 hover:underline"
-        >
-          Se déconnecter
-        </button>
-      </form>
+        <nav className="header-nav">
+          <img className="logo" src="../../../img/logo_inkveil.png" alt="" />
+
+          <ul className="nav-list">
+            <li>
+              <Link href="/auth/signIn" className="btn btn-compte">
+                Se connecter
+              </Link>
+            </li>
+            <li>
+              <Link href="/auth/signUp" className="btn btn-compte">
+                S'inscrire
+              </Link>
+            </li>
+            <li>
+              <form action={signOut}>
+                <button
+                  type="submit"
+                  className="btn btn-compte"
+                >
+                  Se déconnecter
+                </button>
+              </form>
+            </li>
+            <li>
+              <Link href="/auth/signUp" className="btn btn-creer">
+                Créer une histoire
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
       </div>
 
 
-      <div style={{ width: 1000, height: 1000 }}>
+      {/* <div style={{ width: 1000, height: 1000 }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -77,7 +95,7 @@ const MainPageClient = ({ displayName }) => {
         >
           <Background variant={BackgroundVariant.Dots} />
         </ReactFlow>
-      </div>
+      </div> */}
 
     </div>
   );

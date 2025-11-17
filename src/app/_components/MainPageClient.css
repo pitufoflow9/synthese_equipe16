@@ -1,0 +1,33 @@
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+    align-items: flex-end;
+}
+
+.nav-list {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.btn {
+  font-size: 19px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logo {
+  width: 150px;
+}
+
+.btn-creer {
+  border-radius: 25px;
+  padding: 12px 20px;
+  color: white;
+  background-color: black;
+}
