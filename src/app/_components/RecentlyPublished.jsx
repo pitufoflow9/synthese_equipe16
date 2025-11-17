@@ -1,24 +1,22 @@
 "use client";
-
+import { BookOpen } from 'lucide-react';
 const RecemmentPubliees = () => {
     return (
         <section>
             <h2>Récemment publiées</h2>
-            <div class="swiper">
-                <div class="swiper-wrapper">
+            <div className="swiper">
+                <div className="swiper-wrapper">
                     {/*Slide 1 */}
-                    <div class="swiper-slide">
-                        <div class="card">
+                    <div className="swiper-slide">
+                        <div className="card">
                             <div className="img-container">
                                 <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                 <button className="read-button">
                                     {/* <p>Lire</p> */}
-                                    <span class="material-symbols-outlined read-icon">
-                                        auto_stories
-                                    </span>
+                                    <BookOpen className='read-icon'/>
                                 </button>
                             </div>
-                            <div class="tags">
+                            <div className="tags">
                                 <span>Vampire</span>
                                 <span>Amour</span>
                             </div>
@@ -29,18 +27,16 @@ const RecemmentPubliees = () => {
                         </div>
                     </div>
                     {/* Slide 2 */}
-                    <div class="swiper-slide">
-                        <div class="card">
+                    <div className="swiper-slide">
+                        <div className="card">
                             <div className="img-container">
                                 <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                 <button className="read-button">
                                     {/* <p>Lire</p> */}
-                                    <span class="material-symbols-outlined read-icon">
-                                        auto_stories
-                                    </span>
+                                 <BookOpen className='read-icon'/>
                                 </button>
                             </div>
-                            <div class="tags">
+                            <div className="tags">
                                 <span>Fée</span>
                                 <span>Action</span>
                             </div>
@@ -52,18 +48,16 @@ const RecemmentPubliees = () => {
                         </div>
                     </div>
                     {/* Slide 3 */}
-                    <div class="swiper-slide">
-                        <div class="card">
+                    <div className="swiper-slide">
+                        <div className="card">
                             <div className="img-container">
                                 <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                 <button className="read-button">
                                     {/* <p>Lire</p> */}
-                                    <span class="material-symbols-outlined read-icon">
-                                        auto_stories
-                                    </span>
+                                 <BookOpen className='read-icon'/>
                                 </button>
                             </div>
-                            <div class="tags">
+                            <div className="tags">
                                 <span>Guerrier</span>
                                 <span>Amour</span>
                             </div>
@@ -76,18 +70,16 @@ const RecemmentPubliees = () => {
                     </div>
 
                     {/* Slide 4 */}
-                    <div class="swiper-slide">
-                        <div class="card">
+                    <div className="swiper-slide">
+                        <div className="card">
                             <div className="img-container">
                                 <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                 <button className="read-button">
                                     {/* <p>Lire</p> */}
-                                    <span class="material-symbols-outlined read-icon">
-                                        auto_stories
-                                    </span>
+                                 <BookOpen className='read-icon'/>
                                 </button>
                             </div>
-                            <div class="tags">
+                            <div className="tags">
                                 <span>Action</span>
                                 <span>Magie</span>
                             </div>

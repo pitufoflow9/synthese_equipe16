@@ -34,12 +34,15 @@ const MainPageClient = ({ displayName }) => {
     console.log(selection);
   }, [selection]);
 
-  const swiper = new Swiper('.swiper', {
-    slidesPerView: 2.5,
-    spaceBetween: 30,
-    speed: 50,
-    freeMode: true
-  });
+  useEffect(() => {
+    const swiper = new Swiper('.swiper', {
+      slidesPerView: 2.5,
+      spaceBetween: 30,
+      speed: 50,
+      freeMode: true
+    });
+
+  }, []);
 
 
   return (

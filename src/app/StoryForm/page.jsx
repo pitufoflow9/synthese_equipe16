@@ -1,13 +1,13 @@
 "use client";
 
-import CreerHistoire from "../_components/StoryForm.jsx"
+import StoryFormPage from "../_components/StoryFormPage.jsx"
 
-const HistoireForm = () => {
+const StoryForm = () => {
     return (
         <div>
-            <CreerHistoire />
+            <StoryFormPage />
         </div>
     )
 }
 
-export default HistoireForm;
+export default StoryForm;

@@ -3,19 +3,19 @@
 import "../_components/Nav.css"
 import "../_components/Footer.css"
 import "../_components/MainPageClient.css"
-import "../_components/StoryForm.css"
+import "../_components/LogInPage.css"
 
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
 
-const CreateStory = () => {
+const UserAccountPage = () => {
     return (
-        <div className="story-form-container">
+        <div className="user-form-container">
             <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
             <Nav />
 
-            <h1 className="h1-story-form">Nouvelle histoire</h1>
-            <form className="story-form" >
+            <h1 className="h1-user-form">USER ACCOUNT PAGE</h1>
+            <form className="user-form" >
                 <div className="form-input-container title-input">
                     <label for="title">Titre</label>
                     <textarea
@@ -23,7 +23,7 @@ const CreateStory = () => {
                         className="title"
                         placeholder="Écrire..."
                         required
-                        rows={1} 
+                        rows={1}
                     ></textarea>
                 </div>
                 <div className="form-input-container synopsis-input">
@@ -32,25 +32,19 @@ const CreateStory = () => {
                         id="synopsis"
                         placeholder="Écrire..."
                         required
-                        rows={3} 
                     ></textarea>
                 </div>
 
-                <button className="btn-form btn-form-banner-img" >
-                    Choisir une image de bannière
-                </button>
-                <button className="btn-form btn-form-add-music" >
-                    <span className="material-symbols-outlined music-icon">
-                        music_note
-                    </span>
-                    Ajouter une musique
-                </button>
-
-                <hr className="story-form-hr" />
-
                 <button className="btn-form btn-form-continue" >
-                    Continuer
+                    Se connecter
                 </button>
+
+                <hr className="user-form-hr" />
+
+                <button className="btn-form btn-form-banner-img" >
+                   Se connecter avec Github
+                </button>
+
 
 
             </form>
@@ -61,4 +55,4 @@ const CreateStory = () => {
     )
 }
 
-export default CreateStory;
+export default UserAccountPage;
