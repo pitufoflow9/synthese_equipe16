@@ -17,7 +17,7 @@ const StoryFormPage = () => {
             <h1 className="h1-story-form">Nouvelle histoire</h1>
             <form className="story-form" >
                 <div className="form-input-container title-input">
-                    <label for="title">Titre</label>
+                    <label htmlFor="title">Titre</label>
                     <textarea
                         id="title"
                         className="title"
@@ -27,7 +27,7 @@ const StoryFormPage = () => {
                     ></textarea>
                 </div>
                 <div className="form-input-container synopsis-input">
-                    <label for="synopsis">Synopsis</label>
+                    <label htmlFor="synopsis">Synopsis</label>
                     <textarea
                         id="synopsis"
                         placeholder="Écrire..."

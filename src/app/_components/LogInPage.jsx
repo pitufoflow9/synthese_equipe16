@@ -17,7 +17,7 @@ const UserAccountPage = () => {
             <h1 className="h1-user-form">USER ACCOUNT PAGE</h1>
             <form className="user-form" >
                 <div className="form-input-container title-input">
-                    <label for="title">Titre</label>
+                    <label htmlFor="title">Titre</label>
                     <textarea
                         id="title"
                         className="title"
@@ -27,7 +27,7 @@ const UserAccountPage = () => {
                     ></textarea>
                 </div>
                 <div className="form-input-container synopsis-input">
-                    <label for="synopsis">Synopsis</label>
+                    <label htmlFor="synopsis">Synopsis</label>
                     <textarea
                         id="synopsis"
                         placeholder="Écrire..."
