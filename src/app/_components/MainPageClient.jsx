@@ -1,13 +1,29 @@
 "use client";
 import "@xyflow/react/dist/style.css";
-import Link from "next/link";
-import { signOut } from "../actions/auth-actions";
-
+// import Link from "next/link";
+// import { signOut } from "../actions/auth-actions";
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useGrid } from "../_context/gridContext";
 import { useEffect } from "react";
 import { session } from "@/db/schemas";
+<<<<<<< HEAD
 import HistoireTemp from "./HistoireTemp";
+=======
+import Swiper from 'swiper';
+
+
+import "swiper/css";
+import "../_components/MainPageClient.css"
+import "../_components/Nav.css"
+import "../_components/Footer.css"
+import "../_components/RecentlyPublished.css"
+
+
+import Footer from "../_components/Footer.jsx"
+import Nav from "../_components/Nav.jsx"
+import RecemmentPubliees from "./RecentlyPublished.jsx"
+import ReprendreLecture from "./KeepReading.jsx"
+>>>>>>> Alexandre_artistique
 
 const MainPageClient = ({ displayName }) => {
   const {
@@ -22,10 +38,19 @@ const MainPageClient = ({ displayName }) => {
     console.log(selection);
   }, [selection]);
 
-  
+  useEffect(() => {
+    const swiper = new Swiper('.swiper', {
+      slidesPerView: 2.5,
+      spaceBetween: 30,
+      speed: 50,
+      freeMode: true
+    });
+
+  }, []);
 
 
   return (
+<<<<<<< HEAD
     <div>
       <h1> Où Votre Imagination mène l'histoire </h1>
       <h2>Bienvenue, {displayName}</h2>
@@ -63,6 +88,37 @@ const MainPageClient = ({ displayName }) => {
 
 
       
+=======
+    <div className="page">
+      {/* <h1>Main Page Client</h1>
+      <h2>Bienvenue, {displayName}</h2>
+      <button
+        className="mt-2 bg-amber-500 px-2 rounded"
+        onClick={() =>
+          addLocalNode({ id: "id-quatre", position: { x: 0, y: -30 } })
+        }
+      >
+        Ajouter un noeud
+
+      </button> */}
+
+
+      <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
+      <header>
+        <Nav></Nav>
+        <h1 className="h1-header">
+          Où votre <br />
+          imagination <br />
+          mène l'histoire
+        </h1>
+      </header>
+
+      <RecemmentPubliees />
+      <hr />
+      <ReprendreLecture />
+      <Footer />
+
+>>>>>>> Alexandre_artistique
       {/* <div style={{ width: 1000, height: 1000 }}>
         <ReactFlow
           nodes={nodes}
@@ -80,6 +136,7 @@ const MainPageClient = ({ displayName }) => {
           <Background variant={BackgroundVariant.Dots} />
         </ReactFlow>
       </div> */}
+<<<<<<< HEAD
 
       <div className="Recent">
         <h3> Récement publié</h3>
@@ -104,6 +161,9 @@ const MainPageClient = ({ displayName }) => {
           </div>
 
     </div>
+=======
+    </div >
+>>>>>>> Alexandre_artistique
   );
 };
 export default MainPageClient;

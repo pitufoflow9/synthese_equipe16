@@ -1,0 +1,82 @@
+.user-form-container {
+    width: 100vw;
+}
+
+.h1-user-form {
+    text-align: center;
+    margin: 30px 0 20px 0;
+    font-size: 55px;
+    font-weight: 700;
+}
+
+.user-form {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    margin: 0 auto 0 auto;
+    background-color: white;
+    border-radius: 25px;
+    border: 1px solid var(--light-gray);
+}
+
+.form-input-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 17px;
+    margin-bottom: 30px;
+
+    label {
+        margin-bottom: 10px;
+    }
+}
+
+textarea {
+    padding: 20px;
+    background-color: var(--white-gray);
+    border-radius: 15px;
+    border: 1px solid var(--light-gray);
+
+    &:focus {
+        box-shadow: 0px 0px 25px 2px rgba(188, 97, 254, 0.60);
+    }
+}
+
+
+.btn-form {
+    width: 100%;
+    padding: 20px 40px;
+    border-radius: 35px;
+    font-size: 17px;
+    font-weight: 700;
+
+}
+
+.btn-form-banner-img {
+    color: white;
+    background-color: var(--primary-text-color);
+    margin-bottom: 30px;
+}
+
+.btn-form-add-music {
+    color: var(--primary-text-color);
+    border: 1px solid var(--primary-text-color);
+    position: relative;
+}
+
+.music-icon {
+    position: absolute;
+    left: 0;
+    padding-left: 20px;
+}
+
+.user-form-hr {
+    margin: 50px 0 50px 0;
+    color: var(--light-gray);
+}
+
+.btn-form-continue {
+    color: white;
+    background-color: var(--purple);
+    position: relative;
+}
