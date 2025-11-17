@@ -34,9 +34,6 @@ const HomePage = async () => {
 
   const session = await getSession();
   console.log(session);
-  if (!session) {
-    redirect('/auth/signin');
-  }
   const displayName = session?.user?.name || "Invité";
 
   // Consulter la composante GridProvider
