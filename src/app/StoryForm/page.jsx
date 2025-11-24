@@ -1,11 +1,12 @@
 "use client";
 
 import StoryFormPage from "../_components/StoryFormPage.jsx"
+import { addHistoire } from "@/app/actions/histoires-actions";
 
 const StoryForm = () => {
     return (
         <div>
-            <StoryFormPage />
+            <StoryFormPage formAction={addHistoire} />
         </div>
     )
 }

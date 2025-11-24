@@ -13,19 +13,19 @@ export const Histoires = sqliteTable("histoires", {
 export const Nodes = sqliteTable("nodes", {
   id: text("id").primaryKey(),
   histoire_id: text("histoire_id").references(() => Histoires.id),
-  titre: text("titre").notNull(),
-  contenu: text("contenu").notNull(),
-  position_x: integer("position_x").notNull(),
-  position_y: integer("position_y").notNull(),
+  titre: text("titre"),
+  contenu: text("contenu"),
+  position_x: integer("position_x"),
+  position_y: integer("position_y"),
   data: text("data"),
 
 });
 export const Branches = sqliteTable("edges", {
   id: text("id").primaryKey(),
   histoire_id: text("histoire_id").references(() => Histoires.id),
-  sources : text("source").notNull().references(() => Nodes.id),
-  target : text("target").notNull().references(() => Nodes.id),
-  texte : text("texte").notNull(),
+  sources : text("source").references(() => Nodes.id),
+  target : text("target").references(() => Nodes.id),
+  texte : text("texte"),
 });
 export const Img = sqliteTable("images", {
     id: text("id").primaryKey(),
