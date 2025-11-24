@@ -1,0 +1,22 @@
+/* ----------Header----------- */
+/* Juste ceux qui prennent 100vw */
+.header-nav,
+section {
+  padding: 0 150px;
+}
+
+.bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.h1-header {
+  margin: 110px 0;
+  padding-left: 150px;
+  width: 50%;
+  color: var(--primary-text-color);
+  font-weight: 700;
+  font-size: 100px;
+}

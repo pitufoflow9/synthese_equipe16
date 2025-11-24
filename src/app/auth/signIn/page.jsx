@@ -1,4 +1,4 @@
-import SignInClient from "./SignInClient";
+import SignInPage from "../../_components/SignInPage";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -9,10 +9,8 @@ const SignIn = async () => {
     redirect("/");
   }
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-black px-4">
-      <SignInClient />
-    </div>
-  );
+  return <SignInPage />;
+
+
 };
 export default SignIn;
