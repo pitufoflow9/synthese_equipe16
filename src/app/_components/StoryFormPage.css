@@ -1,5 +1,6 @@
 .story-form-container {
   width: 100vw;
+  z-index: 10;
 }
 
 .h1-story-form {
@@ -12,7 +13,7 @@
 .story-form {
   display: flex;
   flex-direction: column;
-  margin: 0 auto 0 auto;
+  margin: 0 auto 200px auto;
   border: 1px solid var(--light-gray);
   border-radius: 25px;
   background-color: white;
@@ -83,4 +84,100 @@ input {
   position: relative;
   background-color: var(--purple);
   color: white;
+}
+
+
+
+.popup-container {
+  background-color: rgba(0, 0, 0, 0.288);
+  backdrop-filter: blur(5px);
+  /* filter: brightness(0.8); TO DO */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+}
+
+.popup {
+  position: relative;
+  z-index: 11;
+  width: 800px;
+  height: auto;
+  background-color: white;
+  margin: 150px auto;
+  border: 1px solid var(--translucent-purple);
+  border-radius: 35;
+  padding: 28px;
+
+  h2 {
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    margin: 20px 0 40px 0;
+  }
+}
+
+.btn-popup {
+  cursor: pointer;
+  border-radius: 35px;
+  padding: 20px 40px;
+  width: 100%;
+  font-weight: 700;
+  font-size: 17px;
+  background-image: linear-gradient(to right, #8e10e7, #dc82ff);
+  color: white;
+}
+
+.popup-banner-hr {
+  margin: 50px 0;
+  color: var(--light-gray);
+}
+
+.banner-grid {
+  border-radius: 25px;
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  img{
+    cursor: pointer;
+  }
+}
+
+.popup-close-icon {
+  position: absolute;
+  padding: 20px;
+  top: 0;
+  right: 0;
+}
+
+.music-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.music-button {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--translucent-purple);
+  border-radius: 25px;
+  padding: 30px;
+  margin: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-image: linear-gradient(to right, #8e10e7, #dc82ff);
+    color: white;
+    transition: all 0.3s;
+  }
 }

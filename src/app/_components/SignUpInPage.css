@@ -25,6 +25,7 @@
   padding: 28px;
   width: 550px;
 }
+
 .h1-user-form {
   background-image: linear-gradient(to right, #8e10e7, #dc82ff);
   background-clip: text;
@@ -33,6 +34,7 @@
   font-size: 40px;
   text-align: center;
 }
+
 .h2-user-form {
   margin: 0 0 50px 0;
   color: var(--secondary-text-color);
@@ -108,7 +110,8 @@ input {
 .switch-form {
   margin-top: 30px;
   text-align: center;
-    color: var(--secondary-text-color);
+  color: var(--secondary-text-color);
+
   span {
     color: var(--purple);
     font-weight: 700;

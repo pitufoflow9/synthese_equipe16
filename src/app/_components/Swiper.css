@@ -1,0 +1,92 @@
+/* ----------Section récemment publiées----------- */
+
+.swiper-h2 {
+  margin-bottom: 40px;
+  font-weight: 500;
+  font-size: 45px;
+  margin-left: 7.5vw;
+}
+
+.swiper-container {
+  width: 100vw;
+}
+
+.swiper-slide {
+  width: 670px;
+  height: 600px;
+}
+
+.swiper-slide-1 {
+  margin-left: 7.5vw;
+}
+
+.card {
+  position: relative;
+}
+
+.img-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.slide-img {
+  border-radius: 25px;
+}
+
+.tags {
+  position: absolute;
+  top: 18px;
+  left: 15px;
+  color: var(--primary-text-color);
+  font-weight: 500;
+  font-size: 18;
+
+  span {
+    margin-right: 20px;
+    border-radius: 15px;
+    background-color: white;
+    padding: 8px 20px;
+  }
+}
+
+.read-button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  transition: all 0.3s ease-out;
+  margin: 15px;
+  border-radius: 100%;
+  background-color: white;
+  width: 50px;
+  height: 50px;
+
+  /* &:hover {
+    width: 100px;
+    transition: all 0.4s ease-out;
+  } */
+}
+
+.read-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* right: 8px; */
+}
+
+h3 {
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 27px;
+}
+
+p {
+  color: var(--secondary-text-color);
+  font-weight: 300;
+  font-size: 20px;
+}
+
+hr {
+  margin: 100px 0;
+  color: #b8b8b8;
+}

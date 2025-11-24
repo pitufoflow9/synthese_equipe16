@@ -1,6 +1,6 @@
 "use client";
 
-import Erreur404Page from "../_components/Erreur404Page.jsx"
+import Erreur404Page from "../_components/Error404Page.jsx"
 
 const Erreur404 = () => {
     return (

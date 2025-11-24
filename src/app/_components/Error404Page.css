@@ -11,6 +11,7 @@
   }
   p {
     font-size: 33vw;
+    color: var(--primary-text-color);
   }
 }
 

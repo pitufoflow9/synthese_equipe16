@@ -6,9 +6,9 @@ import Nav from "./Nav.jsx"
 import "../_components/Nav.css"
 import "../_components/Footer.css"
 import "../_components/MainPageClient.css"
-import "../_components/Erreur404Page.css"
+import "../_components/Error404Page.css"
 
-const erreur404Page = () => {
+const Error404Page = () => {
     return (
 
         <div className="page-container">
@@ -32,6 +32,6 @@ const erreur404Page = () => {
     )
 }
 
-export default erreur404Page;
+export default Error404Page;
 
 

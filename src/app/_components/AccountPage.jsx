@@ -1,15 +1,50 @@
 "use client";
+import Link from "next/link";
+import Footer from "./Footer.jsx"
+import Nav from "./Nav.jsx"
 import { BookOpen } from 'lucide-react';
+import { useEffect } from "react";
 
-const RecemmentPubliees = () => {
+import "../_components/Nav.css"
+import "../_components/Footer.css"
+import "../_components/MainPageClient.css"
+import "../_components/AccountPage.css"
+import "../_components/Swiper.css"
+
+import Swiper from 'swiper';
+import "swiper/css";
+
+const AccountPage = () => {
+    useEffect(() => {
+        const swiper = new Swiper('.swiper', {
+            slidesPerView: 2.5,
+            spaceBetween: 30,
+            speed: 50,
+            freeMode: true
+        });
+
+    }, []);
     return (
-        <section>
-            <h2>Récemment publiées</h2>
+
+        <div className="page-container">
+            <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
+            <Nav />
+
+            <div className="profile-container">
+                <img className="profile-picture" src="../../../img/blue-purple_gradient.png" alt="" />
+
+                {/*  */}
+                <h2 className="profile-name">Alexandre Gratton</h2>
+            </div>
+
+
+
             <div className="swiper-container">
+                <h2 className="swiper-h2">Récits partagés</h2>
                 <div className="swiper">
                     <div className="swiper-wrapper">
                         {/*Slide 1 */}
-                        <div className="swiper-slide">
+                        <div className="swiper-slide swiper-slide-1">
                             <div className="card">
                                 <div className="img-container">
                                     <img src="../../../img/placeholder.png" className="slide-img" alt="" />
@@ -91,9 +126,11 @@ const RecemmentPubliees = () => {
                     </div>
                 </div>
             </div>
-        </section>
-
+            <Footer></Footer>
+        </div >
     )
 }
 
-export default RecemmentPubliees;
+export default AccountPage;
+
+

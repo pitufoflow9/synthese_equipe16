@@ -1,9 +1,13 @@
 .header-nav {
+  z-index: 11;
   display: flex;
   justify-content: space-between;
   align-items: center;
   align-items: flex-end;
   margin-top: 40px;
+  position: relative;
+  width: 85vw;
+  margin: 40px auto 0 auto;
 }
 
 .nav-list {
@@ -15,7 +19,7 @@
   list-style: none;
 }
 
-.btn {
+.btn-nav {
   cursor: pointer;
   border: none;
   background: none;

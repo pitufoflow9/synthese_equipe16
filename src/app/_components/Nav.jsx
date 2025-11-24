@@ -9,12 +9,12 @@ const Nav = () => {
 
             <ul className="nav-list">
                 <li>
-                    <Link href="/auth/signIn" className="btn btn-compte">
+                    <Link href="/auth/signIn" className="btn-nav btn-compte">
                         Se connecter
                     </Link>
                 </li>
                 <li>
-                    <Link href="/auth/signUp" className="btn btn-compte">
+                    <Link href="/auth/signUp" className="btn-nav btn-compte">
                         S'inscrire
                     </Link>
                 </li>
@@ -32,7 +32,7 @@ const Nav = () => {
                     {/* <Link href="/auth/signUp" className="btn btn-creer">
                         Créer une histoire
                     </Link> */}
-                    <Link href="/StoryForm" className="btn btn-creer">
+                    <Link href="/StoryForm" className="btn-nav btn-creer">
                         Créer une histoire
                     </Link>
                 </li>
