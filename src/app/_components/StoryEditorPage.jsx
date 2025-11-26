@@ -4,8 +4,10 @@
 import Link from "next/link";
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
-import Switch from '@mui/material/Switch';
+// import Switch from '@mui/material/Switch ';
 import CustomSwitch from "./CustomSwitch.jsx"
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import AddIcon from '@mui/icons-material/Add';
 
 import "../_components/Nav.css"
 import "../_components/Footer.css"
@@ -41,11 +43,16 @@ const storyModificationPage = () => {
 
         <div className="bg-grid"></div>
 
-        <button className="delete-icon">
-        </button>
-        <button className="add-icon"></button>
-
       </div>
+        <div className="flex-container-icons">
+          <button className="delete-icon">
+            <DeleteOutlineIcon sx={{ color: '#ff3c3cff' }} />
+          </button>
+          <button className="add-icon">
+            <AddIcon  sx={{ color: 'white' }}/>
+          </button>
+        </div>
+
     </div >
   )
 }

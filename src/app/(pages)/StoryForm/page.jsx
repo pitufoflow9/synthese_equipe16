@@ -1,6 +1,6 @@
 "use client";
 
-import StoryFormPage from "../_components/StoryFormPage.jsx"
+import StoryFormPage from "../../_components/StoryFormPage.jsx"
 
 const StoryForm = () => {
     return (

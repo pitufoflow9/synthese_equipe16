@@ -1,6 +1,6 @@
 "use client";
 
-import StoryEditorPage from "../../_components/StoryEditorPage.jsx"
+import StoryEditorPage from "../../../_components/StoryEditorPage.jsx"
 
 const StoryEditor = () => {
     return (

@@ -6,6 +6,7 @@ import "../_components/MainPageClient.css"
 import "../_components/StoryFormPage.css"
 import { useEffect, useState } from "react";
 import { useRef } from "react";
+import Link from "next/link";
 
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
@@ -146,9 +147,12 @@ const StoryFormPage = () => {
 
                 <hr className="story-form-hr" />
 
-                <button className="btn-form btn-form-continue" >
-                    Continuer
-                </button>
+                {/* id place holder */}
+                <Link href="/StoryEditor/id" className="">
+                    <button className="btn-form btn-form-continue" >
+                        Continuer
+                    </button>
+                </Link>
 
 
             </form>
