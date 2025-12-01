@@ -1,13 +1,16 @@
 .header-nav {
   display: flex;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   justify-content: space-between;
   align-items: center;
   align-items: flex-end;
   z-index: 11;
-  margin-top: 40px;
-  margin: 40px auto;
-  width: 85vw;
+  width: 84vw;
+  height: 60px;
+
 }
 
 .nav-list {

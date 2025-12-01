@@ -4,11 +4,43 @@ import { signOut } from "../actions/auth-actions";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { usePathname } from 'next/navigation';
 
+import gsap from "gsap";
+import { CustomEase } from "gsap/all";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+gsap.registerPlugin(useGSAP, ScrollTrigger, CustomEase);
+
 // TODO: Afficher dynamiquement le nom de l'utilisateur et sa photo de profile (utiliser l'image account_icon s'il n'y a  pas de photo de profil venant de github (car le seul moyen que l'utilisateur ait une photo de profil c'est qu'il s'est connecté avec GitHub; c'est ce que le professeur m'a dit)).
 
 const Nav = () => {
     const pathname = usePathname();
     var isVisualizerPage = pathname.includes("StoryVisualizer");
+
+    useGSAP(() => {
+        const showAnim = gsap.from('.header-nav', {
+            yPercent: -100,
+            paused: true,
+            duration: 0.2
+        }).progress(1);
+
+        ScrollTrigger.create({
+            start: "top top",
+            end: 99999,
+            onUpdate: (self) => {
+                self.direction === -1 ? showAnim.play() : showAnim.reverse()
+            }
+        });
+
+        ScrollTrigger.create({
+            trigger: ".blue",
+            start: "top top",
+            end: "+=10",
+            onEnter: () => gsap.to(".header-wrapper", { height: 80, duration: 0.2 }),
+            onLeaveBack: () => gsap.to(".header-wrapper", { height: 180, duration: 0.2 }),
+            markers: true,
+        });
+    }, []);
+
     return (
         <nav className="header-nav">
             {/* /////////////////////////////VERSION DÉCONNECTÉ////////////////////////////////// */}
