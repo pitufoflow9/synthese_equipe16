@@ -1,6 +1,7 @@
 import MainPageClient from "./_components/MainPageClient";
 import { GridProvider } from "./_context/gridContext";
 import { getSession } from "@/lib/auth";
+import { getRecentPublished } from "./_data/histoires";
 
 export const metadata = {
   title: "Web 5",
@@ -40,14 +41,24 @@ const HomePage = async () => {
       : "Utilisateur déconnecté (invité)"
   );
 
-  // Consulter la composante GridProvider
+  const publishedStories =
+    (await getRecentPublished(8))?.map((story) => ({
+      id: story.id,
+      title: story.title,
+      synopsis: story.synopsis,
+      theme: story.theme,
+      created_at: story.created_at,
+    })) ?? [];
 
   return (
     <GridProvider initialNodes={initialNodes} initialEdges={initialEdges}>
       <main className="">
         {/* <main className="flex flex-col items-center justify-center gap-2 py-5"> */}
         {/* <h1>Gabarit de départ</h1> */}
-        <MainPageClient displayName={displayName} />
+        <MainPageClient
+          user={session?.user ?? null}
+          recentStories={publishedStories}
+        />
       </main>
     </GridProvider>
   );

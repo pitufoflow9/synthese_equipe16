@@ -2,9 +2,15 @@
 import Link from "next/link";
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
+
+import { authClient } from "@/lib/auth-client";
+
+
+import Swiper from 'swiper';
+import "swiper/css";
 import { BookOpen } from 'lucide-react';
-import EditIcon from '@mui/icons-material/Edit';
 import { useEffect } from "react";
+
 
 import "../_components/Nav.css"
 import "../_components/Footer.css"
@@ -12,14 +18,16 @@ import "../_components/MainPageClient.css"
 import "../_components/UserPage.css"
 import "../_components/Swiper.css"
 
-import Swiper from 'swiper';
-import "swiper/css";
-
 //TODO: Afficher dynamiquement le nom et la photo de profil de l'utilisateur.
 //TODO: Intégrer la logique pour afficher les récits partagés de l'utilisateur.
 //TODO: Intégrer la logique pour le bouton lire (rediriger vers la bonne page).
 
 const UserPage = () => {
+    const { data: session } = authClient.useSession();
+    const displayName = session?.user?.name || "Invite";
+    const profileImage =
+        session?.user?.image || "../../../img/account_icon.svg";
+
     useEffect(() => {
         const swiper = new Swiper('.swiper', {
             slidesPerView: 2.5,
@@ -37,9 +45,12 @@ const UserPage = () => {
             <Nav />
 
             <div className="profile-container">
-                <img className="profile-picture" src="../../../img/account_icon.svg" alt="" />
+                <img
+                    className="profile-picture"
+                    src={profileImage}
+                    alt={`Profil de ${displayName}`}
+                />
 
-                {/*  */}
                 <h2 className="profile-name">Alexandre Gratton</h2>
             </div>
 

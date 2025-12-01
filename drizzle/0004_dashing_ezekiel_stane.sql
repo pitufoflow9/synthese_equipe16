@@ -11,7 +11,7 @@ CREATE TABLE `__new_nodes` (
 	FOREIGN KEY (`histoire_id`) REFERENCES `histoires`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-INSERT INTO `__new_nodes`("id", "histoire_id", "titre", "contenu", "type", "is_ending", "position_x", "position_y") SELECT "id", "histoire_id", "titre", "contenu", "type", "is_ending", "position_x", "position_y" FROM `nodes`;--> statement-breakpoint
+INSERT INTO `__new_nodes`("id", "histoire_id", "titre", "contenu", "type", "is_ending", "position_x", "position_y") SELECT "id", "histoire_id", "titre", "contenu", 'story', false, coalesce("position_x", 0), coalesce("position_y", 0) FROM `nodes`;--> statement-breakpoint
 DROP TABLE `nodes`;--> statement-breakpoint
 ALTER TABLE `__new_nodes` RENAME TO `nodes`;--> statement-breakpoint
 PRAGMA foreign_keys=ON;--> statement-breakpoint

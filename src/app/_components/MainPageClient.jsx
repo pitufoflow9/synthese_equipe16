@@ -1,37 +1,25 @@
 "use client";
 import "@xyflow/react/dist/style.css";
-// import Link from "next/link";
-// import { signOut } from "../actions/auth-actions";
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useGrid } from "../_context/gridContext";
-import { useEffect, useState } from "react";
-import { session } from "@/db/schemas";
-// import useLenis from "../_hooks/useLenis.jsx";
-import HistoireTemp from "./HistoireTemp";
-import Swiper from 'swiper';
-import { useGSAP } from "@gsap/react";
-
-
-import "../_components/MainPageClient.css"
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/RecentlyPublished.css"
+import { useEffect } from "react";
+import Swiper from "swiper";
+import "../_components/MainPageClient.css";
+import "../_components/Nav.css";
+import "../_components/Footer.css";
+import "../_components/RecentlyPublished.css";
 import "swiper/css";
-import "../_components/Swiper.css"
+import "../_components/Swiper.css";
 
+import Footer from "../_components/Footer.jsx";
+import Nav from "../_components/Nav.jsx";
+import RecemmentPubliees from "./RecentlyPublished.jsx";
+import ReprendreLecture from "./KeepReading.jsx";
 
-import Footer from "../_components/Footer.jsx"
-import Nav from "../_components/Nav.jsx"
-import RecemmentPubliees from "./RecentlyPublished.jsx"
-import ReprendreLecture from "./KeepReading.jsx"
+// TODO: Intégrer la logique pour afficher les histoires à reprendre (Tags, bannière, titre et synopsis)
+// (ou ne pas l'afficher si l'utilisateur n'a jamais lu d'histoire et/ou il n'est pas connecté).
 
-
-
-//TODO: Intégrer la logique pour afficher les histoires à reprendre (Tags, bannière, titre et synopsis)(ou ne pas l'afficher si l'utilisateur n'a jamais lu d'histoire et/ou il n'est pas connceté).
-
-const MainPageClient = ({ displayName }) => {
-  // useLenis();
-
+const MainPageClient = ({ user, recentStories = [] }) => {
   const {
     nodes,
     edges,
@@ -45,7 +33,7 @@ const MainPageClient = ({ displayName }) => {
   }, [selection]);
 
   useEffect(() => {
-    const swiper = new Swiper('.swiper', {
+    const swiper = new Swiper(".swiper", {
       slidesPerView: 2.5,
       spaceBetween: 30,
       speed: 400,
@@ -53,27 +41,16 @@ const MainPageClient = ({ displayName }) => {
       slidesOffsetAfter: 200,
     });
 
+    return () => {
+      swiper?.destroy?.();
+    };
   }, []);
-
 
   return (
     <div className="page">
-      {/* <h1>Main Page Client</h1>
-      <h2>Bienvenue, {displayName}</h2>
-      <button
-        className="mt-2 bg-amber-500 px-2 rounded"
-        onClick={() =>
-          addLocalNode({ id: "id-quatre", position: { x: 0, y: -30 } })
-        }
-      >
-        Ajouter un noeud
-
-      </button> */}
-
-
       <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
       <header>
-        <Nav></Nav>
+        <Nav user={user} />
         <h1 className="h1-header">
           Où votre <br />
           imagination <br />
@@ -81,7 +58,7 @@ const MainPageClient = ({ displayName }) => {
         </h1>
       </header>
 
-      <RecemmentPubliees />
+      <RecemmentPubliees stories={recentStories} />
       <hr />
       <ReprendreLecture />
       <Footer />
@@ -103,7 +80,7 @@ const MainPageClient = ({ displayName }) => {
           <Background variant={BackgroundVariant.Dots} />
         </ReactFlow>
       </div> */}
-    </div >
+    </div>
   );
 };
 export default MainPageClient;

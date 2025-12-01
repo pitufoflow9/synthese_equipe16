@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "@/db";
 import { Histoires, Nodes, Branches } from "@/db/schemas/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 
 export async function getHistoires() {
   return db.select().from(Histoires);
@@ -17,6 +17,15 @@ export async function getPublishedByAuthor(authorId) {
     .select()
     .from(Histoires)
     .where(and(eq(Histoires.creator_id, authorId), eq(Histoires.is_published, true)));
+}
+
+export async function getRecentPublished(limit = 6) {
+  return db
+    .select()
+    .from(Histoires)
+    .where(eq(Histoires.is_published, true))
+    .orderBy(desc(Histoires.created_at))
+    .limit(limit);
 }
 
 export async function getStoryGraph(storyId) {
