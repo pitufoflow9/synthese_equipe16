@@ -1,24 +1,51 @@
+.page-background-visualizer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgb(255, 255, 255);
+  width: 100vw;
+  height: 100vh;
+}
+
 .story-text {
+    transform-style: preserve-3d;
+   perspective: 1000px;
+  margin: 200 auto 0 auto;
+  width: 80vw;
+  color: white;
   font-size: 40px;
   text-align: center;
-  width: 80vw;
-  margin: 200 auto 0 auto;
-  color: var(--texte-histoire);
 }
 
 .continue-btn {
-  margin-top: 50px;
-  padding: 10px 20px;
-  margin: 60px auto;
-  width: auto;
-  border: solid 1px var(--texte-histoire);
-  border-radius: 25px;
-  font-size: 18px;
   display: flex;
   transition: all 0.3s ease;
-
+  margin-top: 50px;
+  margin: 60px auto;
+  border: solid 1px white;
+  border-radius: 25px;
+  padding: 10px 20px;
+  width: auto;
+  color: white;
+  font-size: 18px;
   &:hover {
-    background-color: var(--texte-histoire);
-    color: white;
+    background-color: white;
+    color: var(--texte-histoire);
+  }
+}
+
+.theme-btn {
+  position: absolute;
+  top: 200px;
+  left: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: solid 1px white;
+  border-radius: 25px;
+  padding: 10px 20px;
+  color: white;
+  &:hover {
+    background-color: white;
+    color: var(--texte-histoire);
   }
 }

@@ -1,13 +1,13 @@
 .header-nav {
-  z-index: 11;
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   align-items: flex-end;
+  z-index: 11;
   margin-top: 40px;
-  position: relative;
-  width: 85vw;
   margin: 40px auto;
+  width: 85vw;
 }
 
 .nav-list {
@@ -30,7 +30,7 @@
   width: 120px;
 }
 
-.btn-creer {
+.btn-create {
   border-radius: 25px;
   background-color: var(--primary-text-color);
   padding: 12px 20px;
@@ -51,4 +51,19 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.btn-compte.white {
+  color: white;
+}
+
+.btn-create.white {
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+
+  &:hover {
+    background-color: white;
+    color: var(--primary-text-color);
+  }
 }

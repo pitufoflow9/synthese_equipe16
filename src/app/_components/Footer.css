@@ -1,5 +1,6 @@
 /* ----------Footer----------- */
 footer {
+  margin-top: 200px;
   background-color: var(--white-gray);
   width: 100vw;
   height: 80vh;
