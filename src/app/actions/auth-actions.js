@@ -2,7 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { db } from "@/db";
 import { user } from "@/db/schemas";
 import { eq } from "drizzle-orm";
@@ -10,6 +10,7 @@ import { eq } from "drizzle-orm";
 export async function signOut() {
   await auth.api.signOut({
     headers: await headers(),
+    cookies: cookies(),
   });
   redirect("/");
 }
@@ -37,6 +38,7 @@ export async function signInWithEmail(formData) {
   await auth.api.signInEmail({
     body: { email, password },
     headers: await headers(),
+    cookies: cookies(),
   });
 
   console.debug(`[auth] Utilisateur connecté: ${existingUser[0].name} (${email})`);
@@ -68,6 +70,7 @@ export async function signUpWithEmail(formData) {
   await auth.api.signUpEmail({
     body: { name, email, password },
     headers: await headers(),
+    cookies: cookies(),
   });
 
   console.debug(`[auth] Nouvel utilisateur créé et connecté: ${name} (${email})`);
