@@ -56,9 +56,7 @@ const UserPage = () => {
                                     <div className="img-container">
                                         <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                         <div className="swiper-buttons-flex-container">
-                                            <button className="edit-button">
-                                                <EditIcon />
-                                            </button>
+
                                             <button className="read-button">
                                                 <p>Lire</p>
                                                 <BookOpen className='read-icon' />
@@ -85,9 +83,7 @@ const UserPage = () => {
                                     <div className="img-container">
                                         <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                         <div className="swiper-buttons-flex-container">
-                                            <button className="edit-button">
-                                                <EditIcon />
-                                            </button>
+
                                             <button className="read-button">
                                                 <p>Lire</p>
                                                 <BookOpen className='read-icon' />
@@ -114,9 +110,7 @@ const UserPage = () => {
                                     <div className="img-container">
                                         <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                         <div className="swiper-buttons-flex-container">
-                                            <button className="edit-button">
-                                                <EditIcon />
-                                            </button>
+
                                             <button className="read-button">
                                                 <p>Lire</p>
                                                 <BookOpen className='read-icon' />
@@ -143,9 +137,7 @@ const UserPage = () => {
                                     <div className="img-container">
                                         <img src="../../../img/placeholder.png" className="slide-img" alt="" />
                                         <div className="swiper-buttons-flex-container">
-                                            <button className="edit-button">
-                                                <EditIcon />
-                                            </button>
+
                                             <button className="read-button">
                                                 <p>Lire</p>
                                                 <BookOpen className='read-icon' />
