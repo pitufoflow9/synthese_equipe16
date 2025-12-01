@@ -35,7 +35,7 @@
   list-style: none;
 }
 
-.btn-nav {
+.btn-nav, .create-p {
   cursor: pointer;
   border: none;
   background: none;
@@ -52,6 +52,31 @@
   padding: 12px 20px;
   color: white;
 }
+
+.btn-create::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 25px;
+  background-image: linear-gradient(to right, #8e10e7, #dc82ff);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+/* .btn-create:hover {
+  border-color: white;
+  color: white;
+}
+
+.btn-create:hover::before {
+  opacity: 1;
+}
+
+.btn-create:hover p {
+  color: white;
+} */
+
 
 .account-icon {
   img {
