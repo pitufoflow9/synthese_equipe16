@@ -53,7 +53,7 @@ const AccountPage = () => {
             </div>
 
             <div className="swiper-container">
-                <h2 className="swiper-h2">R�cits partag�s</h2>
+                <h2 className="swiper-h2">Récits partagés</h2>
                 <div className="swiper">
                     <div className="swiper-wrapper">
                         {/*Slide 1 */}

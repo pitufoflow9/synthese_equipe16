@@ -23,7 +23,7 @@ const StoryVisualizerPage = () => {
 
     const storyTextRef = useRef();
     const backgroundRef = useRef();
-    //BOUTTONS THEME TEST
+    //Boutons thème test
     const [theme, setTheme] = useState(1);
 
     const { changeSource, play } = useAudio(false);
@@ -139,7 +139,7 @@ const StoryVisualizerPage = () => {
             {/* ////////////////////RESET SPLITTEXT ///////////////////////// */}
             {/*  (IMPORTANT, sinon bug)(À retirer pour la remise): */}
             <button onClick={changeTheme} className="theme-btn">
-                Change Theme ({theme})
+                Changer Thème ({theme})
             </button>
             {/* ///////////////////////////////////////////////////////////// */}
 
