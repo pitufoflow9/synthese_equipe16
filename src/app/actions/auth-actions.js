@@ -24,7 +24,7 @@ export async function signInWithEmail(formData) {
   }
 
   const existingUser = await db
-    .select({ id: user.id })
+    .select({ id: user.id, name: user.name })
     .from(user)
     .where(eq(user.email, email))
     .limit(1);
@@ -38,6 +38,8 @@ export async function signInWithEmail(formData) {
     body: { email, password },
     headers: await headers(),
   });
+
+  console.debug(`[auth] Utilisateur connecté: ${existingUser[0].name} (${email})`);
 
   redirect("/");
 }
@@ -67,6 +69,8 @@ export async function signUpWithEmail(formData) {
     body: { name, email, password },
     headers: await headers(),
   });
+
+  console.debug(`[auth] Nouvel utilisateur créé et connecté: ${name} (${email})`);
 
   redirect("/");
 }
