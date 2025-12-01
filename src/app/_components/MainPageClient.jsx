@@ -4,7 +4,7 @@ import "@xyflow/react/dist/style.css";
 // import { signOut } from "../actions/auth-actions";
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useGrid } from "../_context/gridContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { session } from "@/db/schemas";
 // import useLenis from "../_hooks/useLenis.jsx";
 import HistoireTemp from "./HistoireTemp";
