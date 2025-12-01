@@ -58,11 +58,13 @@
   background-color: white;
   width: 50px;
   height: 50px;
+
   &:hover {
     transition: all 0.3s;
     border: transparent;
     background-image: linear-gradient(to right, #8e10e7, #dc82ff);
     color: white;
+
     p {
       color: white;
     }
@@ -94,6 +96,7 @@
     border: transparent;
     background-image: linear-gradient(to right, #8e10e7, #dc82ff);
     color: white;
+
     p {
       color: white;
     }
@@ -132,7 +135,7 @@ hr {
 }
 
 
-.swiper-author{
+.swiper-author {
   margin-top: 10px;
   font-weight: 500;
   font-size: 16px;

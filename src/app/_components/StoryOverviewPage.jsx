@@ -28,8 +28,8 @@ const StoryOverviewPage = () => {
                             <img src="../../../img/placeholder.png" className="overview-img" alt="" />
                         </div>
                         <div className="overview-tags">
-                            <div className="tag">Action</div>
-                            <div className="tag">Magie</div>
+                            <div className="tag action-tag">Action</div>
+                            <div className="tag magic-tag">Magie</div>
                         </div>
                         <Link href="/Profiles/User/slug" className="">
                             <p className="author">Alexandre Gratton</p>

@@ -6,13 +6,13 @@
 }
 
 .story-card-container {
-  margin-top: 120px;
   border: 1px solid var(--purple);
   border-radius: 25px;
   background-color: white;
   padding: 30px;
-  height: auto;
+  height: 100%;
   width: 1125px;
+  margin: 220px auto 0 auto;
 }
 
 .story-card {
@@ -27,12 +27,20 @@
   display: flex;
   flex-direction: column;
   width: 550px;
+
 }
 
 .overview-flex-2 {
+  height: 100%;
   display: flex;
   flex-direction: column;
   width: 550px;
+  justify-items: flex-start;
+  gap: 10;
+
+  &:last-child a {
+   justify-self: flex-end;
+  }
 }
 
 .img-container {
@@ -53,14 +61,23 @@
   color: var(--primary-text-color);
   font-weight: 500;
   font-size: 18;
+  margin: 20px 0;
 
-  span {
+  .tag {
     background-color: var(--primary-text-color);
-    margin-right: 20px;
     border-radius: 15px;
-    background-color: white;
-    padding: 8px 20px;
+    padding: 6px 15px;
+    color: white;
   }
+
+  .magic-tag {
+    background: linear-gradient(to right, #8e10e7, #e6a6ff);
+  }
+
+  .action-tag {
+    background: linear-gradient(to right, #ff1212, #ff985c);
+  }
+
 }
 
 .read-button {
