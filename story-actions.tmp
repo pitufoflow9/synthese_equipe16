@@ -1,0 +1,109 @@
+"use server";
+import { db } from "@/db";
+import { Histoires, Nodes, Branches } from "@/db/schemas/schema";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { v4 as uuid } from "uuid";
+import { eq } from "drizzle-orm";
+import { auth } from "@/lib/auth";
+
+export async function createStory(formData) {
+  const session = await auth.api.getSession({ headers: await headers() });
+  const userId = session?.user?.id ?? "anonyme";
+  const titre = formData.get("titre")?.toString().trim();
+  const synopsis = formData.get("synopsis")?.toString().trim();
+  if (!titre || !synopsis) return;
+  const storyId = uuid();
+
+  await db.insert(Histoires).values({
+    id: storyId,
+    title: titre,
+    synopsis,
+    creator_id: userId,
+    is_published: false,
+    created_at: new Date(),
+  });
+
+  await db.insert(Nodes).values({
+    id: uuid(),
+    histoire_id: storyId,
+    type: "start",
+    titre: "Départ",
+    contenu: "",
+    position_x: 0,
+    position_y: 0,
+    is_ending: false,
+  });
+
+  redirect(`/storyEdit/${storyId}`);
+}
+
+export async function updateStoryMeta(storyId, payload) {
+  await db
+    .update(Histoires)
+    .set({
+      title: payload.title,
+      synopsis: payload.synopsis,
+      is_published: payload.isPublished,
+    })
+    .where(eq(Histoires.id, storyId));
+}
+
+export async function createNode(storyId, node) {
+  await db.insert(Nodes).values({
+    id: node.id ?? uuid(),
+    histoire_id: storyId,
+    type: node.type ?? "story",
+    titre: node.titre ?? "Nouveau nœud",
+    contenu: node.contenu ?? "",
+    position_x: node.position?.x ?? 0,
+    position_y: node.position?.y ?? 0,
+    is_ending: node.isEnding ?? false,
+  });
+}
+
+export async function createEdge(storyId, edge) {
+  await db.insert(Branches).values({
+    id: edge.id ?? uuid(),
+    histoire_id: storyId,
+    source: edge.source,
+    target: edge.target,
+    texte: edge.texte ?? "",
+    type: edge.edgeType ?? edge.type ?? "regular",
+    history_key: edge.historyKey ?? null,
+  });
+}
+
+export async function updateNodePosition(storyId, nodeId, position) {
+  await db
+    .update(Nodes)
+    .set({ position_x: position.x, position_y: position.y })
+    .where(eq(Nodes.id, nodeId))
+    .where(eq(Nodes.histoire_id, storyId));
+}
+
+export async function updateNode(storyId, nodeId, payload) {
+  await db
+    .update(Nodes)
+    .set({
+      titre: payload.titre,
+      contenu: payload.contenu,
+      type: payload.type,
+      is_ending: payload.isEnding,
+    })
+    .where(eq(Nodes.id, nodeId))
+    .where(eq(Nodes.histoire_id, storyId));
+}
+
+export async function updateEdge(storyId, edgeId, payload) {
+  await db
+    .update(Branches)
+    .set({
+      texte: payload.texte,
+      type: payload.edgeType,
+      history_key: payload.historyKey,
+    })
+    .where(eq(Branches.id, edgeId))
+    .where(eq(Branches.histoire_id, storyId));
+}
+

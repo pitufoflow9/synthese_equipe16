@@ -10,25 +10,30 @@
 
 .flex-container-toolbar {
   display: flex;
+  min-height: calc(100vh - 110px);
 }
 
 .tool-bar {
-  /* position: absolute; */
-  top: 0;
-  left: 0;
   border-right: solid 1px var(--light-gray);
-  height: 100%;
-  width: 600px;
+  width: 420px;
   display: flex;
   flex-direction: column;
   padding: 30px;
   background-color: white;
 }
 
+.stroy-title-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: calc(100vh - 110px);
+}
+
 .story-name {
   height: auto;
-  padding: 20px;
-  margin: 10px;
+  padding: 16px;
+  margin-bottom: 10px;
   font-size: 20px;
   background-color: white;
   font-weight: 700;

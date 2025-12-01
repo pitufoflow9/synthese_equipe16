@@ -1,4 +1,3 @@
-import { redirect } from "next/dist/server/api-utils";
 import MainPageClient from "./_components/MainPageClient";
 import { GridProvider } from "./_context/gridContext";
 import { getSession } from "@/lib/auth";
@@ -33,21 +32,24 @@ const HomePage = async () => {
   const initialEdges = [{ id: "edge-un", source: "id-un", target: "id-deux" }];
 
   const session = await getSession();
-  console.log(session);
+  console.log("[session]", session);
   const displayName = session?.user?.name || "Invité";
+  console.log(
+    session
+      ? `Utilisateur connecté: ${displayName}`
+      : "Utilisateur déconnecté (invité)"
+  );
 
   // Consulter la composante GridProvider
 
   return (
     <GridProvider initialNodes={initialNodes} initialEdges={initialEdges}>
       <main className="">
-      {/* <main className="flex flex-col items-center justify-center gap-2 py-5"> */}
-      {/* <h1>Gabarit de départ</h1> */}
-      <MainPageClient displayName={displayName} />
-
+        {/* <main className="flex flex-col items-center justify-center gap-2 py-5"> */}
+        {/* <h1>Gabarit de départ</h1> */}
+        <MainPageClient displayName={displayName} />
       </main>
     </GridProvider>
-
   );
 };
 export default HomePage;

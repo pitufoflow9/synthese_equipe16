@@ -1,58 +1,56 @@
 import "server-only";
 import { db } from "@/db";
-import { Histoires } from "@/db/schemas/schema";
-import { eq } from "drizzle-orm";
+import { Histoires, Nodes, Branches } from "@/db/schemas/schema";
+import { eq, and } from "drizzle-orm";
 
 export async function getHistoires() {
-    const histoiresList = await db.select().from(Histoires);
-    return histoiresList;
-}   
+  return db.select().from(Histoires);
+}
 
 export async function getHistoireById(id) {
-    const [row] = await db.select().from(Histoires).where(eq(Histoires.id, id));
-    return row || null;
+  const [row] = await db.select().from(Histoires).where(eq(Histoires.id, id));
+  return row || null;
+}
+
+export async function getPublishedByAuthor(authorId) {
+  return db
+    .select()
+    .from(Histoires)
+    .where(and(eq(Histoires.creator_id, authorId), eq(Histoires.is_published, true)));
+}
+
+export async function getStoryGraph(storyId) {
+  const nodes = await db.select().from(Nodes).where(eq(Nodes.histoire_id, storyId));
+  const edges = await db.select().from(Branches).where(eq(Branches.histoire_id, storyId));
+  return { nodes, edges };
 }
 
 export async function ajouterHistoires(histoire) {
-    try {
-        console.log("ajouterHistoires: objet reçu =>", histoire);
-        const result = await db.insert(Histoires).values({
-            id: histoire.id,
-            title: histoire.titre,
-            synopsis: histoire.synopsis,
-            theme: histoire.banniere || null,
-            musique: histoire.musique || null,
-            creator_id: histoire.creator_id || null,
-            createdAt: Date.now(),
-        });
-        console.log("ajouterHistoires: insertion effectuée =>", result);
-    } catch (error) {
-        console.error("Erreur lors de l'ajout de l'histoire :", error);
-        throw error;
-    }
+  return db.insert(Histoires).values({
+    id: histoire.id,
+    title: histoire.titre,
+    synopsis: histoire.synopsis,
+    theme: histoire.banniere || null,
+    musique: histoire.musique || null,
+    creator_id: histoire.creator_id || null,
+    is_published: false,
+    created_at: Date.now(),
+  });
 }
 
 export async function deleteHistoire(id) {
-    try {
-        await db.delete(Histoires).where(eq(Histoires.id, id));
-    } catch (error) {
-        console.error("Erreur lors de la suppression de l'histoire :", error);
-        throw error;
-    }
+  return db.delete(Histoires).where(eq(Histoires.id, id));
 }
 
 export async function updateHistoire(id, payload) {
-    try {
-        const result = await db.update(Histoires).set({
-            title: payload.titre,
-            synopsis: payload.synopsis,
-            theme: payload.banniere || null,
-            musique: payload.musique || null,
-        }).where(eq(Histoires.id, id));
-
-        return result;
-    } catch (error) {
-        console.error("Erreur lors de la mise à jour de l'histoire :", error);
-        throw error;
-    }
+  return db
+    .update(Histoires)
+    .set({
+      title: payload.titre,
+      synopsis: payload.synopsis,
+      theme: payload.banniere || null,
+      musique: payload.musique || null,
+      is_published: payload.is_published ?? false,
+    })
+    .where(eq(Histoires.id, id));
 }

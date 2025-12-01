@@ -4,7 +4,7 @@ import { Histoires, Nodes, Branches } from "@/db/schemas/schema";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { v4 as uuid } from "uuid";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 
 export async function createStory(formData) {
@@ -78,8 +78,7 @@ export async function updateNodePosition(storyId, nodeId, position) {
   await db
     .update(Nodes)
     .set({ position_x: position.x, position_y: position.y })
-    .where(eq(Nodes.id, nodeId))
-    .where(eq(Nodes.histoire_id, storyId));
+    .where(and(eq(Nodes.id, nodeId), eq(Nodes.histoire_id, storyId)));
 }
 
 export async function updateNode(storyId, nodeId, payload) {
@@ -91,8 +90,7 @@ export async function updateNode(storyId, nodeId, payload) {
       type: payload.type,
       is_ending: payload.isEnding,
     })
-    .where(eq(Nodes.id, nodeId))
-    .where(eq(Nodes.histoire_id, storyId));
+    .where(and(eq(Nodes.id, nodeId), eq(Nodes.histoire_id, storyId)));
 }
 
 export async function updateEdge(storyId, edgeId, payload) {
@@ -103,7 +101,21 @@ export async function updateEdge(storyId, edgeId, payload) {
       type: payload.edgeType,
       history_key: payload.historyKey,
     })
-    .where(eq(Branches.id, edgeId))
-    .where(eq(Branches.histoire_id, storyId));
+    .where(and(eq(Branches.id, edgeId), eq(Branches.histoire_id, storyId)));
+}
+
+export async function deleteEdge(storyId, edgeId) {
+  await db
+    .delete(Branches)
+    .where(and(eq(Branches.id, edgeId), eq(Branches.histoire_id, storyId)));
+}
+
+export async function deleteNodeAndEdges(storyId, nodeId) {
+  // supprimer les branches liées puis le nœud
+  await db.delete(Branches).where(eq(Branches.source, nodeId));
+  await db.delete(Branches).where(eq(Branches.target, nodeId));
+  await db
+    .delete(Nodes)
+    .where(and(eq(Nodes.id, nodeId), eq(Nodes.histoire_id, storyId)));
 }
 

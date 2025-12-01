@@ -78,7 +78,7 @@ const GridProvider = ({
         isEnding: !!newNode.isEnding,
         body: newNode.contenu ?? "",
       },
-      draggable: (newNode.type ?? "story") !== "start",
+      draggable: true,
       selectable: true,
     };
 

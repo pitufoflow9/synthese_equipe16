@@ -7,7 +7,8 @@ import Nav from "./Nav.jsx";
 import CustomSwitch from "./CustomSwitch.jsx";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
-import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
+import { Background, BackgroundVariant, ReactFlow, Handle } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 import { v4 as uuid } from "uuid";
 import {
   updateStoryMeta,
@@ -36,6 +37,8 @@ const StoryEditorPage = ({ story }) => {
   const [choiceTitle, setChoiceTitle] = useState("");
   const [nodeText, setNodeText] = useState("");
   const [isEnding, setIsEnding] = useState(false);
+  const [edgeType, setEdgeType] = useState("regular");
+  const [historyKey, setHistoryKey] = useState("");
 
   const isNodeSelected = selection?.type === "node" && selection.node;
   const isEdgeSelected = selection?.type === "edge" && selection.edge;
@@ -47,12 +50,16 @@ const StoryEditorPage = ({ story }) => {
       setIsEnding(!!selection.node.data?.isEnding);
     } else if (isEdgeSelected) {
       setChoiceTitle(selection.edge.label ?? "");
+      setEdgeType(selection.edge.data?.edgeType ?? "regular");
+      setHistoryKey(selection.edge.data?.historyKey ?? "");
       setNodeText("");
       setIsEnding(false);
     } else {
       setChoiceTitle("");
       setNodeText("");
       setIsEnding(false);
+      setEdgeType("regular");
+      setHistoryKey("");
     }
   }, [isNodeSelected, isEdgeSelected, selection]);
 
@@ -77,13 +84,20 @@ const StoryEditorPage = ({ story }) => {
     } else if (isEdgeSelected) {
       const id = selection.edge.id;
       const updatedEdges = edges.map((e) =>
-        e.id === id ? { ...e, label: choiceTitle } : e
+        e.id === id
+          ? {
+              ...e,
+              label: choiceTitle,
+              data: { ...e.data, edgeType, historyKey },
+              edgeType,
+            }
+          : e
       );
       setEdgesState(updatedEdges);
       updateEdge(story.id, id, {
         texte: choiceTitle,
-        edgeType: selection.edge.data?.edgeType ?? "regular",
-        historyKey: selection.edge.data?.historyKey ?? null,
+        edgeType,
+        historyKey: historyKey || null,
       });
     }
   };
@@ -121,9 +135,61 @@ const StoryEditorPage = ({ story }) => {
     });
   };
 
-  const canvas = useMemo(
-    () => (
-      <div className="editor-canvas">
+  const nodeTypes = useMemo(
+    () => ({
+      default: ({ data }) => {
+        const isStart = data?.nodeType === "start";
+        const isEnd = data?.isEnding;
+        const showTarget = !isStart;
+        const showSource = !isEnd;
+
+        return (
+          <div
+            style={{
+              position: "relative",
+              padding: "12px 16px",
+              borderRadius: 10,
+              border: "1px solid #d6d6d6",
+              background: "#fff",
+              boxShadow:
+                "0 1px 2px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.06)",
+              minWidth: 140,
+              textAlign: "center",
+              fontWeight: 600,
+            }}
+          >
+            {showTarget && (
+              <Handle
+                type="target"
+                position="top"
+                style={{ width: 12, height: 12, background: "#8e10e7" }}
+              />
+            )}
+            {data?.label || "Sans titre"}
+            {showSource && (
+              <Handle
+                type="source"
+                position="bottom"
+                style={{ width: 12, height: 12, background: "#8e10e7" }}
+              />
+            )}
+          </div>
+        );
+      },
+    }),
+    []
+  );
+
+  const canvas = useMemo(() => {
+    return (
+      <div
+        className="editor-canvas"
+        style={{
+          width: "100%",
+          height: "calc(100vh - 200px)",
+          minHeight: 500,
+        }}
+      >
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -132,17 +198,23 @@ const StoryEditorPage = ({ story }) => {
           onSelectionChange={internals.onSelectionChange}
           onConnect={internals.onConnect}
           nodesDraggable
+          nodesConnectable
           elementsSelectable
           panOnDrag
           selectionOnDrag
+          zoomOnScroll
+          panOnScroll
+          multiSelectionKeyCode={null}
+          deleteKeyCode={null}
+          nodeTypes={nodeTypes}
+          fitViewOptions={{ padding: 0.3 }}
           fitView
         >
           <Background variant={BackgroundVariant.Dots} />
         </ReactFlow>
       </div>
-    ),
-    [nodes, edges, internals]
-  );
+    );
+  }, [nodes, edges, internals, nodeTypes]);
 
   return (
     <div className="page-container">
@@ -177,12 +249,13 @@ const StoryEditorPage = ({ story }) => {
           <button className="btn btn-editor-appliquer" onClick={handleApply}>
             Appliquer
           </button>
-          <div className="bg-grid"></div>
         </div>
 
         <div className="stroy-title-container">
           <div className="story-name">{story.title}</div>
-          {canvas}
+          <div style={{ flex: 1, minHeight: "calc(100vh - 110px)" }}>
+            {canvas}
+          </div>
         </div>
       </div>
 

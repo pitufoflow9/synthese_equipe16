@@ -10,6 +10,7 @@ import {
   updateStoryMeta,
   updateNode,
   updateEdge,
+  deleteNodeAndEdges,
 } from "@/app/actions/story-actions";
 import { useEffect, useState } from "react";
 
@@ -25,12 +26,15 @@ const ClientPage = ({ story }) => {
   } = useGrid();
   const [nodeTitle, setNodeTitle] = useState("");
   const [edgeText, setEdgeText] = useState("");
+  const [nodeContent, setNodeContent] = useState("");
 
   useEffect(() => {
     if (selection?.type === "node" && selection.node) {
       setNodeTitle(selection.node.data?.label ?? "");
+      setNodeContent(selection.node.data?.body ?? "");
     } else {
       setNodeTitle("");
+      setNodeContent("");
     }
 
     if (selection?.type === "edge" && selection.edge) {
@@ -49,9 +53,26 @@ const ClientPage = ({ story }) => {
     setNodesState(newNodes);
     updateNode(story.id, id, {
       titre: nodeTitle,
+      contenu: nodeContent,
       type: selection.node.data?.nodeType ?? "story",
       isEnding: selection.node.data?.isEnding ?? false,
     });
+  };
+
+  const onDeleteNode = async () => {
+    if (selection?.type !== "node" || !selection.node?.id) return;
+    if (selection.node.data?.nodeType === "start") return; // ne pas supprimer le départ
+    const id = selection.node.id;
+    // remove local edges attached
+    const filteredEdges = edges.filter(
+      (e) => e.source !== id && e.target !== id
+    );
+    setEdgesState(filteredEdges);
+    // remove node locally
+    const filteredNodes = nodes.filter((n) => n.id !== id);
+    setNodesState(filteredNodes);
+    // fire-and-forget serveur
+    deleteNodeAndEdges(story.id, id);
   };
 
   const onUpdateEdge = async () => {
@@ -92,18 +113,21 @@ const ClientPage = ({ story }) => {
         <div style={{ flex: 1, border: "1px solid #ccc", padding: 12 }}>
           <h3>{story.title}</h3>
           <p>{story.synopsis}</p>
-          <button
-            onClick={() =>
-              addLocalNode({
-                id: uuid(),
-                type: "story",
-                titre: "Nouveau nœud",
-                position: { x: 100, y: 100 },
-              })
-            }
-          >
-            + Ajouter un nœud
-          </button>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <button
+              onClick={() =>
+                addLocalNode({
+                  id: uuid(),
+                  type: "story",
+                  titre: "Nouveau nœud",
+                  position: { x: 100, y: 100 },
+                })
+              }
+            >
+              + Ajouter un nœud
+            </button>
+            <button onClick={onDeleteNode}>Supprimer la sélection</button>
+          </div>
 
           <div
             style={{
@@ -132,6 +156,13 @@ const ClientPage = ({ story }) => {
                   value={nodeTitle}
                   onChange={(e) => setNodeTitle(e.target.value)}
                   placeholder="Titre"
+                />
+                <label>Texte du nœud</label>
+                <textarea
+                  value={nodeContent}
+                  onChange={(e) => setNodeContent(e.target.value)}
+                  placeholder="Texte"
+                  rows={3}
                 />
                 <button onClick={onUpdateNode}>Sauvegarder le nœud</button>
               </div>

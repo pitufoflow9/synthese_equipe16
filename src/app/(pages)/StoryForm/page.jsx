@@ -1,13 +1,5 @@
-"use client";
+import StoryFormPage from "../../_components/StoryFormPage.jsx";
+import { createStory } from "@/app/actions/story-actions";
 
-import StoryFormPage from "../../_components/StoryFormPage.jsx"
-
-const StoryForm = () => {
-    return (
-        <div>
-            <StoryFormPage formAction={addHistoire} />
-        </div>
-    )
-}
-
+const StoryForm = () => <StoryFormPage formAction={createStory} />;
 export default StoryForm;
