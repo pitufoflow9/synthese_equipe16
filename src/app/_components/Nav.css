@@ -33,9 +33,18 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  li {
+    &:hover {
+      opacity: 0.8;
+    }
+    &:last-child:hover {
+      opacity: 1;
+    }
+  }
 }
 
-.btn-nav, .create-p {
+.btn-nav,
+.create-p {
   cursor: pointer;
   border: none;
   background: none;

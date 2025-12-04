@@ -13,7 +13,7 @@ const RecemmentPubliees = ({ stories = [] }) => {
     return (
       <section>
         <h2 className="section-title">Récemment publiées</h2>
-        <p style={{ padding: "0 24px" }}>
+        <p className="placeholder-text">
           Aucune histoire publique n'est disponible pour l'instant. Parcourez les
           créations dès qu'elles seront publiées — même en mode invité.
         </p>

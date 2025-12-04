@@ -5,3 +5,9 @@ h2 {
   font-weight: 500;
   font-size: 45px;
 }
+
+.placeholder-text {
+  padding: 24px 24px 24px 0;
+  margin-left: 7.5vw;
+  font-size: 20px;
+}

@@ -40,7 +40,7 @@ const Nav = ({ user: initialUser }) => {
   }, [initialUser]);
 
   const isAuthenticated = !!user;
-  const createStoryHref = isAuthenticated ? "/StoryForm" : "/auth/signIn";
+  const createStoryHref = isAuthenticated ? "/storyform" : "/auth/signin";
 
   useGSAP(() => {
     const nav = document.querySelector('.header-nav');
@@ -77,17 +77,17 @@ const Nav = ({ user: initialUser }) => {
         {!isAuthenticated && (
           <ul className="nav-list">
             <li>
-              <Link href="/auth/signIn" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
+              <Link href="/auth/signin" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
                 Se connecter
               </Link>
             </li>
             <li>
-              <Link href="/auth/signUp" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
+              <Link href="/auth/signup" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
                 S'inscrire
               </Link>
             </li>
             <li>
-              <Link href="/StoryForm" className={isVisualizerPage ? "btn-nav btn-create white" : "btn-nav btn-create"}>
+              <Link href="/storyform" className={isVisualizerPage ? "btn-nav btn-create white" : "btn-nav btn-create"}>
                 Créer une histoire
               </Link>
             </li>
@@ -97,7 +97,7 @@ const Nav = ({ user: initialUser }) => {
       {isAuthenticated && (
         <ul className="nav-list">
           <li>
-            <Link href="/Profiles/MyProfile" className="account-flex-container">
+            <Link href="/profiles/myprofile" className="account-flex-container">
               <span className="btn-nav account-name">
                 {user?.name || "Mon compte"}
               </span>
