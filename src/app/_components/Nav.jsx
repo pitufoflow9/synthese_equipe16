@@ -97,13 +97,15 @@ const Nav = ({ user: initialUser }) => {
 
       {isAuthenticated && (
         <ul className="nav-list">
-          <li className="account-flex-container">
-            <span className="btn-nav account-name">
-              {user?.name || "Mon compte"}
-            </span>
-            <span className="btn-nav account-icon">
-              <img src="../../../img/account_icon.svg" alt="" />
-            </span>
+          <li>
+            <Link href="/Profiles/MyProfile" className="account-flex-container">
+              <span className="btn-nav account-name">
+                {user?.name || "Mon compte"}
+              </span>
+              <span className="btn-nav account-icon">
+                <img src="../../../img/account_icon.svg" alt="" />
+              </span>
+            </Link>
           </li>
           <li>
             <form action={signOut}>
@@ -111,6 +113,7 @@ const Nav = ({ user: initialUser }) => {
                 type="submit"
                 className="btn-nav btn-compte"
                 title="Se déconnecter"
+                
               >
                 <LogoutIcon sx={{ fontSize: 30 }} />
               </button>

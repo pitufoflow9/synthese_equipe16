@@ -1,7 +1,6 @@
 import SignUpClient from "../../_components/SignUpPage";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { signUpWithEmail } from "@/app/actions/auth-actions";
 
 const SignUp = async () => {
   const session = await getSession();
@@ -9,7 +8,7 @@ const SignUp = async () => {
     redirect("/");
   }
 
-  return <SignUpClient formAction={signUpWithEmail} />;
+  return <SignUpClient />;
 };
 
 export default SignUp;

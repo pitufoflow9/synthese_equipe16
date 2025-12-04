@@ -56,6 +56,7 @@ const StoryFormPage = ({ formAction, initial = {}, user }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [bannerIsOpen, musicIsOpen]);
+  
 
   return (
     <div className="story-form-container">
