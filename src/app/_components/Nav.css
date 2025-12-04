@@ -32,9 +32,21 @@
 
 .btn-create {
   border-radius: 25px;
-  background-color: var(--primary-text-color);
   padding: 12px 20px;
   color: white;
+  border: none;
+  background: linear-gradient(
+    90deg,
+    rgb(34, 34, 34) 0%,
+    rgb(110, 110, 110) 51%,
+    rgb(34, 34, 34) 100%
+  );
+  background-size: 200% 100%;
+  background-position: left bottom;
+  transition: background-position 0.6s ease;
+  &:hover {
+    background-position: right bottom;
+  }
 }
 
 .account-icon {

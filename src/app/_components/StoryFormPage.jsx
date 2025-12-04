@@ -7,21 +7,93 @@ import "../_components/StoryFormPage.css"
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import SplitText from "gsap/SplitText";
+import { useGSAP } from "@gsap/react";
 
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
 import { X } from 'lucide-react';
-import { Music3 } from 'lucide-react';
+import { Ambiance3 } from 'lucide-react';
+gsap.registerPlugin(SplitText, useGSAP);
 
-//TODO: Intégrer la logique de la création de l'histoire (Titre, synopsis, image de bannière, musique).
-//TODO (APRÈS L'ALPHA) : Pouvoir téléverser une image de bannière et/ou musique.
+//TODO: Intégrer la logique de la création de l'histoire (Titre, synopsis, image de bannière, ambiance).
+//TODO (APRÈS L'ALPHA) : Pouvoir téléverser une image de bannière et/ou ambiance.
+const previewAnimation = (theme, target) => {
+    if (!target) return;
+
+    target.innerHTML = target.textContent;
+
+    // Theme 1
+    if (theme === 1) {
+        const split = new SplitText(target, { type: "lines" });
+        const lines = split.lines;
+
+        gsap.set(lines, { opacity: 0, y: 50, color: "#ffffff" });
+
+        const tl = gsap.timeline();
+        tl.to(lines, {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            stagger: 0.5,
+            ease: "power2.out",
+        }).to(lines, {
+            y: -15,
+            duration: 3,
+            yoyo: true,
+            repeat: -1,
+            ease: "power1.inOut",
+            stagger: 0.2,
+        });
+
+        return tl;
+    }
+
+    // Theme 2
+    if (theme === 2) {
+        const split = new SplitText(target, { type: "chars" });
+
+        return gsap.from(split.chars, {
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.01,
+            filter: "blur(4px)",
+        });
+    }
+
+    // Theme 3
+    if (theme === 3) {
+        const split = new SplitText(target, { type: "chars" });
+
+        gsap.set(split.chars, { opacity: 0, scale: 0 });
+
+        return gsap.set(split.chars, {
+            opacity: 1,
+            scale: 1,
+            y: () => gsap.utils.random(-3, 3),
+            x: () => gsap.utils.random(-1, 1),
+            rotation: () => gsap.utils.random(-1, 1),
+            duration: 0.1,
+            stagger: gsap.utils.random(0.01, 0.04),
+        });
+    }
+};
+
+
 
 const StoryFormPage = () => {
     const [bannerIsOpen, setBannerIsOpen] = useState(false);
-    const [musicIsOpen, setMusicIsOpen] = useState(false);
+    const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
+    const [effectIsOpen, setEffectIsOpen] = useState(false);
     const bannerPopupRef = useRef();
-    const musicPopupRef = useRef();
+    const ambiancePopupRef = useRef();
+    const effectPopupRef = useRef();
+    const preview1Ref = useRef(null);
+    const preview2Ref = useRef(null);
+    const preview3Ref = useRef(null);
 
+    const previewTlRef = useRef(null);
     const openBannerPopup = (e) => {
         e.preventDefault();
         setBannerIsOpen(true);
@@ -33,25 +105,54 @@ const StoryFormPage = () => {
         setBannerIsOpen(false);
         console.log("Banner closed")
     };
-    const openMusicPopup = (e) => {
+    const openAmbiancePopup = (e) => {
         e.preventDefault();
-        setMusicIsOpen(true);
-        console.log("Music opened")
+        setAmbianceIsOpen(true);
+        console.log("Ambiance opened")
     };
 
-    const closeMusicPopup = (e) => {
+    const closeAmbiancePopup = (e) => {
         e.preventDefault();
-        setMusicIsOpen(false);
-        console.log("Music closed")
+        setAmbianceIsOpen(false);
+        console.log("Ambiance closed")
     };
+
+    const openEffectPopup = (e) => {
+        e.preventDefault();
+        setEffectIsOpen(true);
+        console.log("Ambiance opened")
+    };
+
+    const closeEffectPopup = (e) => {
+        e.preventDefault();
+        setEffectIsOpen(false);
+        console.log("Ambiance closed")
+    };
+
+    const previewButtonEnter = (theme, ref) => {
+        if (previewTlRef.current) previewTlRef.current.kill();
+        previewTlRef.current = previewAnimation(theme, ref.current);
+    };
+
+    const previewButtonLeave = (ref) => {
+        if (previewTlRef.current) previewTlRef.current.kill();
+        previewTlRef.current = null;
+        if (ref.current) {
+            ref.current.innerHTML = ref.current.textContent;
+        }
+    };
+
 
     useEffect(() => {
         function handleClickOutside(e) {
             if (bannerIsOpen && bannerPopupRef.current && !bannerPopupRef.current.contains(e.target)) {
                 setBannerIsOpen(false);
             }
-            if (musicIsOpen && musicPopupRef.current && !musicPopupRef.current.contains(e.target)) {
-                setMusicIsOpen(false);
+            if (ambianceIsOpen && ambiancePopupRef.current && !ambiancePopupRef.current.contains(e.target)) {
+                setAmbianceIsOpen(false);
+            }
+            if (effectIsOpen && effectPopupRef.current && !effectPopupRef.current.contains(e.target)) {
+                setEffectIsOpen(false);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -116,46 +217,86 @@ const StoryFormPage = () => {
 
                             </div>
                             <hr className="popup-banner-hr" />
-                            <button className="btn-popup">Téléverser à partir de l'appareil</button>
+                            <Link href="../upload" ><button className="btn-popup">Téléverser à partir de l'appareil</button></Link>
                         </div>
                     </div>
                 }
 
-                <button onClick={openMusicPopup} className="btn-form btn-form-add-music" >
-                    <span className="material-symbols-outlined music-icon">
-                        music_note
-                    </span>
-                    Ajouter une musique
-                </button>
-                {musicIsOpen &&
+                <div className="form-btn-container">
+                    <button onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance" >
+                        Choisir une ambiance
+                    </button>
+                    <button onClick={openEffectPopup} className="btn-form btn-form-add-effect" >
+                        Choisir une effet
+                    </button>
+                </div>
+                {ambianceIsOpen &&
                     <div className="popup-container">
-                        <div className="popup" ref={musicPopupRef}>
-                            <button onClick={closeMusicPopup} className="popup-close-icon">
+                        <div className="popup" ref={ambiancePopupRef}>
+                            <button onClick={closeAmbiancePopup} className="popup-close-icon">
                                 <X />
                             </button>
-                            <h2 className="">Parcourir la banque de musiques</h2>
-                            <div className="music-list" >
-                                <button className="music-button" >
-                                    <div className="icon">
-                                        <Music3 />
-                                    </div>
-                                    <div className="music-title">Ambiance d'horreur</div> <div className="music-length">1:22</div>
+                            <h2 className="">Parcourir nos choix d'ambiances</h2>
+                            <div className="ambiance-list" >
+                                <button className="ambiance-button ambiance-horreur" >
+                                    <div className="ambiance-title">Ambiance d'horreur</div>
                                 </button>
-                                <button className="music-button">
-                                    <div className="icon">
-                                        <Music3 />
-                                    </div>
-                                    <div className="music-title">Ambiance médiéval</div> <div className="music-length">3:30</div>
+                                <button className="ambiance-button ambiance-medieval">
+                                    <div className="ambiance-title">Ambiance médiéval</div>
                                 </button>
-                                <button className="music-button" >
-                                    <div className="icon">
-                                        <Music3 />
-                                    </div>
-                                    <div className="music-title">Ambiance de magie</div> <div className="music-length">1:41</div>
+                                <button className="ambiance-button ambiance-magique" >
+                                    <div className="ambiance-title">Ambiance magique</div>
                                 </button>
                             </div>
                             <hr className="popup-banner-hr" />
-                            <button className="btn-popup">Téléverser à partir de l'appareil</button>
+                            <Link href="../upload" ><button className="btn-popup">Téléverser à partir de l'appareil</button></Link>
+                        </div>
+                    </div>
+                }
+                {effectIsOpen &&
+                    <div className="popup-container">
+                        <div className="popup popup-effect" ref={effectPopupRef}>
+                            <button onClick={closeEffectPopup} className="popup-close-icon">
+                                <X />
+                            </button>
+                            <h2 className="">Parcourir nos d'effets</h2>
+                            <div className="ambiance-list" >
+                                {/* Theme 1 */}
+                                <button
+                                    className="ambiance-button effect-preview effect-preview-1"
+                                    onMouseEnter={() => previewButtonEnter(1, preview1Ref)}
+                                    onMouseLeave={() => previewButtonLeave(preview1Ref)}
+                                >
+                                    <div className="ambiance-title">Effet d'entrée par le bas  </div>
+                                    <div className="effect-preview-placeholder" ref={preview1Ref}>
+                                        Ceci est un aperçu
+                                    </div>
+                                </button>
+
+                                {/* Theme 2 */}
+                                <button
+                                    className="ambiance-button effect-preview effect-preview-2"
+                                    onMouseEnter={() => previewButtonEnter(2, preview2Ref)}
+                                    onMouseLeave={() => previewButtonLeave(preview2Ref)}
+                                >
+                                    <div className="ambiance-title">Effet de flou</div>
+                                    <div className="effect-preview-placeholder" ref={preview2Ref}>
+                                        Ceci est un aperçu
+                                    </div>
+                                </button>
+
+                                {/* Theme 3 */}
+                                <button
+                                    className="ambiance-button effect-preview effect-preview-3"
+                                    onMouseEnter={() => previewButtonEnter(3, preview3Ref)}
+                                    onMouseLeave={() => previewButtonLeave(preview3Ref)}
+                                >
+                                    <div className="ambiance-title">Effet de machine à écrire</div>
+                                    <div className="effect-preview-placeholder" ref={preview3Ref}>
+                                        Ceci est un aperçu
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 }
@@ -170,11 +311,11 @@ const StoryFormPage = () => {
                 </Link>
 
 
-            </form>
+            </form >
             <div>
             </div>
             <Footer />
-        </div>
+        </div >
     )
 }
 
