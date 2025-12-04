@@ -82,7 +82,7 @@ const previewAnimation = (theme, target) => {
 
 
 
-const StoryFormPage = ({ formAction, initial = {} }) => {
+const StoryFormPage = () => {
     const [bannerIsOpen, setBannerIsOpen] = useState(false);
     const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
     const [effectIsOpen, setEffectIsOpen] = useState(false);
@@ -164,16 +164,11 @@ const StoryFormPage = ({ formAction, initial = {} }) => {
             <Nav />
 
             <h1 className="h1-story-form">Nouvelle histoire</h1>
-            <form className="story-form" action={formAction}>
-                {initial.id && (
-                    <input type="hidden" name="id" value={initial.id} />
-                )}
-                
+            <form className="story-form" >
                 <div className="form-input-container title-input">
                     <label htmlFor="title">Titre</label>
                     <input
                         id="title"
-                        name="titre"
                         className="title"
                         placeholder="Écrire..."
                         // required
@@ -184,11 +179,9 @@ const StoryFormPage = ({ formAction, initial = {} }) => {
                     <label htmlFor="synopsis">Synopsis</label>
                     <textarea
                         id="synopsis"
-                        name="synopsis"
                         placeholder="Écrire..."
                         // required
                         rows={3}
-                        defaultValue={initial.synopsis || ''}
                     ></textarea>
                 </div>
 
@@ -311,9 +304,11 @@ const StoryFormPage = ({ formAction, initial = {} }) => {
                 <hr className="story-form-hr" />
 
                 {/* id place holder */}
-                <button type="submit" className="btn-form btn-form-continue" >
-                    Continuer
-                </button>
+                <Link href="/StoryEditor/id" className="">
+                    <button className="btn-form btn-form-continue" >
+                        Continuer
+                    </button>
+                </Link>
 
 
             </form >
@@ -325,4 +320,3 @@ const StoryFormPage = ({ formAction, initial = {} }) => {
 }
 
 export default StoryFormPage;
-
