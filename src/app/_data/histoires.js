@@ -64,6 +64,8 @@ export async function updateHistoire(id, payload) {
     })
     .where(eq(Histoires.id, id));
 }
+
+// Fonctions simplifiées (approche débutant)
 export async function getPublishedStories() {
   return db
     .select()
@@ -72,59 +74,59 @@ export async function getPublishedStories() {
     .orderBy(desc(Histoires.created_at));
 }
 
-// Infos d’une histoire + auteur + node de départ
 export async function getStoryInfoById(storyId) {
-  const [story] = await db
-    .select({
-      id: Histoires.id,
-      title: Histoires.title,
-      synopsis: Histoires.synopsis,
-      authorId: Histoires.creator_id,
-      authorName: user.name,
-      startNodeId: Nodes.id, // node de départ (type "start")
-    })
-    .from(Histoires)
-    .leftJoin(user, eq(user.id, Histoires.creator_id))
-    .leftJoin(
-      Nodes,
-      and(eq(Nodes.histoire_id, Histoires.id), eq(Nodes.type, "start"))
-    )
-    .where(eq(Histoires.id, storyId))
-    .limit(1);
-
+  // Histoire
+  const [story] = await db.select().from(Histoires).where(eq(Histoires.id, storyId));
   if (!story) return null;
 
-  // Fallback si aucun node de type "start"
-  if (!story.startNodeId) {
-    const fallback = await db
-      .select({ startNodeId: Nodes.id })
-      .from(Nodes)
-      .where(eq(Nodes.histoire_id, storyId))
-      .orderBy(Nodes.position_x) // ou created_at si tu préfères
-      .limit(1);
-    story.startNodeId = fallback?.[0]?.startNodeId ?? null;
+  // Auteur
+  let authorName = null;
+  if (story.creator_id) {
+    const [author] = await db.select().from(user).where(eq(user.id, story.creator_id));
+    authorName = author?.name ?? null;
   }
 
-  return story;
+  // Node de départ 
+  const [startNode] = await db
+    .select({ id: Nodes.id })
+    .from(Nodes)
+    .where(and(eq(Nodes.histoire_id, storyId), eq(Nodes.type, "start")))
+    .limit(1);
+
+  let startNodeId = startNode?.id ?? null;
+  if (!startNodeId) {
+    const [firstNode] = await db
+      .select({ id: Nodes.id })
+      .from(Nodes)
+      .where(eq(Nodes.histoire_id, storyId))
+      .limit(1);
+    startNodeId = firstNode?.id ?? null;
+  }
+
+  return {
+    id: story.id,
+    title: story.title,
+    synopsis: story.synopsis,
+    authorId: story.creator_id,
+    authorName,
+    startNodeId,
+  };
 }
 
-// Infos d’un node + branches sortantes + id des cibles
 export async function getNodeInfoById(nodeId) {
+  // Node
   const [node] = await db.select().from(Nodes).where(eq(Nodes.id, nodeId));
   if (!node) return null;
 
-  const TargetNode = alias(Nodes, "targetNode");
+  // Branches sortantes
   const branches = await db
     .select({
       id: Branches.id,
       texte: Branches.texte,
       type: Branches.type,
       targetNodeId: Branches.target,
-      targetTitle: TargetNode.titre,
-      targetType: TargetNode.type,
     })
     .from(Branches)
-    .leftJoin(TargetNode, eq(TargetNode.id, Branches.target))
     .where(eq(Branches.source, nodeId));
 
   return { node, branches };

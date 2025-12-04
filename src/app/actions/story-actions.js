@@ -9,7 +9,12 @@ import { auth } from "@/lib/auth";
 
 export async function createStory(formData) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const userId = session?.user?.id ?? "anonyme";
+  if (!session?.user?.id) {
+    // Refuser la creation sans utilisateur authentifie
+    redirect("/auth/signIn");
+  }
+
+  const userId = session.user.id;
   const titre = formData.get("titre")?.toString().trim();
   const synopsis = formData.get("synopsis")?.toString().trim();
   if (!titre || !synopsis) return;
