@@ -6,36 +6,64 @@
 }
 
 .story-card-container {
+  position: relative;
+  justify-self: center;
+  margin: 250px 0 300px 0;
   border: 1px solid var(--purple);
   border-radius: 25px;
   background-color: white;
   padding: 30px;
-  height: 100%;
   width: 1125px;
-  margin: 220px auto 0 auto;
+  height: 100%;
 }
 
 .story-card {
   display: flex;
   position: relative;
   flex-direction: row;
-  gap: 40px;
   justify-content: space-between;
+  gap: 40px;
 }
 
 .overview-flex-1 {
-  display: flex;
-  flex-direction: column;
-  width: 550px;
-
+  position: relative;
+  width: 100%;
 }
-
 .overview-flex-2 {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   width: 550px;
+}
+
+.like-dislike-container {
+  display: flex;
+  gap: 25px;
+  transition: all 0.3 ease;
+  & > * {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.5;
+      transition: all 0.3 ease;
+    }
+  }
+}
+
+.like-container,
+.dislike-container {
+  display: flex;
+  gap: 5px;
+  p {
+    font-weight: 700;
+  }
+}
+
+.overview-flex-3 {
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   gap: 10;
+  width: 550px;
 
   &:last-child a {
     justify-self: flex-end;
@@ -51,100 +79,41 @@
   border-radius: 25px;
 }
 
-.overview-tags {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  top: 18px;
-  left: 15px;
-  color: var(--primary-text-color);
-  font-weight: 500;
-  font-size: 18;
-  margin: 20px 0;
-
-  .tag {
-    background-color: var(--primary-text-color);
-    border-radius: 15px;
-    padding: 6px 15px;
-    color: white;
-  }
-
-  .magic-tag {
-    background: linear-gradient(to right, #8e10e7, #e6a6ff);
-  }
-
-  .action-tag {
-    background: linear-gradient(to right, #ff1212, #ff985c);
-  }
-
-}
-
 .read-button {
-  position: relative;
   display: flex;
+  position: relative;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  transition: background-position 0.6s ease;
   cursor: pointer;
   margin: 0 auto;
+  border: 1px solid white;
   border-radius: 25px;
-  background: #333333;
-  color: white;
+  background: linear-gradient(
+    90deg,
+    rgba(142, 16, 231, 1) 0%,
+    rgba(220, 130, 255, 1) 51%,
+    rgba(142, 16, 231, 1) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
   padding: 0 20px;
   width: 100%;
   height: 60px;
-  font-weight: 500;
   overflow: hidden;
-}
-
-.read-button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 25px;
-  background-image: linear-gradient(to right, #8e10e7, #dc82ff);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
-}
-
-.read-button p {
-  position: relative;
-  z-index: 1;
+  color: white;
+  color: white;
   color: white;
   font-weight: 500;
-  font-size: 19px;
+  &:hover {
+    background-position: right bottom;
+  }
 }
 
 .read-icon {
-  z-index: 1;
-}
-
-.read-button:hover {
-  border-color: white;
-  color: white;
-}
-
-.read-button:hover::before {
-  opacity: 1;
-}
-
-.read-button:hover p {
-  color: white;
-}
-
-
-/* .btn-modify {
-
-} */
-
-.read-icon {
-  /* position: absolute; */
-  /* top: 50%; */
   margin-top: 2px;
   margin-left: 10px;
-
-  /* transform: translateY(-50%); */
 }
 
 .overview-h3 {
@@ -181,5 +150,22 @@ hr {
   flex-direction: row;
   justify-content: flex-end;
   width: 100%;
+}
 
+.btn-back {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  margin: 0px 40px 40px 4vw;
+  border: solid 1px var(--primary-text-color);
+  border-radius: 25px;
+  padding: 8px 15px;
+  &:hover {
+    background-color: var(--primary-text-color);
+    color: white;
+  }
 }

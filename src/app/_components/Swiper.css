@@ -2,19 +2,37 @@
 
 .swiper-h2 {
   margin-bottom: 40px;
-  margin-left: 7.5vw;
+  margin-left: 4vw;
   font-weight: 500;
   font-size: 45px;
 }
 
 .swiper-slide {
   cursor: pointer;
+  margin: 15px;
   width: 670px;
-  height: 600px;
+  height: auto;
+}
+
+.card{
+  height: auto;
+}
+
+.card::before {
+  position: absolute;
+  z-index: -1;
+  transition: all 0.2s;
+  inset: -15px;
+  border-radius: 35px;
+  background: transparent;
+  content: "";
+}
+.card:hover::before {
+  background: #00000017;
 }
 
 .swiper-first-slide {
-  margin-left: 7.5vw;
+  margin-left: 4vw;
 }
 
 .img-container {
@@ -133,7 +151,6 @@ hr {
   justify-content: flex-end;
   width: 100%;
 }
-
 
 .swiper-author {
   margin-top: 10px;

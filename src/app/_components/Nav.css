@@ -14,33 +14,37 @@
   height: auto;
 }
 
-.header-nav-flex-container {
-  display: flex;
-  align-content: center;
-  justify-content: space-between;
-  width: 84vw;
-}
-
 .header-nav.is-not-at-top {
   border-bottom: solid 1px var(--light-gray);
   background: white;
 }
 
+.account-actions-container {
+  display: flex;
+  gap: 70px;
+}
 .nav-list {
   display: flex;
-  align-items: center;
-  gap: 50px;
+  justify-content: space-between;
+  align-items: end;
   margin: 0;
   padding: 0;
+  width: 92vw;
   list-style: none;
   li {
     &:hover {
       opacity: 0.8;
     }
-    &:last-child:hover {
-      opacity: 1;
-    }
   }
+}
+
+.nav-list-connected {
+  justify-content: end;
+  gap: 40px;
+}
+
+.nav-list-connected li:first-child {
+  margin-right: auto;
 }
 
 .btn-nav,
@@ -48,7 +52,8 @@
   cursor: pointer;
   border: none;
   background: none;
-  font-size: 17px;
+  font-weight: 400;
+  font-size: 18px;
 }
 
 .logo {

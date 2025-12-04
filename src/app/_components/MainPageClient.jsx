@@ -9,7 +9,8 @@ import HistoireTemp from "./HistoireTemp";
 import Swiper from 'swiper';
 import { useGSAP } from "@gsap/react";
 import { usePathname } from 'next/navigation'
-
+import EastIcon from '@mui/icons-material/East';
+import Link from "next/link";
 
 import "../_components/MainPageClient.css"
 import "../_components/Nav.css"
@@ -59,14 +60,35 @@ const MainPageClient = ({ user, recentStories = [] }) => {
 
   return (
     <div className="page">
-      <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
       <header>
         <Nav user={user} />
-        <h1 className="h1-header">
-          Où votre <br />
-          imagination <br />
-          mène l'histoire
-        </h1>
+        <div className="hero">
+          <div className="hero-container">
+            <h2 className="h2-header">Faites briller votre univers</h2>
+            <h1 className="h1-header">
+              Donnez vie à votre récit
+
+
+            </h1>
+            <h3 className="h3-header">
+              Créez des chapitres comme des scènes de film : choisissez vos ambiances, ajoutez des effets et faites vibrer chaque moment.
+            </h3>
+            <img className="main-bg" src="../../../img/Background_1.jpg" alt="" />
+            <div className="main-input-container">
+              <input
+                className="main-input"
+                placeholder="Le titre de votre histoire..."
+                required
+              />
+              <Link href="/storyform"
+              >
+                <div className="btn-input">
+                  <EastIcon />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
       </header>
 
       <RecemmentPubliees stories={recentStories} />

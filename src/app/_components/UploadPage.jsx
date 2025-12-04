@@ -15,7 +15,7 @@ const UploadPage = () => {
     return (
 
         <div className="page-container">
-            <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
+            <img className="bg" src="../../../img/Background_2.jpg" alt="" />
 
             <Nav />
 

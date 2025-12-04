@@ -72,10 +72,10 @@ const Nav = ({ user: initialUser }) => {
 
   return (
     <nav className="header-nav">
-      <div className="header-nav-flex-container">
-        <a href="/"><img className="logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a>
-        {!isAuthenticated && (
-          <ul className="nav-list">
+      {!isAuthenticated && (
+        <ul className="nav-list">
+          <li><a href="/"><img className="logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
+          <div className="account-actions-container">
             <li>
               <Link href="/auth/signin" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
                 Se connecter
@@ -87,15 +87,24 @@ const Nav = ({ user: initialUser }) => {
               </Link>
             </li>
             <li>
-              <Link href="/storyform" className={isVisualizerPage ? "btn-nav btn-create white" : "btn-nav btn-create"}>
-                Créer une histoire
+              <Link href="/#stories" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
+                Lire
               </Link>
             </li>
-          </ul>
-        )}
+          </div>
+          <li>
+            <Link href="/storyform" className={isVisualizerPage ? "btn-nav btn-create white" : "btn-nav btn-create"}>
+              Créer une histoire
+            </Link>
+          </li>
+        </ul>
+
+      )}
 
       {isAuthenticated && (
-        <ul className="nav-list">
+
+        <ul className="nav-list nav-list-connected">
+          <li><a href="/"><img className="logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
           <li>
             <Link href="/profiles/myprofile" className="account-flex-container">
               <span className="btn-nav account-name">
@@ -112,8 +121,8 @@ const Nav = ({ user: initialUser }) => {
                 type="submit"
                 className="btn-nav btn-compte"
                 title="Se déconnecter"
-                
-                >
+
+              >
                 <LogoutIcon sx={{ fontSize: 30 }} />
               </button>
             </form>
@@ -124,9 +133,9 @@ const Nav = ({ user: initialUser }) => {
             </Link>
           </li>
         </ul>
+
       )}
-      </div>
-    </nav>
+    </nav >
   );
 };
 

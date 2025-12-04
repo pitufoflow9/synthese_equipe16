@@ -1,13 +1,15 @@
 /* ----------Section récemment publiées----------- */
 
-h2 {
+.recently-published-h2 {
+  margin-top: 100px;
   margin-bottom: 40px;
+  scroll-margin-top: 100px;
   font-weight: 500;
   font-size: 45px;
 }
 
 .placeholder-text {
+  margin-left: 4vw;
   padding: 24px 24px 24px 0;
-  margin-left: 7.5vw;
   font-size: 20px;
 }
