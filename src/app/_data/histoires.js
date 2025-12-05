@@ -17,7 +17,9 @@ export async function getPublishedByAuthor(authorId) {
   return db
     .select()
     .from(Histoires)
-    .where(and(eq(Histoires.creator_id, authorId), eq(Histoires.is_published, true)));
+    .where(
+      and(eq(Histoires.creator_id, authorId), eq(Histoires.is_published, true))
+    );
 }
 
 export async function getRecentPublished(limit = 6) {
@@ -30,8 +32,14 @@ export async function getRecentPublished(limit = 6) {
 }
 
 export async function getStoryGraph(storyId) {
-  const nodes = await db.select().from(Nodes).where(eq(Nodes.histoire_id, storyId));
-  const edges = await db.select().from(Branches).where(eq(Branches.histoire_id, storyId));
+  const nodes = await db
+    .select()
+    .from(Nodes)
+    .where(eq(Nodes.histoire_id, storyId));
+  const edges = await db
+    .select()
+    .from(Branches)
+    .where(eq(Branches.histoire_id, storyId));
   return { nodes, edges };
 }
 
@@ -76,17 +84,23 @@ export async function getPublishedStories() {
 
 export async function getStoryInfoById(storyId) {
   // Histoire
-  const [story] = await db.select().from(Histoires).where(eq(Histoires.id, storyId));
+  const [story] = await db
+    .select()
+    .from(Histoires)
+    .where(eq(Histoires.id, storyId));
   if (!story) return null;
 
   // Auteur
   let authorName = null;
   if (story.creator_id) {
-    const [author] = await db.select().from(user).where(eq(user.id, story.creator_id));
+    const [author] = await db
+      .select()
+      .from(user)
+      .where(eq(user.id, story.creator_id));
     authorName = author?.name ?? null;
   }
 
-  // Node de départ 
+  // Node de départ
   const [startNode] = await db
     .select({ id: Nodes.id })
     .from(Nodes)

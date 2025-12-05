@@ -70,10 +70,10 @@ const MainPageClient = ({ user, recentStories = [] }) => {
 
 
             </h1>
+            <img className="main-bg" src="../../../img/Background_1.jpg" alt="" />
             <h3 className="h3-header">
               Créez des chapitres comme des scènes de film : choisissez vos ambiances, ajoutez des effets et faites vibrer chaque moment.
             </h3>
-            <img className="main-bg" src="../../../img/Background_1.jpg" alt="" />
             <div className="main-input-container">
               <input
                 className="main-input"

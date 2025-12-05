@@ -80,7 +80,6 @@ html {
   justify-content: space-between;
   transition: all 0.2s ease-out;
   margin: 0 auto;
-  border: 1px solid var(--translucent-purple);
   border-radius: 30px;
   background-color: var(--white-gray);
   width: 400px;

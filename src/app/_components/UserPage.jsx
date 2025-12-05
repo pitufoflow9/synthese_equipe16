@@ -74,10 +74,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="tags">
-                                        <span>Vampire</span>
-                                        <span>Amour</span>
-                                    </div>
+                                
                                     <h3>Les derniers jours de Noctis</h3>
 
                                     <p>
@@ -101,10 +98,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="tags">
-                                        <span>Fée</span>
-                                        <span>Action</span>
-                                    </div>
+                                 
                                     <h3>Entre les Pétales et les Épines</h3>
 
                                     <p>
@@ -128,10 +122,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="tags">
-                                        <span>Guerrier</span>
-                                        <span>Amour</span>
-                                    </div>
+                                 
                                     <h3>La Révolte du Paladin</h3>
 
                                     <p>
@@ -155,10 +146,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="tags">
-                                        <span>Action</span>
-                                        <span>Magie</span>
-                                    </div>
+                                
                                     <h3>Magie Blanche et Ombre</h3>
 
                                     <p>
