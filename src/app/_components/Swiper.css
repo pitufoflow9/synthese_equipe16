@@ -26,9 +26,11 @@
   border-radius: 35px;
   background: transparent;
   content: "";
+  scale: 0.9;
 }
 .card:hover::before {
   background: #00000017;
+  scale: 1;
 }
 
 .swiper-first-slide {
