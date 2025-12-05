@@ -5,10 +5,17 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { v4 as uuid } from "uuid";
 import { eq, and } from "drizzle-orm";
+import { auth } from "@/lib/auth";
 
 export async function createStory(formData) {
 
-  const userId = session.user.id;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const userId = session?.user?.id;
+  if (!userId) {
+    redirect("/auth/signin");
+  }
   const titre = formData.get("titre")?.toString().trim();
   const synopsis = formData.get("synopsis")?.toString().trim();
   if (!titre || !synopsis) return;

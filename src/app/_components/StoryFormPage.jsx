@@ -82,7 +82,7 @@ const previewAnimation = (theme, target) => {
 
 
 
-const StoryFormPage = () => {
+const StoryFormPage = ({ formAction, user = null }) => {
     const [bannerIsOpen, setBannerIsOpen] = useState(false);
     const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
     const [effectIsOpen, setEffectIsOpen] = useState(false);
@@ -164,14 +164,15 @@ const StoryFormPage = () => {
             <Nav user={user} />
 
             <h1 className="h1-story-form">Nouvelle histoire</h1>
-            <form className="story-form" >
+            <form className="story-form" action={formAction} >
                 <div className="form-input-container title-input">
                     <label htmlFor="title">Titre</label>
                     <input
                         id="title"
+                        name="titre"
                         className="title"
                         placeholder="Écrire..."
-                        // required
+                        required
                         rows={1}
                     ></input>
                 </div>
@@ -179,19 +180,20 @@ const StoryFormPage = () => {
                     <label htmlFor="synopsis">Synopsis</label>
                     <textarea
                         id="synopsis"
+                        name="synopsis"
                         placeholder="Écrire..."
-                        // required
+                        required
                         rows={3}
                     ></textarea>
                 </div>
 
-                <button onClick={openBannerPopup} className="btn-form btn-form-banner-img" >
+                <button type="button" onClick={openBannerPopup} className="btn-form btn-form-banner-img" >
                     Choisir une image de bannière
                 </button>
                 {bannerIsOpen &&
                     <div className="popup-container" >
                         <div className="popup" ref={bannerPopupRef}>
-                            <button onClick={closeBannerPopup} className="popup-close-icon">
+                            <button type="button" onClick={closeBannerPopup} className="popup-close-icon">
                                 <X />
                             </button>
                             <h2 className="">Parcourir la banque d’images</h2>
@@ -217,53 +219,52 @@ const StoryFormPage = () => {
 
                             </div>
                             <hr className="popup-banner-hr" />
-                            <Link href="../upload" ><button className="btn-popup">Téléverser à partir de l'appareil</button></Link>
+                            <Link href="../upload" ><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
                         </div>
                     </div>
                 }
 
                 <div className="form-btn-container">
-                    <button onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance" >
+                    <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance" >
                         Choisir une ambiance
                     </button>
-                    <button onClick={openEffectPopup} className="btn-form btn-form-add-effect" >
+                    <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect" >
                         Choisir une effet
                     </button>
                 </div>
                 {ambianceIsOpen &&
                     <div className="popup-container">
                         <div className="popup" ref={ambiancePopupRef}>
-                            <button onClick={closeAmbiancePopup} className="popup-close-icon">
+                            <button type="button" onClick={closeAmbiancePopup} className="popup-close-icon">
                                 <X />
                             </button>
                             <h2 className="">Parcourir nos choix d'ambiances</h2>
                             <div className="ambiance-list" >
-                                <button className="ambiance-button ambiance-horreur" >
+                                <button type="button" className="ambiance-button ambiance-horreur" >
                                     <div className="ambiance-title">Ambiance d'horreur</div>
                                 </button>
-                                <button className="ambiance-button ambiance-medieval">
+                                <button type="button" className="ambiance-button ambiance-medieval">
                                     <div className="ambiance-title">Ambiance médiéval</div>
                                 </button>
-                                <button className="ambiance-button ambiance-magique" >
+                                <button type="button" className="ambiance-button ambiance-magique" >
                                     <div className="ambiance-title">Ambiance magique</div>
                                 </button>
                             </div>
                             <hr className="popup-banner-hr" />
-                            <Link href="../upload" ><button className="btn-popup">Téléverser à partir de l'appareil</button></Link>
+                            <Link href="../upload" ><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
                         </div>
                     </div>
                 }
                 {effectIsOpen &&
                     <div className="popup-container">
                         <div className="popup popup-effect" ref={effectPopupRef}>
-                            <button onClick={closeEffectPopup} className="popup-close-icon">
+                            <button type="button" onClick={closeEffectPopup} className="popup-close-icon">
                                 <X />
                             </button>
                             <h2 className="">Parcourir nos d'effets</h2>
                             <div className="ambiance-list" >
                                 {/* Theme 1 */}
-                                <button
-                                    className="ambiance-button effect-preview effect-preview-1"
+                                <button type="button" className="ambiance-button effect-preview effect-preview-1"
                                     onMouseEnter={() => previewButtonEnter(1, preview1Ref)}
                                     onMouseLeave={() => previewButtonLeave(preview1Ref)}
                                 >
@@ -274,8 +275,7 @@ const StoryFormPage = () => {
                                 </button>
 
                                 {/* Theme 2 */}
-                                <button
-                                    className="ambiance-button effect-preview effect-preview-2"
+                                <button type="button" className="ambiance-button effect-preview effect-preview-2"
                                     onMouseEnter={() => previewButtonEnter(2, preview2Ref)}
                                     onMouseLeave={() => previewButtonLeave(preview2Ref)}
                                 >
@@ -286,8 +286,7 @@ const StoryFormPage = () => {
                                 </button>
 
                                 {/* Theme 3 */}
-                                <button
-                                    className="ambiance-button effect-preview effect-preview-3"
+                                <button type="button" className="ambiance-button effect-preview effect-preview-3"
                                     onMouseEnter={() => previewButtonEnter(3, preview3Ref)}
                                     onMouseLeave={() => previewButtonLeave(preview3Ref)}
                                 >
@@ -303,12 +302,9 @@ const StoryFormPage = () => {
 
                 <hr className="story-form-hr" />
 
-                {/* id place holder */}
-                <Link href="/storyeditor/id" className="">
-                    <button className="btn-form btn-form-continue" >
-                        Continuer
-                    </button>
-                </Link>
+                <button type="submit" className="btn-form btn-form-continue" >
+                    Continuer
+                </button>
 
 
             </form >
@@ -320,3 +316,7 @@ const StoryFormPage = () => {
 }
 
 export default StoryFormPage;
+
+
+
+
