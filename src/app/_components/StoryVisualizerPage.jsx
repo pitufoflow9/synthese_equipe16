@@ -49,15 +49,15 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
             });
             const lines = split.lines;
 
-      gsap.set(lines, { opacity: 0, y: 50, color: "#ffffff" });
+            gsap.set(lines, { opacity: 0, y: 50, color: "#ffffff" });
 
-      gsap.to(lines, {
-        opacity: 1,
-        y: 0,
-        duration: 1.5,
-        stagger: 0.5,
-        ease: "power2.out",
-      });
+            gsap.to(lines, {
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                stagger: 0.5,
+                ease: "power2.out",
+            });
 
             // gsap.to(lines, {
             //     y: -15,
@@ -87,7 +87,7 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 type: "chars"
             });
 
-      gsap.set(split.chars, { opacity: 0, scale: 0 });
+            gsap.set(split.chars, { opacity: 0, scale: 0 });
 
             gsap.set(split.chars, {
                 opacity: 1,
