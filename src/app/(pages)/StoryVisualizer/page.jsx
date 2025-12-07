@@ -111,7 +111,7 @@ const pageTestAlex = () => {
             gsap.set(split.chars, {
                 opacity: 1,
                 scale: 1,
-                y: () => gsap.utils.random(-3, 3),
+                y: () => gsap.utils.random(-2, 2),
                 x: () => gsap.utils.random(-1, 1),
                 rotation: () => gsap.utils.random(-1, 1),
                 duration: 0.1,
@@ -150,35 +150,12 @@ const pageTestAlex = () => {
             <p className="story-text" ref={storyTextRef}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             {/* <Footer /> */}
             <button className="continue-btn">Continuer</button>
+            {/* FAIRE LOGIQUE BTN  (OUVRIR CHOIX) */}
         </div >
     )
 }
 
 export default pageTestAlex;
-
-
-
-
-// "use client";
-// import Footer from "./Footer.jsx"
-// import Nav from "./Nav.jsx"
-
-// import gsap from "gsap";
-// import Link from "next/link";
-// import { CustomEase } from "gsap/all";
-// import { useRef, useState } from "react";
-// import { useGSAP } from "@gsap/react";
-// import { GSDevTools } from "gsap/GSDevTools";
-// import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import { SplitText } from "gsap/SplitText";
-// import { useAudio } from "../_context/AudioContext.jsx";
-
-// import "../_components/Nav.css"
-// import "../_components/Footer.css"
-// import "../_components/MainPageClient.css"
-// import "../_components/StoryVisualizerPage.css"
-
-
 
 
 

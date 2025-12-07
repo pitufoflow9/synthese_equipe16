@@ -13,31 +13,43 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useAudio } from "../_context/AudioContext.jsx";
 
+import CloseIcon from '@mui/icons-material/Close';
+import WestIcon from '@mui/icons-material/West';
+
 import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/MainPageClient.css"
 import "../_components/StoryVisualizerPage.css"
 gsap.registerPlugin(useGSAP, ScrollTrigger, GSDevTools, SplitText, CustomEase);
 
-const StoryVisualizerPage = () => {
-
+export default function StoryVisualizerClient({ story, current, edges, storyId, textEffect = "2", ambiance = "2" }) {
+    const [choiceIsOpen, setChoiceIsOpen] = useState(false);
+    const choicePopupRef = useRef();
     const storyTextRef = useRef();
     const backgroundRef = useRef();
-    //BOUTTON THEME TEST
-    const [theme, setTheme] = useState(1);
-
-    const { changeSource, play } = useAudio(false);
-    const tl = useRef();
+    const { changeSource } = useAudio(true);
 
     useGSAP(() => {
-        // Thème Horreur
-        if (theme === 1) {
-            gsap.to(backgroundRef.current, {
+        if (ambiance == "1") {
+            changeSource("/audio/horror_ambiance.mp3", true);
+            gsap.set(backgroundRef.current, {
                 background: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
-                duration: 1,
-                ease: "power2.inOut"
             });
+        }
 
+        else if (ambiance == "2") {
+            changeSource("/audio/magic_ambiance.mp3", true);
+            gsap.set(backgroundRef.current, {
+                background: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
+            });
+        }
+        else {
+            changeSource("/audio/medieval_ambiance.mp3", true);
+            gsap.set(backgroundRef.current, {
+                background: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
+            });
+        }
+
+        if (textEffect == "1") {
+            changeSource("", true);
             const split = new SplitText(storyTextRef.current, {
                 type: "lines"
             });
@@ -57,44 +69,30 @@ const StoryVisualizerPage = () => {
                 ease: "power2.out"
             });
 
-            gsap.to(lines, {
-                y: -15,
-                duration: 3,
-                yoyo: true,
-                repeat: -1,
-                ease: "power1.inOut",
-                stagger: 0.2
-            });
+            // gsap.to(lines, {
+            //     y: -15,
+            //     duration: 3,
+            //     yoyo: true,
+            //     repeat: -1,
+            //     ease: "power1.inOut",
+            //     stagger: 0.2
+            // });
         }
 
-        //Thème Magie
-        else if (theme === 2) {
-            gsap.to(backgroundRef.current, {
-                background: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
-                duration: 1.5,
-                ease: "power2.inOut"
-            });
-
+        else if (textEffect == "2") {
             const split = new SplitText(storyTextRef.current, {
                 type: "chars"
             });
+
             gsap.from(split.chars, {
                 opacity: 0,
-                // scale: 0,
                 duration: 0.6,
                 stagger: 0.01,
                 filter: "blur(4px)",
             });
         }
 
-        //Thème Médieval
-        else if (theme === 3) {
-            gsap.to(backgroundRef.current, {
-                background: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
-                duration: 1,
-                ease: "power2.inOut"
-            });
-
+        else {
             const split = new SplitText(storyTextRef.current, {
                 type: "chars"
             });
@@ -112,43 +110,60 @@ const StoryVisualizerPage = () => {
                 rotation: () => gsap.utils.random(-1, 1),
                 duration: 0.1,
                 stagger: gsap.utils.random(0.01, 0.04),
-                // ease: "back.out(2)"
             });
         }
 
-    }, [theme]);
 
+    }, []);
 
-    ////////////////////////////////////////////////////////////////////////
-    //BOUTON QUI CYCLE ENTRE LES THÈMES (À retirer pour la remise):
-    const changeTheme = () => {
-        setTheme((previousTheme) => (previousTheme === 3 ? 1 : previousTheme + 1));
+    const openChoicePopup = (e) => {
+        e.preventDefault();
+        setChoiceIsOpen(true);
+        console.log("Choice opened");
     };
 
-    //RESET SPLITTEXT POUR TEST (IMPORTANT, sinon bug)(À retirer pour la remise):
-    if (storyTextRef.current) {
-        storyTextRef.current.innerHTML = storyTextRef.current.textContent;
-    }
-    ////////////////////////////////////////////////////////////////////////
-
+    const closeChoicePopup = (e) => {
+        e.preventDefault();
+        setChoiceIsOpen(false);
+        console.log("Choice closed");
+    };
 
     return (
-        <div className="page-background-visualizer" ref={backgroundRef}>
+        <div className="storyvisualizer-page" ref={backgroundRef}>
             <Nav />
+            <Link href="/#stories">
+                <button className="storyvisualizer-btn-back ">
+                    <WestIcon />Retour
+                </button>
+            </Link>
+            <h1 className="storyvisualizer-title">{story.title}</h1>
+            <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>
 
-            {/* ////////////////////RESET SPLITTEXT ///////////////////////// */}
-            {/*  (IMPORTANT, sinon bug)(À retirer pour la remise): */}
-            <button onClick={changeTheme} className="theme-btn">
-                Changer Thème ({theme})
-            </button>
-            {/* ///////////////////////////////////////////////////////////// */}
+            {edges.length === 0 && <p className="storyvisualizer-ending-screen">Fin de l'histoire.</p>}
 
-            <p className="story-text" ref={storyTextRef}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            {/* <Footer /> */}
-            <button className="continue-btn">Continuer</button>
-        </div >
-    )
+            <div
+                className={choiceIsOpen ? "storyvisualizer-choices-container opened" : "storyvisualizer-choices-container"}
+                ref={choicePopupRef}>
+                {edges.map((edge) => (
+                    <a
+                        className="storyvisualizer-choices"
+                        key={edge.id}
+                        href={`/storyvisualizer/${storyId}/${edge.target}`}
+                    >
+                        {edge.texte || "Choix"}
+                    </a>
+                ))}
+                <hr className="storyvisualizer-hr" />
+            </div>
+            {!choiceIsOpen ? (
+                <button className="storyvisualizer-continue-btn" onClick={openChoicePopup}>
+                    Continuer
+                </button>
+            ) : (
+                <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
+                    <CloseIcon />
+                </button>
+            )}
+        </div>
+    );
 }
-
-export default StoryVisualizerPage;
-

@@ -103,7 +103,8 @@ const Nav = ({ user: initialUser }) => {
 
       {isAuthenticated && (
 
-        <ul className="nav-list nav-list-connected">
+        // <ul className="nav-list nav-list-connected">
+        <ul className={isVisualizerPage ? "nav-list nav-list-connected white" : "nav-list nav-list-connected"}>
           <li><a href="/"><img className="logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
           <li>
             <Link href="/profiles/myprofile" className="account-flex-container">
@@ -111,7 +112,7 @@ const Nav = ({ user: initialUser }) => {
                 {user?.name || "Mon compte"}
               </span>
               <span className="btn-nav account-icon">
-                <img src="../../../img/account_icon.svg" alt="" />
+                <img className="logo" src={isVisualizerPage ? "../../../img/account_icon_white.png" : "../../../img/account_icon_gray.png"} alt="" />
               </span>
             </Link>
           </li>
@@ -128,7 +129,7 @@ const Nav = ({ user: initialUser }) => {
             </form>
           </li>
           <li>
-            <Link href={createStoryHref} className="btn-nav btn-create">
+            <Link href="/storyform" className={isVisualizerPage ? "btn-nav btn-create white" : "btn-nav btn-create"}>
               Créer une histoire
             </Link>
           </li>

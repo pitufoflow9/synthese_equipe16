@@ -27,13 +27,19 @@
   display: flex;
   justify-content: space-between;
   align-items: end;
+  transition: all 0.3s ease;
   margin: 0;
   padding: 0;
   width: 92vw;
   list-style: none;
   li {
+    transition: all 0.3s ease;
     &:hover {
       opacity: 0.8;
+    }
+    &:last-child:hover {
+      opacity: 1;
+      transition: all 0.3s ease;
     }
   }
 }
@@ -42,7 +48,12 @@
   justify-content: end;
   gap: 40px;
 }
-
+.nav-list-connected.white li {
+  color: white;
+  & a {
+    color: white;
+  }
+}
 .nav-list-connected li:first-child {
   margin-right: auto;
 }
@@ -80,6 +91,17 @@
   }
 }
 
+.btn-create.white {
+  transition: all 0.3s ease;
+  border: 1px solid white;
+  background-image: none;
+  color: white;
+
+  &:hover {
+    background-color: white;
+    color: var(--primary-text-color);
+  }
+}
 .account-icon {
   img {
     width: 30px;
@@ -98,15 +120,4 @@
 
 .btn-compte.white {
   color: white;
-}
-
-.btn-create.white {
-  border: 1px solid white;
-  background-color: transparent;
-  color: white;
-
-  &:hover {
-    background-color: white;
-    color: var(--primary-text-color);
-  }
 }

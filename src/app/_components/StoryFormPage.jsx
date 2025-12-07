@@ -38,14 +38,16 @@ const previewAnimation = (theme, target) => {
             duration: 1.5,
             stagger: 0.5,
             ease: "power2.out",
-        }).to(lines, {
-            y: -15,
-            duration: 3,
-            yoyo: true,
-            repeat: -1,
-            ease: "power1.inOut",
-            stagger: 0.2,
-        });
+        })
+
+        // tl.to(lines, {
+        //     y: -15,
+        //     duration: 3,
+        //     yoyo: true,
+        //     repeat: -1,
+        //     ease: "power1.inOut",
+        //     stagger: 0.2,
+        // });
 
         return tl;
     }
@@ -68,7 +70,7 @@ const previewAnimation = (theme, target) => {
 
         gsap.set(split.chars, { opacity: 0, scale: 0 });
 
-        return gsap.set(split.chars, {
+        gsap.set(split.chars, {
             opacity: 1,
             scale: 1,
             y: () => gsap.utils.random(-3, 3),
@@ -79,8 +81,6 @@ const previewAnimation = (theme, target) => {
         });
     }
 };
-
-
 
 const StoryFormPage = ({ formAction, user = null }) => {
     const [bannerIsOpen, setBannerIsOpen] = useState(false);
@@ -243,11 +243,11 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <button type="button" className="ambiance-button ambiance-horreur" >
                                     <div className="ambiance-title">Ambiance d'horreur</div>
                                 </button>
-                                <button type="button" className="ambiance-button ambiance-medieval">
-                                    <div className="ambiance-title">Ambiance médiéval</div>
-                                </button>
                                 <button type="button" className="ambiance-button ambiance-magique" >
                                     <div className="ambiance-title">Ambiance magique</div>
+                                </button>
+                                <button type="button" className="ambiance-button ambiance-medieval">
+                                    <div className="ambiance-title">Ambiance médiéval</div>
                                 </button>
                             </div>
                             <hr className="popup-banner-hr" />
