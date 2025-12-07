@@ -8,7 +8,6 @@ import { eq, and } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 
 export async function createStory(formData) {
-
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -34,7 +33,7 @@ export async function createStory(formData) {
     id: uuid(),
     histoire_id: storyId,
     type: "start",
-    titre: "Départ",
+    titre: "Depart",
     contenu: "",
     position_x: 0,
     position_y: 0,
@@ -60,7 +59,7 @@ export async function createNode(storyId, node) {
     id: node.id ?? uuid(),
     histoire_id: storyId,
     type: node.type ?? "story",
-    titre: node.titre ?? "Nouveau nœud",
+    titre: node.titre ?? "Nouveau noeud",
     contenu: node.contenu ?? "",
     position_x: node.position?.x ?? 0,
     position_y: node.position?.y ?? 0,
@@ -117,11 +116,10 @@ export async function deleteEdge(storyId, edgeId) {
 }
 
 export async function deleteNodeAndEdges(storyId, nodeId) {
-  // supprimer les branches liées puis le nœud
+  // supprimer les branches liees puis le noeud
   await db.delete(Branches).where(eq(Branches.source, nodeId));
   await db.delete(Branches).where(eq(Branches.target, nodeId));
   await db
     .delete(Nodes)
     .where(and(eq(Nodes.id, nodeId), eq(Nodes.histoire_id, storyId)));
 }
-

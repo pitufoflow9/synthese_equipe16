@@ -107,13 +107,18 @@
   color: white;
   font-weight: 500;
   &:hover {
-    background-position: right bottom;
+  background-position: right bottom;
   }
 }
 
 .read-icon {
   margin-top: 2px;
   margin-left: 10px;
+}
+
+.read-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
 }
 
 .overview-h3 {

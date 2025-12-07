@@ -73,7 +73,7 @@ const GridProvider = ({
       type: "default",
       position: newNode.position ?? { x: 0, y: 0 },
       data: {
-        label: newNode.titre ?? "Nouveau nœud",
+        label: newNode.titre ?? "Nouveau noeud",
         nodeType: newNode.type ?? "story",
         isEnding: !!newNode.isEnding,
         body: newNode.contenu ?? "",

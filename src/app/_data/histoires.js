@@ -88,7 +88,7 @@ export async function getStoryInfoById(storyId) {
     .select()
     .from(Histoires)
     .where(eq(Histoires.id, storyId));
-  if (!story) return null;
+  if (!story || !story.is_published) return null;
 
   // Auteur
   let authorName = null;
@@ -121,6 +121,7 @@ export async function getStoryInfoById(storyId) {
     id: story.id,
     title: story.title,
     synopsis: story.synopsis,
+    isPublished: story.is_published,
     authorId: story.creator_id,
     authorName,
     startNodeId,

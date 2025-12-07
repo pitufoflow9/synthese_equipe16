@@ -145,6 +145,18 @@ label {
   font-weight: 500;
 }
 
+.editor-hint {
+  margin-top: -10px;
+  margin-bottom: 12px;
+  color: var(--secondary-text-color);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.editor-hint + .choice-name {
+  margin-top: 4px;
+}
+
 .save-button {
   position: absolute;
   right: 150px;

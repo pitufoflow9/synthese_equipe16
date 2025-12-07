@@ -17,7 +17,6 @@ import {
   deleteNodeAndEdges,
   deleteEdge,
 } from "@/app/actions/story-actions";
-import { usePathname } from 'next/navigation'
 
 import "../_components/Nav.css";
 import "../_components/Footer.css";
@@ -33,36 +32,54 @@ const StoryEditorPage = ({ story }) => {
     setNodesState,
     setEdgesState,
     internals,
+    updateSelectionData,
   } = useGrid();
 
-  const [choiceTitle, setChoiceTitle] = useState("");
+  const [nodeTitle, setNodeTitle] = useState("");
   const [nodeText, setNodeText] = useState("");
+  const [edgeTitle, setEdgeTitle] = useState("");
   const [isEnding, setIsEnding] = useState(false);
   const [edgeType, setEdgeType] = useState("regular");
   const [historyKey, setHistoryKey] = useState("");
 
   const isNodeSelected = selection?.type === "node" && selection.node;
   const isEdgeSelected = selection?.type === "edge" && selection.edge;
+  const isStartNode = isNodeSelected && selection.node.data?.nodeType === "start";
 
   useEffect(() => {
     if (isNodeSelected) {
-      setChoiceTitle(selection.node.data?.label ?? "");
+      setNodeTitle(selection.node.data?.label ?? "");
       setNodeText(selection.node.data?.body ?? "");
       setIsEnding(!!selection.node.data?.isEnding);
+      setEdgeTitle("");
     } else if (isEdgeSelected) {
-      setChoiceTitle(selection.edge.label ?? "");
+      setEdgeTitle(selection.edge.label ?? "");
       setEdgeType(selection.edge.data?.edgeType ?? "regular");
       setHistoryKey(selection.edge.data?.historyKey ?? "");
+      setNodeTitle("");
       setNodeText("");
       setIsEnding(false);
     } else {
-      setChoiceTitle("");
+      setNodeTitle("");
       setNodeText("");
+      setEdgeTitle("");
       setIsEnding(false);
       setEdgeType("regular");
       setHistoryKey("");
     }
   }, [isNodeSelected, isEdgeSelected, selection]);
+
+  const handleNodeTitleChange = (value) => {
+    setNodeTitle(value);
+    if (isNodeSelected && !isStartNode) {
+      setNodesState((current) =>
+        current.map((n) =>
+          n.id === selection.node.id ? { ...n, data: { ...n.data, label: value } } : n
+        )
+      );
+      updateSelectionData();
+    }
+  };
 
   const handleApply = async () => {
     if (isNodeSelected) {
@@ -70,33 +87,40 @@ const StoryEditorPage = ({ story }) => {
       const updatedNodes = nodes.map((n) =>
         n.id === id
           ? {
-            ...n,
-            data: { ...n.data, label: choiceTitle, body: nodeText, isEnding },
-          }
+              ...n,
+              data: {
+                ...n.data,
+                label: isStartNode ? n.data.label : nodeTitle,
+                body: nodeText,
+                isEnding: isStartNode ? false : isEnding,
+              },
+            }
           : n
       );
       setNodesState(updatedNodes);
+      updateSelectionData();
       updateNode(story.id, id, {
-        titre: choiceTitle,
+        titre: isStartNode ? selection.node.data?.label : nodeTitle,
         contenu: nodeText,
         type: selection.node.data?.nodeType ?? "story",
-        isEnding,
+        isEnding: isStartNode ? false : isEnding,
       });
     } else if (isEdgeSelected) {
       const id = selection.edge.id;
       const updatedEdges = edges.map((e) =>
         e.id === id
           ? {
-            ...e,
-            label: choiceTitle,
-            data: { ...e.data, edgeType, historyKey },
-            edgeType,
-          }
+              ...e,
+              label: edgeTitle,
+              data: { ...e.data, edgeType, historyKey },
+              edgeType,
+            }
           : e
       );
       setEdgesState(updatedEdges);
+      updateSelectionData();
       updateEdge(story.id, id, {
-        texte: choiceTitle,
+        texte: edgeTitle,
         edgeType,
         historyKey: historyKey || null,
       });
@@ -107,7 +131,7 @@ const StoryEditorPage = ({ story }) => {
     addLocalNode({
       id: uuid(),
       type: "story",
-      titre: "Nouveau nœud",
+      titre: "Nouveau noeud",
       position: { x: Math.random() * 400, y: Math.random() * 200 },
     });
   };
@@ -224,21 +248,44 @@ const StoryEditorPage = ({ story }) => {
 
       <div className="flex-container-toolbar">
         <div className="tool-bar">
-          <label htmlFor="title">Nom du choix</label>
+          <label htmlFor="node-title">Titre du noeud</label>
           <input
+            id="node-title"
             className="choice-name"
-            placeholder="Écrire..."
-            value={choiceTitle}
-            onChange={(e) => setChoiceTitle(e.target.value)}
+            placeholder="Ecrire..."
+            value={nodeTitle}
+            onChange={(e) => handleNodeTitleChange(e.target.value)}
           />
-          <label htmlFor="title">Texte</label>
+
+          <label htmlFor="edge-title">Titre du lien (optionnel)</label>
+          <input
+            id="edge-title"
+            className="choice-name"
+            placeholder="Ecrire..."
+            value={edgeTitle}
+            onChange={(e) => setEdgeTitle(e.target.value)}
+          />
+          {!isEdgeSelected && (
+            <p className="editor-hint">
+              Sélectionne un lien (arête) pour appliquer ce titre.
+            </p>
+          )}
+
+          <label htmlFor="node-text">Texte affiché</label>
           <textarea
-            placeholder="Écrire..."
+            id="node-text"
+            placeholder="Ecrire..."
             rows={20}
             value={nodeText}
             onChange={(e) => setNodeText(e.target.value)}
-            disabled={isEdgeSelected}
+            disabled={!isNodeSelected}
           />
+          {isEdgeSelected && (
+            <p className="editor-hint">
+              Le texte du choix sera lu à partir du titre du noeud cible, vous
+              pouvez laisser ce champ vide.
+            </p>
+          )}
           <div className="switch-container">
             <p>Fin</p>
             <CustomSwitch

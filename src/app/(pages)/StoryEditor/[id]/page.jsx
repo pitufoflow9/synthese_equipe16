@@ -15,7 +15,7 @@ const mapNode = (n) => ({
     isEnding: !!n.is_ending,
     nodeType: n.type ?? "story",
   },
-  draggable: true,
+  draggable: n.type !== "start",
   selectable: true,
 });
 
