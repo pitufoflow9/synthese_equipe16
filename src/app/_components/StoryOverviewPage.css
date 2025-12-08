@@ -29,6 +29,7 @@
   position: relative;
   width: 100%;
 }
+
 .overview-flex-2 {
   display: flex;
   flex-direction: column;
@@ -40,8 +41,10 @@
   display: flex;
   gap: 25px;
   transition: all 0.3 ease;
-  & > * {
+
+  &>* {
     cursor: pointer;
+
     &:hover {
       opacity: 0.5;
       transition: all 0.3 ease;
@@ -53,6 +56,7 @@
 .dislike-container {
   display: flex;
   gap: 5px;
+
   p {
     font-weight: 700;
   }
@@ -90,12 +94,10 @@
   margin: 0 auto;
   border: 1px solid white;
   border-radius: 25px;
-  background: linear-gradient(
-    90deg,
-    rgba(142, 16, 231, 1) 0%,
-    rgba(220, 130, 255, 1) 51%,
-    rgba(142, 16, 231, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(142, 16, 231, 1) 0%,
+      rgba(220, 130, 255, 1) 51%,
+      rgba(142, 16, 231, 1) 100%);
   background-position: left bottom;
   background-size: 200% 100%;
   padding: 0 20px;
@@ -106,8 +108,9 @@
   color: white;
   color: white;
   font-weight: 500;
+
   &:hover {
-  background-position: right bottom;
+    background-position: right bottom;
   }
 }
 
@@ -169,6 +172,7 @@ hr {
   border: solid 1px var(--primary-text-color);
   border-radius: 25px;
   padding: 8px 15px;
+
   &:hover {
     background-color: var(--primary-text-color);
     color: white;

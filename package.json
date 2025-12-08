@@ -19,7 +19,7 @@
     "@gsap/react": "^2.1.2",
     "@libsql/client": "^0.15.15",
     "@mui/icons-material": "^7.3.5",
-    "@mui/material": "^7.3.5",
+    "@mui/material": "^7.3.6",
     "@xyflow/react": "^12.9.2",
     "better-auth": "^1.3.23",
     "dotenv": "^17.2.2",

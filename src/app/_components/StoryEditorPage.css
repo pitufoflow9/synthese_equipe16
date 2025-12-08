@@ -17,19 +17,18 @@ html {
 }
 
 .tool-bar {
+  /* overflow-y: auto; */
   height: calc(100vh - 110px);
   margin-top: 110px;
   position: relative;
-  border-right: solid 1px var(--light-gray);
-  width: 420px;
-  display: flex;
-  flex-direction: column;
   border-right: solid 1px var(--light-gray);
   background-color: white;
   padding: 30px 30px 0 30px;
   width: 600px;
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
+
   &:last-child {
     margin-top: auto;
     border: solid 2px red;
@@ -44,14 +43,29 @@ html {
 .inputs-flex-container-2 {
   display: flex;
   flex-direction: column;
+  gap: 25px;
 }
+
 .inputs-flex-container-3 {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.inputs-flex-container-4 {
   display: flex;
   flex-direction: row;
   gap: 10px;
+
   .inputs-optionnal {
     opacity: 0.6;
   }
+}
+
+.inputs-flex-container-5 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .story-title-container {
@@ -70,14 +84,12 @@ html {
   font-weight: 700;
   color: var(--primary-text-color);
   border-radius: 25px;
-  z-index: 1000;
   z-index: 1;
 }
 
 textarea,
 input {
   transition: all 0.2s ease-out;
-  margin-bottom: 20px;
   border: 1px solid var(--translucent-purple);
   border-radius: 15px;
   background-color: var(--white-gray);
@@ -101,8 +113,8 @@ label {
 .switch-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
   width: 80px;
+
   p {
     margin-bottom: 5px;
     font-weight: 700;
@@ -121,39 +133,35 @@ label {
   text-align: center;
   transition: background-position 0.6s ease;
   border: 1px solid white;
-  background: linear-gradient(
-    90deg,
-    rgba(142, 16, 231, 1) 0%,
-    rgba(220, 130, 255, 1) 51%,
-    rgba(142, 16, 231, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(142, 16, 231, 1) 0%,
+      rgba(220, 130, 255, 1) 51%,
+      rgba(142, 16, 231, 1) 100%);
   background-position: left bottom;
   background-size: 200% 100%;
-  color: white;
-  color: white;
+
   &:hover {
     background-position: right bottom;
   }
 }
+
 .add-image-button {
   border-radius: 35px;
   cursor: pointer;
   padding: 20px;
   width: 100%;
-  margin: 0 30px 30px 0;
-  color: var(--primary-text-color);
+  color: white;
   font-weight: 500;
   text-align: center;
   transition: background-position 0.6s ease;
   border: 1px solid var(--primary-text-color);
-  background: linear-gradient(
-    90deg,
-    rgb(255, 255, 255) 0%,
-    rgb(255, 255, 255) 51%,
-    rgb(255, 255, 255) 100%
-  );
+  background: linear-gradient(90deg,
+      rgb(34, 34, 34) 0%,
+      rgb(110, 110, 110) 51%,
+      rgb(34, 34, 34) 100%);
   background-position: left bottom;
   background-size: 200% 100%;
+
   &:hover {
     background-position: right bottom;
   }
@@ -170,13 +178,16 @@ label {
   top: 0;
   right: 0;
   padding: 140px 30px 0 0;
+
   button {
     cursor: pointer;
+
     &:hover {
       opacity: 0.6;
     }
   }
 }
+
 .add-icon {
   margin-left: 20px;
 }
@@ -206,19 +217,19 @@ label {
   padding: 15px 40px;
   font-weight: 500;
   z-index: 1000;
-  background: linear-gradient(
-    90deg,
-    rgba(142, 16, 231, 1) 0%,
-    rgba(220, 130, 255, 1) 51%,
-    rgba(142, 16, 231, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(142, 16, 231, 1) 0%,
+      rgba(220, 130, 255, 1) 51%,
+      rgba(142, 16, 231, 1) 100%);
   background-position: left bottom;
   background-size: 200% 100%;
   color: white;
+
   &:hover {
     background-position: right bottom;
   }
 }
+
 .draft-button {
   z-index: 1;
   display: flex;
@@ -229,18 +240,16 @@ label {
   border-radius: 25px;
   transition: background-position 0.6s ease;
   border: none;
-  border-radius: 25px;
   padding: 15px 40px;
   color: white;
   font-weight: 500;
-  background: linear-gradient(
-    90deg,
-    rgb(34, 34, 34) 0%,
-    rgb(110, 110, 110) 51%,
-    rgb(34, 34, 34) 100%
-  );
+  background: linear-gradient(90deg,
+      rgb(34, 34, 34) 0%,
+      rgb(110, 110, 110) 51%,
+      rgb(34, 34, 34) 100%);
   background-position: left bottom;
   background-size: 200% 100%;
+
   &:hover {
     background-position: right bottom;
   }
@@ -254,7 +263,7 @@ label {
   line-height: 1.4;
 }
 
-.editor-hint + .choice-name {
+.editor-hint+.choice-name {
   margin-top: 4px;
 }
 
@@ -274,7 +283,6 @@ label {
 }
 
 .popup-container {
-  /* filter: brightness(0.8); TO DO */
   position: absolute;
   top: 0;
   left: 0;
@@ -284,6 +292,7 @@ label {
   width: 100vw;
   height: 100vh;
 }
+
 .popup {
   position: relative;
   z-index: 11;
@@ -313,12 +322,10 @@ label {
   transition: background-position 0.6s ease;
   cursor: pointer;
   border-radius: 35px;
-  background: linear-gradient(
-    90deg,
-    rgb(34, 34, 34) 0%,
-    rgb(110, 110, 110) 51%,
-    rgb(34, 34, 34) 100%
-  );
+  background: linear-gradient(90deg,
+      rgb(34, 34, 34) 0%,
+      rgb(110, 110, 110) 51%,
+      rgb(34, 34, 34) 100%);
   background-position: left bottom;
   background-size: 200% 100%;
   padding: 20px 40px;
@@ -326,6 +333,7 @@ label {
   color: white;
   font-weight: 700;
   font-size: 17px;
+
   &:hover {
     background-position: right bottom;
   }
@@ -346,6 +354,7 @@ label {
   overflow: hidden;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
+
   img {
     transition: all 0.3s;
     cursor: pointer;
@@ -359,6 +368,7 @@ label {
     }
   }
 }
+
 .img-wrapper {
   overflow: hidden;
 }
@@ -368,4 +378,136 @@ label {
   top: 0;
   right: 0;
   padding: 20px;
+}
+
+.ambiance-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ambiance-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid var(--translucent-purple);
+  border-radius: 25px;
+  padding: 30px;
+  width: 100%;
+  height: 40px;
+  font-weight: 500;
+}
+
+.ambiance-magique:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(90deg,
+      #7c00adff 0%,
+      #d298e9ff 51%,
+      #7c00adff 100%);
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.ambiance-horreur:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(90deg,
+      #000000ff 0%,
+      #4d0000ff 51%,
+      #000000ff 100%);
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.ambiance-medieval:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(90deg,
+      #858585ff 0%,
+      #ffcab2ff 51%,
+      #858585ff 100%);
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.effect-preview:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(90deg,
+      rgba(142, 16, 231, 1) 0%,
+      rgba(220, 130, 255, 1) 51%,
+      rgba(142, 16, 231, 1) 100%);
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.effect-preview:hover .effect-preview-placeholder {
+  display: block;
+}
+
+.effect-preview-placeholder {
+  display: none;
+}
+
+.btn-form-add-ambiance,
+.btn-form-add-effect {
+  position: relative;
+  border: 1px solid var(--primary-text-color);
+  width: 48%;
+  color: var(--primary-text-color);
+
+  &:hover {
+    background-color: var(--primary-text-color);
+    color: white;
+  }
+}
+
+.effect-preview {
+  display: flex;
+  flex-direction: row;
+}
+
+.btn-form {
+  cursor: pointer;
+  border-radius: 35px;
+  padding: 20px 40px;
+  width: 100%;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.form-btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.storyvisualizer-label {
+  margin-bottom: 10px;
+
 }

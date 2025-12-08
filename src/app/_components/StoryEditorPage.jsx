@@ -6,6 +6,7 @@ import { useGrid } from "../_context/gridContext";
 import Footer from "./Footer.jsx";
 import Nav from "./Nav.jsx";
 import CustomSwitch from "./CustomSwitch.jsx";
+import EdgeTypeToggle from "@/app/_components/CustomBranchToggle.jsx";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
 import { X } from 'lucide-react';
@@ -20,6 +21,7 @@ import {
   deleteEdge,
 } from "@/app/actions/story-actions";
 
+import StoryCustomisation from "@/app/_components/StoryCustomisation.jsx";
 import "@/app/_components/Nav.css";
 import "@/app/_components/Footer.css";
 import "@/app/_components/MainPageClient.css";
@@ -44,7 +46,16 @@ const StoryEditorPage = ({ story }) => {
   const [edgeType, setEdgeType] = useState("regular");
   const [historyKey, setHistoryKey] = useState("");
   const [imagePickerIsOpen, setImagePickerIsOpen] = useState(false);
+  const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
+  const [effectIsOpen, setEffectIsOpen] = useState(false);
+  const ambiancePopupRef = useRef();
+  const effectPopupRef = useRef();
   const imagePickerPopupRef = useRef();
+  const preview1Ref = useRef(null);
+  const preview2Ref = useRef(null);
+  const preview3Ref = useRef(null);
+  const previewTlRef = useRef(null);
+
 
   const isNodeSelected = selection?.type === "node" && selection.node;
   const isEdgeSelected = selection?.type === "edge" && selection.edge;
@@ -164,6 +175,10 @@ const StoryEditorPage = ({ story }) => {
     });
   };
 
+
+
+
+
   const openImagePickerPopup = (e) => {
     e.preventDefault();
     setImagePickerIsOpen(true);
@@ -175,16 +190,59 @@ const StoryEditorPage = ({ story }) => {
     setImagePickerIsOpen(false);
     console.log("Image picker closed");
   };
+  const openAmbiancePopup = (e) => {
+    e.preventDefault();
+    setAmbianceIsOpen(true);
+  };
+
+  const closeAmbiancePopup = (e) => {
+    e.preventDefault();
+    setAmbianceIsOpen(false);
+  };
+
+  const openEffectPopup = (e) => {
+    e.preventDefault();
+    setEffectIsOpen(true);
+  };
+
+  const closeEffectPopup = (e) => {
+    e.preventDefault();
+    setEffectIsOpen(false);
+  };
+
+  const previewButtonEnter = (textEffect, target, preview) => {
+
+    previewTlRef.current = StoryCustomisation(target.current, preview, textEffect);
+  };
+
+
+  const previewButtonLeave = (ref) => {
+
+    if (ref.current) {
+      ref.current.innerHTML = ref.current.textContent;
+    }
+  };
+
+
+
+
+
 
   useEffect(() => {
     function handleClickOutside(e) {
       if (imagePickerIsOpen && imagePickerPopupRef.current && !imagePickerPopupRef.current.contains(e.target)) {
         setImagePickerIsOpen(false);
       }
+      if (ambianceIsOpen && ambiancePopupRef.current && !ambiancePopupRef.current.contains(e.target)) {
+        setAmbianceIsOpen(false);
+      }
+      if (effectIsOpen && effectPopupRef.current && !effectPopupRef.current.contains(e.target)) {
+        setEffectIsOpen(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [imagePickerIsOpen]);
+  }, [imagePickerIsOpen, ambianceIsOpen, effectIsOpen]);
 
   const nodeTypes = useMemo(
     () => ({
@@ -257,6 +315,7 @@ const StoryEditorPage = ({ story }) => {
           <div className="inputs-flex-container-1">
             {isEdgeSelected && (
               <div className="inputs-flex-container-2">
+                <label htmlFor="node-text">Nom du choix *</label>
                 <input
                   id="node-title"
                   className="choice-name"
@@ -267,95 +326,188 @@ const StoryEditorPage = ({ story }) => {
                     handleNodeTitleChange(e.target.value);
                   }}
                 />
+                <button className="btn btn-editor-appliquer" onClick={handleApply}>
+                  Appliquer
+                </button>
               </div>
             )}
             {isNodeSelected && (
               <div className="inputs-flex-container-2">
                 <div className="inputs-flex-container-3">
-                  <label htmlFor="node-text">Nom du noeud</label>
-                  <p className="inputs-optionnal">(Optionnel)</p>
+                  <div className="inputs-flex-container-4">
+                    <label htmlFor="node-text">Nom du nœud</label>
+                    <p className="inputs-optionnal">(Optionnel)</p>
+                  </div>
+                  <input
+                    id="node-text"
+                    placeholder="Ecrire..."
+                    rows={1}
+                    value={nodeTitle}
+                    onChange={(e) => setNodeTitle(e.target.value)}
+                  />
                 </div>
-                <input
-                  id="node-text"
-                  placeholder="Ecrire..."
-                  rows={1}
-                  value={nodeTitle}
-                  onChange={(e) => setNodeTitle(e.target.value)}
-                />
-                <label htmlFor="node-text">Texte affiché *</label>
-                <textarea
-                  id="node-text"
-                  placeholder="Ecrire..."
-                  rows={10}
-                  value={nodeText}
-                  onChange={(e) => setNodeText(e.target.value)}
-                />
-                <button type="button" onClick={openImagePickerPopup} className="add-image-button">
-                  Ajouter une image
+                <div className="inputs-flex-container-3">
+                  <label htmlFor="node-text">Texte affiché *</label>
+                  <textarea
+                    id="node-text"
+                    placeholder="Ecrire..."
+                    rows={5}
+                    value={nodeText}
+                    onChange={(e) => setNodeText(e.target.value)}
+                  />
+                </div>
+                <div className="inputs-flex-container-3">
+                  <label className="storyvisualizer-label" htmlFor="node-text">Effets temporaires</label>
+                  <div className="inputs-flex-container-5">
+                    <div className="form-btn-container">
+                      <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance">
+                        Choisir une ambiance
+                      </button>
+                      <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect">
+                        Choisir un effet
+                      </button>
+                    </div>
+                    <button type="button" onClick={openImagePickerPopup} className="add-image-button">
+                      Ajouter une image
+                    </button>
+                  </div>
+                </div>
+                <div className="inputs-flex-container-3">
+                  <label className="storyvisualizer-label" htmlFor="node-text">Type de nœud</label>
+                  <EdgeTypeToggle
+                    value={edgeType}
+                    onChange={setEdgeType}
+                  />
+
+                </div>
+
+                <div className="switch-container">
+                  <p>Fin</p>
+                  <CustomSwitch
+                    checked={isEnding}
+                    onChange={() => setIsEnding((v) => !v)}
+                    disabled={!isNodeSelected || isStartNode}
+                  />
+                </div>
+
+                <button className="btn btn-editor-appliquer" onClick={handleApply}>
+                  Appliquer
                 </button>
               </div>
             )}
           </div>
-          {isNodeSelected && (
-            <div className="switch-container">
-              <p>Fin</p>
-              <CustomSwitch
-                checked={isEnding}
-                onChange={() => setIsEnding((v) => !v)}
-                disabled={!isNodeSelected || isStartNode}
-              />
-            </div>
-          )}
-
-          {(isEdgeSelected || isNodeSelected) && (
-            <button className="btn btn-editor-appliquer" onClick={handleApply}>
-              Appliquer
-            </button>
-          )}
         </div>
 
-      {imagePickerIsOpen && (
-        <div className="popup-container">
-          <div className="popup" ref={imagePickerPopupRef}>
-            <button type="button" onClick={closeImagePickerPopup} className="popup-close-icon">
-              <X />
-            </button>
-            <h2 className="">Parcourir la banque d'images</h2>
-            <div className="banner-grid">
-              <div className="img-wrapper">
-                <img className="" src="../../../img/banniere_1.jpg" alt="" />
-              </div>
-              <div className="img-wrapper">
-                <img className="" src="../../../img/banniere_2.jpg" alt="" />
-              </div>
-              <div className="img-wrapper">
-                <img className="" src="../../../img/banniere_3.jpg" alt="" />
-              </div>
-              <div className="img-wrapper">
-                <img className="" src="../../../img/banniere_4.jpg" alt="" />
-              </div>
-              <div className="img-wrapper">
-                <img className="" src="../../../img/banniere_5.jpg" alt="" />
-              </div>
-              <div className="img-wrapper">
-                <img className="" src="../../../img/banniere_6.jpg" alt="" />
-              </div>
-            </div>
-            <hr className="popup-banner-hr" />
-            <Link href="../upload">
-              <button type="button" className="btn-popup">
-                Téléverser à partir de l'appareil
+        {imagePickerIsOpen && (
+          <div className="popup-container">
+            <div className="popup" ref={imagePickerPopupRef}>
+              <button type="button" onClick={closeImagePickerPopup} className="popup-close-icon">
+                <X />
               </button>
-            </Link>
+              <h2 className="">Parcourir la banque d'images</h2>
+              <div className="banner-grid">
+                <div className="img-wrapper">
+                  <img className="" src="../../../img/banniere_1.jpg" alt="" />
+                </div>
+                <div className="img-wrapper">
+                  <img className="" src="../../../img/banniere_2.jpg" alt="" />
+                </div>
+                <div className="img-wrapper">
+                  <img className="" src="../../../img/banniere_3.jpg" alt="" />
+                </div>
+                <div className="img-wrapper">
+                  <img className="" src="../../../img/banniere_4.jpg" alt="" />
+                </div>
+                <div className="img-wrapper">
+                  <img className="" src="../../../img/banniere_5.jpg" alt="" />
+                </div>
+                <div className="img-wrapper">
+                  <img className="" src="../../../img/banniere_6.jpg" alt="" />
+                </div>
+              </div>
+              <hr className="popup-banner-hr" />
+              <Link href="../upload">
+                <button type="button" className="btn-popup">
+                  Téléverser à partir de l'appareil
+                </button>
+              </Link>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+        {ambianceIsOpen && (
+          <div className="popup-container">
+            <div className="popup" ref={ambiancePopupRef}>
+              <button type="button" onClick={closeAmbiancePopup} className="popup-close-icon">
+                <X />
+              </button>
+              <h2 className="">Parcourir nos choix d'ambiances</h2>
+              <div className="ambiance-list">
+                <button type="button" className="ambiance-button ambiance-horreur">
+                  <div className="ambiance-title">Ambiance d'horreur</div>
+                </button>
+                <button type="button" className="ambiance-button ambiance-magique">
+                  <div className="ambiance-title">Ambiance magique</div>
+                </button>
+                <button type="button" className="ambiance-button ambiance-medieval">
+                  <div className="ambiance-title">Ambiance médiéval</div>
+                </button>
+              </div>
+              <hr className="popup-banner-hr" />
+              <Link href="../upload"><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
+            </div>
+          </div>
+        )}
+
+        {effectIsOpen && (
+          <div className="popup-container">
+            <div className="popup popup-effect" ref={effectPopupRef}>
+              <button type="button" onClick={closeEffectPopup} className="popup-close-icon">
+                <X />
+              </button>
+              <h2 className="">Parcourir nos d'effets</h2>
+              <div className="ambiance-list" >
+                {/* Theme 1 */}
+                <button type="button" className="ambiance-button effect-preview effect-preview-1"
+                  onMouseEnter={() => previewButtonEnter(1, preview1Ref, true)}
+                  onMouseLeave={() => previewButtonLeave(preview1Ref)}
+                >
+                  <div className="ambiance-title">Effet d'entrée par le bas  </div>
+                  <div className="effect-preview-placeholder" ref={preview1Ref}>
+                    Ceci est un aperçu
+                  </div>
+                </button>
+
+                {/* Theme 2 */}
+                <button type="button" className="ambiance-button effect-preview effect-preview-2"
+                  onMouseEnter={() => previewButtonEnter(2, preview2Ref, true)}
+                  onMouseLeave={() => previewButtonLeave(preview2Ref)}
+                >
+                  <div className="ambiance-title">Effet de flou</div>
+                  <div className="effect-preview-placeholder" ref={preview2Ref}>
+                    Ceci est un aperçu
+                  </div>
+                </button>
+
+                {/* Theme 3 */}
+                <button type="button" className="ambiance-button effect-preview effect-preview-3"
+                  onMouseEnter={() => previewButtonEnter(3, preview3Ref, true)}
+                  onMouseLeave={() => previewButtonLeave(preview3Ref)}
+                >
+                  <div className="ambiance-title">Effet de machine à écrire</div>
+                  <div className="effect-preview-placeholder" ref={preview3Ref}>
+                    Ceci est un aperçu
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="story-title-container">
           <div className="story-name">{story.title}</div>
           {canvas}
         </div>
       </div>
-
 
       <div className="flex-container-icons">
         <button className="icon delete-icon" onClick={handleDelete}>
@@ -388,6 +540,7 @@ const StoryEditorPage = ({ story }) => {
       <Footer />
     </div>
   );
-};
+}
+
 
 export default StoryEditorPage;
