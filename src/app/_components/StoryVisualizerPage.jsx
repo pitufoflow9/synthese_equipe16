@@ -14,8 +14,9 @@ import "@/app/_components/Nav.css"
 import "@/app/_components/StoryVisualizerPage.css"
 gsap.registerPlugin(useGSAP, SplitText);
 
-export default function storyvisualizerclient({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) {
+const StoryVisualizerPage = ({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) => {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
+    const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
     const [selectedChoice, setSelectedChoice] = useState(false);
     const [isConfirmed, setIsConfirmed] = useState(null);
     const [clonedElement, setClonedElement] = useState(null);
@@ -25,6 +26,8 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
     const storyTextRef = useRef();
     const backgroundRef = useRef();
     const { changeSource } = useAudio(true);
+    const timelineRef = useRef(null);
+
     const ambiancePresets = {
         "ambiance-horror": {
             audio: "/audio/horror_ambiance.mp3",
@@ -128,48 +131,120 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
 
 
 
-    const handleChoiceClick = (e, edgeId) => {
-        e.preventDefault();
-        // if (!alreadyClicked) {
+    const openChoiceConfirmation = (e, edgeId) => {
         const clickedElement = choiceRefs.current[edgeId];
         const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
         const clone = clickedElement.cloneNode(true);
+
+        //Suprimme l'ancien clone (pour eviter le bug de voir l'autre choix si on fait plusieur sélections)
+        if (clonedRef.current) {
+            clonedRef.current.remove();
+            clonedRef.current = null;
+        }
+
+        e.preventDefault();
+        setChoiceConfirmationIsOpen(true);
+
         choicePopupRef.current.appendChild(clone);
         clone.classList.add("clone")
         clonedRef.current = clone;
 
         let tl = gsap.timeline();
-
+        timelineRef.current = tl;
+        tl.set(clonedRef.current, {
+            opacity: 0,
+            filter: "blur(15px)"
+        })
+        tl.set(".choice-confirmation-indication", {
+            opacity: 0,
+            filter: "blur(15px)"
+        })
         tl.to(allChoices, {
             opacity: 0,
-            duration: 0.1,
-            filter: "blur(5px)",
+            duration: 0.2,
+            filter: "blur(15px)",
             ease: "none"
         });
         tl.to(".storyvisualizer-hr", {
             opacity: 0,
-            duration: 0.1,
-            filter: "blur(5px)",
+            duration: 0.2,
+            filter: "blur(15px)",
             ease: "none"
         }, "<");
+        tl.to(".choice-confirmation-indication", {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.4,
+            ease: "power4.in"
+        }, "<")
         tl.to(clonedRef.current, {
             opacity: 1,
             filter: "blur(0px)",
             duration: 0.4,
             ease: "power4.in"
-        }, "<-0.2")
-        tl.to(clonedRef.current, {
-            scale: 1.5,
-            duration: 0.6,
-            ease: "power2.out"
         }, "<")
-
-        alreadyClicked = true;
-        // }
-        // else {
-        //voir comment faire lorsque le bouton x est peser, revert eveythng back
-        // }
+        tl.to(".choice-confirmation-indication", {
+            scale: 1.3,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "<")
+        tl.to(clonedRef.current, {
+            scale: 1.3,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "<")
     }
+
+    const closeChoiceConfirmation = (e) => {
+        // e.preventDefault();
+        setChoiceConfirmationIsOpen(false);
+
+        const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
+
+        const reverseTl = gsap.timeline({
+            onComplete: () => {
+                if (clonedRef.current) {
+                    clonedRef.current.remove();
+                    clonedRef.current = null;
+                }
+                timelineRef.current = null;
+                setSelectedChoice(false);
+            }
+        });
+
+        reverseTl.to(clonedRef.current, {
+            opacity: 0,
+            filter: "blur(15px)",
+            duration: 0.2,
+            ease: "none"
+        }, "<+0.1")
+        reverseTl.to(".choice-confirmation-indication", {
+            opacity: 0,
+            filter: "blur(15px)",
+            duration: 0.2,
+            ease: "none"
+        }, "<")
+        reverseTl.to(allChoices, {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.2,
+            ease: "none"
+        }, "-=0.1")
+        reverseTl.to(".storyvisualizer-hr", {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.2,
+            ease: "none"
+        }, "<");
+        reverseTl.set(clonedRef.current, {
+            scale: 1,
+        })
+        reverseTl.set(".choice-confirmation-indication", {
+            scale: 1,
+        })
+
+    };
+
 
 
 
@@ -208,7 +283,7 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
                         key={edge.id}
                         ref={(e) => (choiceRefs.current[edge.id] = e
                         )}
-                        onClick={(e) => handleChoiceClick(e, edge.id)}
+                        onClick={(e) => openChoiceConfirmation(e, edge.id)}
                         href={"/storyvisualizer/" + storyId + "/" + edge.target}
                     >
                         {edge.texte || "Choix"}
@@ -216,6 +291,7 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
                 ))}
                 <hr className="storyvisualizer-hr" />
             </div>
+            <p className="choice-confirmation-indication">Appuyez à nouveau pour confirmer votre choix</p>
             {isStoryEnd ? (
                 <div className="storyvisualizer-flex-container">
                     <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
@@ -223,8 +299,7 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
                             Relire
                         </button>
                     </Link>
-                    <Link href={"/#stories" + storyId + "/" + (edges[0]?.target || "")}>
-
+                    <Link href="/#stories">
                         <button className="storyvisualizer-continue-btn">
                             Retourner aux publications
                         </button>
@@ -239,7 +314,16 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
                     </Link>
                 </div>
             ) : (
-                choiceIsOpen ? (
+
+                choiceIsOpen && choiceConfirmationIsOpen ? (
+                    <div>
+                        <div className="storyvisualizer-flex-container">
+                            <button className="storyvisualizer-close-btn confirmation" onClick={closeChoiceConfirmation}>
+                                <CloseIcon />
+                            </button>
+                        </div>
+                    </div>
+                ) : choiceIsOpen ? (
                     <div className="storyvisualizer-flex-container">
                         <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
                             <CloseIcon />
@@ -256,3 +340,6 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
         </div>
     );
 }
+
+export default StoryVisualizerPage;
+
