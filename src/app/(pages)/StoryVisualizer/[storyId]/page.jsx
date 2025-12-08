@@ -1,23 +1,16 @@
-import { db } from "@/db";
-import { Histoires, Nodes } from "@/db/schemas/schema";
-import { eq, and } from "drizzle-orm";
 import { redirect, notFound } from "next/navigation";
+import { getStoryInfoById } from "@/app/_data/histoires.js";
 
-export default async function StoryStart({ params }) {
+const StoryStart = async ({ params }) => {
+  //Récupère le id de l'histoire
   const { storyId } = await params;
 
-  const story = await db.query.Histoires.findFirst({
-    where: eq(Histoires.id, storyId),
-  });
-  if (!story || !story.is_published) return notFound();
+  //Récupère tout les infos de l'histoire depuis son id
+  const storyInfo = await getStoryInfoById(storyId);
+  if (!storyInfo) return notFound();
 
-  const startNode = await db
-    .select()
-    .from(Nodes)
-    .where(and(eq(Nodes.histoire_id, storyId), eq(Nodes.type, "start")))
-    .limit(1);
+  //construit l'url pour afficher l'histoire dans la page storyvisualizer
+  redirect("/storyvisualizer/" + storyId + "/" + storyInfo.startNodeId);
+};
 
-  if (!startNode.length) return notFound();
-
-  redirect(`/storyvisualizer/${storyId}/${startNode[0].id}`);
-}
+export default StoryStart;

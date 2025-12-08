@@ -1,51 +1,53 @@
-// app/(pages)/storyvisualizer/[storyId]/[nodeId]/page.jsx
-import { db } from "@/db";
-import { Histoires, Nodes, Branches } from "@/db/schemas/schema";
-import { and, eq, inArray } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import StoryVisualizerPage from "../../../../_components/StoryVisualizerPage";
-import AudioProvider from "../../../../_components/AudioProvider"
+import StoryVisualizerPage from "@/app/_components/StoryVisualizerPage.jsx";
+import { getStoryInfoById, getNodeInfoById } from "@/app/_data/histoires.js";
 
-export default async function NodeView({ params }) {
+const NodeView = async ({ params }) => {
+  //Récupère le id de l'histoire et du noeud
   const { storyId, nodeId } = await params;
 
-  const story = await db.query.Histoires.findFirst({
-    where: eq(Histoires.id, storyId),
-    where: eq(Histoires.id, storyId),
-  });
-  if (!story || !story.is_published) return notFound();
+  // Récupère les info des histoire
+  const storyInfo = await getStoryInfoById(storyId);
+  if (!storyInfo) return notFound();
 
-  const node = await db
-    .select()
-    .from(Nodes)
-    .where(and(eq(Nodes.histoire_id, storyId), eq(Nodes.id, nodeId)))
-    .limit(1);
-  if (!node.length) return notFound();
+  // Récupère les info dans les noeuds et les branches
+  const nodeData = await getNodeInfoById(nodeId);
+  console.log(nodeData);
+  if (!nodeData) return notFound();
 
-  const edges = await db
-    .select({
-      id: Branches.id,
-      source: Branches.source,
-      target: Branches.target,
-      texte: Branches.texte,
-      type: Branches.type,
-      history_key: Branches.history_key,
-    })
-    .from(Branches)
-    .where(eq(Branches.source, nodeId));
+  //Créé les données pour les afficher dans la page storyvisualization
+  const story = {
+    id: storyInfo.id,
+    title: storyInfo.title,
+  };
 
-  const current = node[0];
+  //Le noeud que l'utilisateur lit en ce moment
+  const current = nodeData.node;
 
-  // Pass data as props to Client Component
+  //Passer seulement le contenu utile à la page storyvisualization
+  const edges = nodeData.branches.map(branch => ({
+    id: branch.id,
+    texte: branch.texte,
+    type: branch.type,
+    target: branch.targetNodeId,
+  }));
+
+  //Est-ce qu'il y a un choix à faire? (Sinon, ne pas afficher les choix, passer au prochains noeuds directement)
+  const isChoiceAsked = edges.length === 1;
+
+  //Est-ce que c'est le dernier noeud?
+  const isStoryEnd = (current.is_ending === true);
+
   return (
-    <div>
-      <StoryVisualizerPage
-        story={story}
-        current={current}
-        edges={edges}
-        storyId={storyId}
-      />
-      <AudioProvider />
-    </div>
+    <StoryVisualizerPage
+      story={story}
+      current={current}
+      edges={edges}
+      storyId={storyId}
+      isStoryEnd={isStoryEnd}
+      isChoiceAsked={isChoiceAsked}
+    />
   );
-}
+};
+
+export default NodeView;

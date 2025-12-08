@@ -14,7 +14,7 @@ import "../_components/Nav.css"
 import "../_components/StoryVisualizerPage.css"
 gsap.registerPlugin(useGSAP, SplitText);
 
-export default function StoryVisualizerClient({ story, current, edges, storyId, textEffect = "2", ambiance = "2" }) {
+export default function StoryVisualizerClient({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const choicePopupRef = useRef();
     const storyTextRef = useRef();
@@ -126,8 +126,6 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
             <h1 className="storyvisualizer-title">{story.title}</h1>
             <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>
 
-            {edges.length === 0 && <p className="storyvisualizer-ending-screen">Fin de l'histoire.</p>}
-
             <div
                 className={choiceIsOpen ? "storyvisualizer-choices-container opened" : "storyvisualizer-choices-container"}
                 ref={choicePopupRef}>
@@ -142,15 +140,30 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 ))}
                 <hr className="storyvisualizer-hr" />
             </div>
-            {!choiceIsOpen ? (
-                <button className="storyvisualizer-continue-btn" onClick={openChoicePopup}>
-                    Continuer
-                </button>
+            {isStoryEnd ? (
+                <Link href={`/storyvisualizer/${storyId}/${edges[0]?.target || ''}`}>
+                    <button className="storyvisualizer-continue-btn">
+                        Rejouer
+                    </button>
+                </Link>
+            ) : isChoiceAsked ? (
+                <Link href={`/storyvisualizer/${storyId}/${edges[0].target}`}>
+                    <button className="storyvisualizer-continue-btn">
+                        Continuer
+                    </button>
+                </Link>
             ) : (
-                <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
-                    <CloseIcon />
-                </button>
+                choiceIsOpen ? (
+                    <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
+                        <CloseIcon />
+                    </button>
+                ) : (
+                    <button className="storyvisualizer-continue-btn" onClick={openChoicePopup}>
+                        Continuer
+                    </button>
+                )
             )}
+
         </div>
     );
 }
