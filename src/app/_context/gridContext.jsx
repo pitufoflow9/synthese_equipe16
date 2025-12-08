@@ -47,7 +47,7 @@ const GridProvider = ({
       source,
       target,
       type: "default",
-      data: { edgeType: "regular" },
+      data: { edgeType: "regular", historyKey: null },
       edgeType: "regular",
       selectable: true,
     };

@@ -12,6 +12,8 @@ const NodeView = async ({ params }) => {
   const story = {
     id: storyInfo.id,
     title: storyInfo.title,
+    ambiance: storyInfo.ambiance || "ambiance-magic",
+    textEffect: storyInfo.textEffect || "effect-blur",
   };
   //Le noeud que l'utilisateur lit en ce moment
   const current = nodeData.node;
@@ -32,6 +34,8 @@ const NodeView = async ({ params }) => {
       current={current}
       edges={edges}
       storyId={storyId}
+      ambiance={story.ambiance}
+      textEffect={story.textEffect}
       isStoryEnd={isStoryEnd}
       isChoiceAsked={isChoiceAsked}
     />

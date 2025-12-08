@@ -150,7 +150,7 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
                     <a
                         className="storyvisualizer-choices"
                         key={edge.id}
-                        href={"/StoryVisualizer/" + storyId + "/" + edge.target}
+                        href={"/storyvisualizer/" + storyId + "/" + edge.target}
                     >
                         {edge.texte || "Choix"}
                     </a>

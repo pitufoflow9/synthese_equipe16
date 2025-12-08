@@ -20,6 +20,11 @@ export async function createStory(formData) {
   const banniere = formData.get("banniere")?.toString().trim() || null;
   const ambiance = formData.get("ambiance")?.toString().trim() || null;
   const textEffect = formData.get("textEffect")?.toString().trim() || null;
+  console.log("createStory submit:", {
+    banniere,
+    ambiance,
+    textEffect,
+  });
   if (!titre || !synopsis) return;
   const storyId = uuid();
 

@@ -49,7 +49,8 @@ export async function ajouterHistoires(histoire) {
     title: histoire.titre,
     synopsis: histoire.synopsis,
     theme: histoire.banniere || null,
-    musique: histoire.musique || null,
+    musique: histoire.ambiance || histoire.musique || null,
+    animation: histoire.textEffect || histoire.animation || null,
     creator_id: histoire.creator_id || null,
     is_published: false,
     created_at: Date.now(),
@@ -67,7 +68,8 @@ export async function updateHistoire(id, payload) {
       title: payload.titre,
       synopsis: payload.synopsis,
       theme: payload.banniere || null,
-      musique: payload.musique || null,
+      musique: payload.ambiance || payload.musique || null,
+      animation: payload.textEffect || payload.animation || null,
       is_published: payload.is_published ?? false,
     })
     .where(eq(Histoires.id, id));
@@ -125,6 +127,9 @@ export async function getStoryInfoById(storyId) {
     authorId: story.creator_id,
     authorName,
     startNodeId,
+    theme: story.theme,
+    ambiance: story.musique,
+    textEffect: story.animation,
   };
 }
 

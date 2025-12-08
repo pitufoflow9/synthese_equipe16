@@ -27,6 +27,8 @@ const ClientPage = ({ story }) => {
   const [nodeTitle, setNodeTitle] = useState("");
   const [edgeText, setEdgeText] = useState("");
   const [nodeContent, setNodeContent] = useState("");
+  const [edgeType, setEdgeType] = useState("regular");
+  const [historyKey, setHistoryKey] = useState("");
 
   useEffect(() => {
     if (selection?.type === "node" && selection.node) {
@@ -39,8 +41,12 @@ const ClientPage = ({ story }) => {
 
     if (selection?.type === "edge" && selection.edge) {
       setEdgeText(selection.edge.label ?? "");
+      setEdgeType(selection.edge.data?.edgeType ?? "regular");
+      setHistoryKey(selection.edge.data?.historyKey ?? "");
     } else {
       setEdgeText("");
+      setEdgeType("regular");
+      setHistoryKey("");
     }
   }, [selection]);
 
@@ -79,13 +85,20 @@ const ClientPage = ({ story }) => {
     if (selection?.type !== "edge" || !selection.edge?.id) return;
     const id = selection.edge.id;
     const newEdges = edges.map((e) =>
-      e.id === id ? { ...e, label: edgeText } : e
+      e.id === id
+        ? {
+            ...e,
+            label: edgeText,
+            data: { ...e.data, edgeType, historyKey },
+            edgeType,
+          }
+        : e
     );
     setEdgesState(newEdges);
     updateEdge(story.id, id, {
       texte: edgeText,
-      edgeType: selection.edge.data?.edgeType ?? "regular",
-      historyKey: selection.edge.data?.historyKey ?? null,
+      edgeType,
+      historyKey: historyKey?.trim() || null,
     });
   };
 
@@ -176,6 +189,27 @@ const ClientPage = ({ story }) => {
                   onChange={(e) => setEdgeText(e.target.value)}
                   placeholder="Texte de la branche"
                 />
+                <label>Type de branche</label>
+                <select
+                  value={edgeType}
+                  onChange={(e) => setEdgeType(e.target.value)}
+                >
+                  <option value="regular">Par défaut</option>
+                  <option value="history">Historique (donne une clé)</option>
+                  <option value="conditional">
+                    Conditionnelle (requiert une clé)
+                  </option>
+                </select>
+                {(edgeType === "history" || edgeType === "conditional") && (
+                  <>
+                    <label>Identifiant de clé</label>
+                    <input
+                      value={historyKey}
+                      onChange={(e) => setHistoryKey(e.target.value)}
+                      placeholder="Ex: cle-1"
+                    />
+                  </>
+                )}
                 <button onClick={onUpdateEdge}>Sauvegarder la branche</button>
               </div>
             )}

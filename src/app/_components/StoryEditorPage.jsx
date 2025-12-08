@@ -98,6 +98,22 @@ const StoryEditorPage = ({ story }) => {
     }
   };
 
+  const handleToggleEnding = () => {
+    if (!isNodeSelected || isStartNode) return;
+    setIsEnding((prev) => {
+      const next = !prev;
+      setNodesState((current) =>
+        current.map((n) =>
+          n.id === selection.node.id
+            ? { ...n, data: { ...n.data, isEnding: next } }
+            : n
+        )
+      );
+      updateSelectionData();
+      return next;
+    });
+  };
+
   const handleApply = async () => {
     if (isNodeSelected) {
       const id = selection.node.id;
@@ -139,8 +155,46 @@ const StoryEditorPage = ({ story }) => {
       updateEdge(story.id, id, {
         texte: edgeTitle,
         edgeType,
-        historyKey: historyKey || null,
+        historyKey: historyKey?.trim() || null,
       });
+    }
+  };
+
+  const handleEdgeTitleChange = (value) => {
+    setEdgeTitle(value);
+    if (isEdgeSelected) {
+      setEdgesState((current) =>
+        current.map((e) => (e.id === selection.edge.id ? { ...e, label: value } : e))
+      );
+      updateSelectionData();
+    }
+  };
+
+  const handleEdgeTypeChange = (value) => {
+    setEdgeType(value);
+    if (isEdgeSelected) {
+      setEdgesState((current) =>
+        current.map((e) =>
+          e.id === selection.edge.id
+            ? { ...e, data: { ...e.data, edgeType: value }, edgeType: value }
+            : e
+        )
+      );
+      updateSelectionData();
+    }
+  };
+
+  const handleHistoryKeyChange = (value) => {
+    setHistoryKey(value);
+    if (isEdgeSelected) {
+      setEdgesState((current) =>
+        current.map((e) =>
+          e.id === selection.edge.id
+            ? { ...e, data: { ...e.data, historyKey: value || null } }
+            : e
+        )
+      );
+      updateSelectionData();
     }
   };
 
@@ -426,6 +480,22 @@ const StoryEditorPage = ({ story }) => {
               </div>
             )}
           </div>
+          {isNodeSelected && (
+            <div className="switch-container">
+              <p>Fin</p>
+              <CustomSwitch
+                checked={isEnding}
+                onChange={handleToggleEnding}
+                disabled={!isNodeSelected || isStartNode}
+              />
+            </div>
+          )}
+
+          {(isEdgeSelected || isNodeSelected) && (
+            <button className="btn btn-editor-appliquer" onClick={handleApply}>
+              Appliquer
+            </button>
+          )}
         </div>
 
         {imagePickerIsOpen && (

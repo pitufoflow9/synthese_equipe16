@@ -23,6 +23,9 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [bannerIsOpen, setBannerIsOpen] = useState(false);
     const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
     const [effectIsOpen, setEffectIsOpen] = useState(false);
+    const [selectedBanner, setSelectedBanner] = useState("banniere_1.jpg");
+    const [selectedAmbiance, setSelectedAmbiance] = useState("ambiance-magic");
+    const [selectedTextEffect, setSelectedTextEffect] = useState("effect-blur");
     const bannerPopupRef = useRef();
     const ambiancePopupRef = useRef();
     const effectPopupRef = useRef();
@@ -31,6 +34,14 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const preview3Ref = useRef(null);
 
     const previewTlRef = useRef(null);
+    const bannerImages = [
+        "banniere_1.jpg",
+        "banniere_2.jpg",
+        "banniere_3.jpg",
+        "banniere_4.jpg",
+        "banniere_5.jpg",
+        "banniere_6.jpg",
+    ];
     const openBannerPopup = (e) => {
         e.preventDefault();
         setBannerIsOpen(true);
@@ -77,6 +88,21 @@ const StoryFormPage = ({ formAction, user = null }) => {
         if (ref.current) {
             ref.current.innerHTML = ref.current.textContent;
         }
+    };
+
+    const selectBanner = (banner) => {
+        setSelectedBanner(banner);
+        setBannerIsOpen(false);
+    };
+
+    const selectAmbiance = (value) => {
+        setSelectedAmbiance(value);
+        setAmbianceIsOpen(false);
+    };
+
+    const selectTextEffect = (value) => {
+        setSelectedTextEffect(value);
+        setEffectIsOpen(false);
     };
 
 
@@ -136,24 +162,16 @@ const StoryFormPage = ({ formAction, user = null }) => {
                             </button>
                             <h2 className="">Parcourir la banque d’images</h2>
                             <div className="banner-grid" >
-                                <div className="img-wrapper">
-                                    <img className="" src="../../../img/banniere_1.jpg" alt="" />
-                                </div>
-                                <div className="img-wrapper">
-                                    <img className="" src="../../../img/banniere_2.jpg" alt="" />
-                                </div>
-                                <div className="img-wrapper">
-                                    <img className="" src="../../../img/banniere_3.jpg" alt="" />
-                                </div>
-                                <div className="img-wrapper">
-                                    <img className="" src="../../../img/banniere_4.jpg" alt="" />
-                                </div>
-                                <div className="img-wrapper">
-                                    <img className="" src="../../../img/banniere_5.jpg" alt="" />
-                                </div>
-                                <div className="img-wrapper">
-                                    <img className="" src="../../../img/banniere_6.jpg" alt="" />
-                                </div>
+                                {bannerImages.map((img) => (
+                                    <button
+                                        type="button"
+                                        key={img}
+                                        className="img-wrapper"
+                                        onClick={() => selectBanner(img)}
+                                    >
+                                        <img className="" src={`../../../img/${img}`} alt={img} />
+                                    </button>
+                                ))}
 
                             </div>
                             <hr className="popup-banner-hr" />
@@ -178,13 +196,13 @@ const StoryFormPage = ({ formAction, user = null }) => {
                             </button>
                             <h2 className="">Parcourir nos choix d'ambiances</h2>
                             <div className="ambiance-list" >
-                                <button type="button" className="ambiance-button ambiance-horreur" >
+                                <button type="button" className="ambiance-button ambiance-horreur" onClick={() => selectAmbiance("ambiance-horror")} >
                                     <div className="ambiance-title">Ambiance d'horreur</div>
                                 </button>
-                                <button type="button" className="ambiance-button ambiance-magique" >
+                                <button type="button" className="ambiance-button ambiance-magique" onClick={() => selectAmbiance("ambiance-magic")} >
                                     <div className="ambiance-title">Ambiance magique</div>
                                 </button>
-                                <button type="button" className="ambiance-button ambiance-medieval">
+                                <button type="button" className="ambiance-button ambiance-medieval" onClick={() => selectAmbiance("ambiance-medieval")}>
                                     <div className="ambiance-title">Ambiance médiéval</div>
                                 </button>
                             </div>
@@ -205,6 +223,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <button type="button" className="ambiance-button effect-preview effect-preview-1"
                                     onMouseEnter={() => previewButtonEnter(1, preview1Ref, true)}
                                     onMouseLeave={() => previewButtonLeave(preview1Ref)}
+                                    onClick={() => selectTextEffect("effect-rise")}
                                 >
                                     <div className="ambiance-title">Effet d'entrée par le bas  </div>
                                     <div className="effect-preview-placeholder" ref={preview1Ref}>
@@ -216,6 +235,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <button type="button" className="ambiance-button effect-preview effect-preview-2"
                                     onMouseEnter={() => previewButtonEnter(2, preview2Ref, true)}
                                     onMouseLeave={() => previewButtonLeave(preview2Ref)}
+                                    onClick={() => selectTextEffect("effect-blur")}
                                 >
                                     <div className="ambiance-title">Effet de flou</div>
                                     <div className="effect-preview-placeholder" ref={preview2Ref}>
@@ -227,6 +247,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <button type="button" className="ambiance-button effect-preview effect-preview-3"
                                     onMouseEnter={() => previewButtonEnter(3, preview3Ref, true)}
                                     onMouseLeave={() => previewButtonLeave(preview3Ref)}
+                                    onClick={() => selectTextEffect("effect-typewriter")}
                                 >
                                     <div className="ambiance-title">Effet de machine à écrire</div>
                                     <div className="effect-preview-placeholder" ref={preview3Ref}>
@@ -239,6 +260,10 @@ const StoryFormPage = ({ formAction, user = null }) => {
                 }
 
                 <hr className="story-form-hr" />
+
+                <input type="hidden" name="banniere" value={selectedBanner} />
+                <input type="hidden" name="ambiance" value={selectedAmbiance} />
+                <input type="hidden" name="textEffect" value={selectedTextEffect} />
 
                 <button type="submit" className="btn-form btn-form-continue" >
                     Continuer

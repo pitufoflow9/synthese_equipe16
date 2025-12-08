@@ -24,6 +24,7 @@ const mapEdge = (e) => ({
   source: e.source,
   target: e.target,
   label: e.texte ?? "",
+  edgeType: e.type ?? "regular",
   data: { edgeType: e.type ?? "regular", historyKey: e.history_key },
 });
 
