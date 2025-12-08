@@ -326,6 +326,14 @@ const StoryEditorPage = ({ story }) => {
                     handleNodeTitleChange(e.target.value);
                   }}
                 />
+                <div className="inputs-flex-container-3">
+                  <label className="storyvisualizer-label" htmlFor="node-text">Type de nœud</label>
+                  <EdgeTypeToggle
+                    value={edgeType}
+                    onChange={setEdgeType}
+                  />
+
+                </div>
                 <button className="btn btn-editor-appliquer" onClick={handleApply}>
                   Appliquer
                 </button>
@@ -371,14 +379,6 @@ const StoryEditorPage = ({ story }) => {
                       Ajouter une image
                     </button>
                   </div>
-                </div>
-                <div className="inputs-flex-container-3">
-                  <label className="storyvisualizer-label" htmlFor="node-text">Type de nœud</label>
-                  <EdgeTypeToggle
-                    value={edgeType}
-                    onChange={setEdgeType}
-                  />
-
                 </div>
 
                 <div className="switch-container">
