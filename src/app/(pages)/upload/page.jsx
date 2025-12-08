@@ -1,6 +1,6 @@
 "use client";
 
-import UploadPage from "../../_components/UploadPage.jsx"
+import UploadPage from "@/app/_components/UploadPage.jsx"
 
 const Upload = () => {
     return (

@@ -1,4 +1,4 @@
-import SignInPage from "../../_components/SignInPage";
+import SignInPage from "@/app/_components/SignInPage";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 

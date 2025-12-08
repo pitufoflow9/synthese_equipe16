@@ -1,6 +1,6 @@
 "use client";
 
-import MyProfilePage from "../../../_components/MyProfilePage.jsx"
+import MyProfilePage from "@/app/_components/MyProfilePage.jsx"
 
 const MyProfile = () => {
     return (

@@ -1,4 +1,4 @@
-import SignUpClient from "../../_components/SignUpPage";
+import SignUpClient from "@/app/_components/SignUpPage";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 

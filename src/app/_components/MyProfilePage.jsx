@@ -6,11 +6,11 @@ import { BookOpen } from 'lucide-react';
 import { useEffect } from "react";
 import "swiper/css";
 
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/MainPageClient.css"
-import "../_components/MyProfilePage.css"
-import "../_components/Swiper.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/Footer.css"
+import "@/app/_components/MainPageClient.css"
+import "@/app/_components/MyProfilePage.css"
+import "@/app/_components/Swiper.css"
 
 import Swiper from 'swiper';
 import EditIcon from '@mui/icons-material/Edit';

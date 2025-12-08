@@ -8,12 +8,9 @@ const NodeView = async ({ params }) => {
 
   // Récupère les info des histoire
   const storyInfo = await getStoryInfoById(storyId);
-  if (!storyInfo) return notFound();
 
   // Récupère les info dans les noeuds et les branches
   const nodeData = await getNodeInfoById(nodeId);
-  console.log(nodeData);
-  if (!nodeData) return notFound();
 
   //Créé les données pour les afficher dans la page storyvisualization
   const story = {

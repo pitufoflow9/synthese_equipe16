@@ -1,6 +1,6 @@
 // app/_components/AudioManager.jsx
 "use client";
-import { useAudio } from "../_context/AudioContext";
+import { useAudio } from "@/app/_context/AudioContext";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 

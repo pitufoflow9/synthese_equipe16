@@ -12,11 +12,11 @@ import { BookOpen } from 'lucide-react';
 import { useEffect } from "react";
 
 
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/MainPageClient.css"
-import "../_components/UserPage.css"
-import "../_components/Swiper.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/Footer.css"
+import "@/app/_components/MainPageClient.css"
+import "@/app/_components/UserPage.css"
+import "@/app/_components/Swiper.css"
 
 //TODO: Afficher dynamiquement le nom et la photo de profil de l'utilisateur.
 //TODO: Intégrer la logique pour afficher les récits partagés de l'utilisateur.
@@ -74,7 +74,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                
+
                                     <h3>Les derniers jours de Noctis</h3>
 
                                     <p>
@@ -98,7 +98,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                 
+
                                     <h3>Entre les Pétales et les Épines</h3>
 
                                     <p>
@@ -122,7 +122,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                 
+
                                     <h3>La Révolte du Paladin</h3>
 
                                     <p>
@@ -146,7 +146,7 @@ const UserPage = () => {
                                             </button>
                                         </div>
                                     </div>
-                                
+
                                     <h3>Magie Blanche et Ombre</h3>
 
                                     <p>

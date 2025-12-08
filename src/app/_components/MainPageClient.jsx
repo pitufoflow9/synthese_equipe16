@@ -12,19 +12,19 @@ import { usePathname } from 'next/navigation'
 import EastIcon from '@mui/icons-material/East';
 import Link from "next/link";
 
-import "../_components/MainPageClient.css"
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/RecentlyPublished.css"
-import "../_components/MainPageClient.css";
-import "../_components/Nav.css";
-import "../_components/Footer.css";
-import "../_components/RecentlyPublished.css";
+import "@/app/_components/MainPageClient.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/Footer.css"
+import "@/app/_components/RecentlyPublished.css"
+import "@/app/_components/MainPageClient.css";
+import "@/app/_components/Nav.css";
+import "@/app/_components/Footer.css";
+import "@/app/_components/RecentlyPublished.css";
 import "swiper/css";
-import "../_components/Swiper.css";
+import "@/app/_components/Swiper.css";
 
-import Footer from "../_components/Footer.jsx";
-import Nav from "../_components/Nav.jsx";
+import Footer from "@/app/_components/Footer.jsx";
+import Nav from "@/app/_components/Nav.jsx";
 import RecemmentPubliees from "./RecentlyPublished.jsx";
 import ReprendreLecture from "./KeepReading.jsx";
 

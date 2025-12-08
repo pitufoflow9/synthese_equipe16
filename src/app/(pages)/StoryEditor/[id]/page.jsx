@@ -1,5 +1,5 @@
-import { GridProvider } from "../../../_context/gridContext";
-import StoryEditorPage from "../../../_components/StoryEditorPage";
+import { GridProvider } from "@/app/_context/gridContext";
+import StoryEditorPage from "@/app/_components/StoryEditorPage";
 import { db } from "@/db";
 import { Histoires, Nodes, Branches } from "@/db/schemas/schema";
 import { eq } from "drizzle-orm";

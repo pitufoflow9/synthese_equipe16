@@ -7,10 +7,10 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import WestIcon from "@mui/icons-material/West";
 
-import "../_components/Nav.css";
-import "../_components/Footer.css";
-import "../_components/MainPageClient.css";
-import "../_components/StoryOverviewPage.css";
+import "@/app/_components/Nav.css";
+import "@/app/_components/Footer.css";
+import "@/app/_components/MainPageClient.css";
+import "@/app/_components/StoryOverviewPage.css";
 
 const StoryOverviewPage = ({ story }) => {
   const {

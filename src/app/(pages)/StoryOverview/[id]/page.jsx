@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import StoryOverviewPage from "../../../_components/StoryOverviewPage.jsx";
-import { getStoryInfoById } from "../../../_data/histoires.js";
+import StoryOverviewPage from "@/app/_components/StoryOverviewPage.jsx";
+import { getStoryInfoById } from "@/app/_data/histoires.js";
 
 const StoryOverview = async ({ params }) => {
   const storyId = (await params)?.id;

@@ -1,6 +1,6 @@
 "use client";
 import { BookOpen } from 'lucide-react';
-import "../_components/KeepReading.css";
+import "@/app/_components/KeepReading.css";
 import Link from "next/link";
 const KeepReading = () => {
     return (

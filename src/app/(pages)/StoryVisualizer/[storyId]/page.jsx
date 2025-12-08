@@ -7,7 +7,6 @@ const StoryStart = async ({ params }) => {
 
   //Récupère tout les infos de l'histoire depuis son id
   const storyInfo = await getStoryInfoById(storyId);
-  if (!storyInfo) return notFound();
 
   //construit l'url pour afficher l'histoire dans la page storyvisualizer
   redirect("/storyvisualizer/" + storyId + "/" + storyInfo.startNodeId);

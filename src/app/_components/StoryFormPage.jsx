@@ -1,9 +1,9 @@
 "use client";
 
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/MainPageClient.css"
-import "../_components/StoryFormPage.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/Footer.css"
+import "@/app/_components/MainPageClient.css"
+import "@/app/_components/StoryFormPage.css"
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import Link from "next/link";

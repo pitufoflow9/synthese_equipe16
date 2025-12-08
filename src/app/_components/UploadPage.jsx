@@ -1,9 +1,9 @@
 "use client";
 
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/MainPageClient.css"
-import "../_components/UploadPage.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/Footer.css"
+import "@/app/_components/MainPageClient.css"
+import "@/app/_components/UploadPage.css"
 import WestIcon from '@mui/icons-material/West';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 

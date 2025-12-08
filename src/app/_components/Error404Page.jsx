@@ -3,10 +3,10 @@ import Link from "next/link";
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
 
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/MainPageClient.css"
-import "../_components/Error404Page.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/Footer.css"
+import "@/app/_components/MainPageClient.css"
+import "@/app/_components/Error404Page.css"
 
 const Error404Page = () => {
     return (

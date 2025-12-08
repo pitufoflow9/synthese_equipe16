@@ -1,17 +1,17 @@
 "use client";
 import Link from "next/link";
-import Nav from "./Nav.jsx";
 import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import { useAudio } from "../_context/AudioContext.jsx";
 
+import Nav from "@/app/_components/Nav.jsx";
 import CloseIcon from '@mui/icons-material/Close';
 import WestIcon from '@mui/icons-material/West';
 
-import "../_components/Nav.css"
-import "../_components/StoryVisualizerPage.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/StoryVisualizerPage.css"
 gsap.registerPlugin(useGSAP, SplitText);
 
 export default function StoryVisualizerClient({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) {
@@ -58,15 +58,6 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 stagger: 0.5,
                 ease: "power2.out",
             });
-
-            // gsap.to(lines, {
-            //     y: -15,
-            //     duration: 3,
-            //     yoyo: true,
-            //     repeat: -1,
-            //     ease: "power1.inOut",
-            //     stagger: 0.2
-            // });
         }
 
         else if (textEffect == "2") {
@@ -99,8 +90,6 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 stagger: gsap.utils.random(0.01, 0.04),
             });
         }
-
-
     }, []);
 
     const openChoicePopup = (e) => {
@@ -125,7 +114,6 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
             </Link>
             <h1 className="storyvisualizer-title">{story.title}</h1>
             <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>
-
             <div
                 className={choiceIsOpen ? "storyvisualizer-choices-container opened" : "storyvisualizer-choices-container"}
                 ref={choicePopupRef}>
@@ -133,7 +121,7 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                     <a
                         className="storyvisualizer-choices"
                         key={edge.id}
-                        href={`/storyvisualizer/${storyId}/${edge.target}`}
+                        href={"/storyvisualizer/" + storyId + "/" + edge.target}
                     >
                         {edge.texte || "Choix"}
                     </a>
@@ -141,13 +129,13 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 <hr className="storyvisualizer-hr" />
             </div>
             {isStoryEnd ? (
-                <Link href={`/storyvisualizer/${storyId}/${edges[0]?.target || ''}`}>
+                <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
                     <button className="storyvisualizer-continue-btn">
                         Rejouer
                     </button>
                 </Link>
             ) : isChoiceAsked ? (
-                <Link href={`/storyvisualizer/${storyId}/${edges[0].target}`}>
+                <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target}>
                     <button className="storyvisualizer-continue-btn">
                         Continuer
                     </button>
@@ -163,7 +151,6 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                     </button>
                 )
             )}
-
         </div>
     );
 }

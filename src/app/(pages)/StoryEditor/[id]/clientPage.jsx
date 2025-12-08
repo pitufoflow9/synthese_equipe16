@@ -1,9 +1,9 @@
 "use client";
 
-import { useGrid } from "../../_context/gridContext";
+import { useGrid } from "@/app/_context/gridContext";
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import Nav from "../../_components/Nav";
+import Nav from "@/app/_components/Nav";
 import Footer from "@/app/_components/Footer";
 import { v4 as uuid } from "uuid";
 import {
