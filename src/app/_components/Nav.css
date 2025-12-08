@@ -1,34 +1,123 @@
 .header-nav {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-items: flex-end;
-  margin-top: 40px;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  justify-content: center;
+  transform: translateX(-50%);
+  z-index: 11;
+  transition: all 0.5s;
+  border-bottom: 1px solid transparent;
+  background-color: transparent;
+  padding: 40px 0;
+  width: 100%;
+  height: auto;
 }
 
+.header-nav.is-not-at-top {
+  border-bottom: solid 1px var(--light-gray);
+  background: white;
+}
+
+.account-actions-container {
+  display: flex;
+  gap: 70px;
+}
 .nav-list {
   display: flex;
-  align-items: center;
-  gap: 50px;
+  justify-content: space-between;
+  align-items: end;
+  transition: all 0.3s ease;
   margin: 0;
   padding: 0;
+  width: 92vw;
   list-style: none;
+  li {
+    transition: all 0.3s ease;
+    &:hover {
+      opacity: 0.8;
+    }
+    &:last-child:hover {
+      opacity: 1;
+      transition: all 0.3s ease;
+    }
+  }
 }
 
-.btn {
+.nav-list-connected {
+  justify-content: end;
+  gap: 40px;
+}
+.nav-list-connected.white li {
+  color: white;
+  & a {
+    color: white;
+  }
+}
+.nav-list-connected li:first-child {
+  margin-right: auto;
+}
+
+.btn-nav,
+.create-p {
   cursor: pointer;
   border: none;
   background: none;
-  font-size: 19px;
+  font-weight: 400;
+  font-size: 18px;
 }
 
 .logo {
   width: 120px;
 }
 
-.btn-creer {
+.btn-create {
+  position: relative;
+  transition: background-position 0.6s ease;
+  border: none;
   border-radius: 25px;
-  background-color: var(--primary-text-color);
+  background: linear-gradient(
+    90deg,
+    rgb(34, 34, 34) 0%,
+    rgb(110, 110, 110) 51%,
+    rgb(34, 34, 34) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
   padding: 12px 20px;
+  color: white;
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.btn-create.white {
+  transition: all 0.3s ease;
+  border: 1px solid white;
+  background-image: none;
+  color: white;
+
+  &:hover {
+    background-color: white;
+    color: var(--primary-text-color);
+  }
+}
+.account-icon {
+  img {
+    width: 30px;
+  }
+}
+
+.account-name {
+  font-weight: 700;
+}
+
+.account-flex-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-compte.white {
   color: white;
 }

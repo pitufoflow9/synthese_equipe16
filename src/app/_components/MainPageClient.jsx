@@ -1,32 +1,37 @@
 "use client";
 import "@xyflow/react/dist/style.css";
-// import Link from "next/link";
-// import { signOut } from "../actions/auth-actions";
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useGrid } from "../_context/gridContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { session } from "@/db/schemas";
-// import useLenis from "../_hooks/useLenis.jsx";
+import useLenis from "../_hooks/useLenis.jsx";
 import HistoireTemp from "./HistoireTemp";
 import Swiper from 'swiper';
 import { useGSAP } from "@gsap/react";
+import { usePathname } from 'next/navigation'
+import EastIcon from '@mui/icons-material/East';
+import Link from "next/link";
 
-
+import "@/app/_components/MainPageClient.css"
+import "@/app/_components/Nav.css"
+import "@/app/_components/Footer.css"
+import "@/app/_components/RecentlyPublished.css"
+import "@/app/_components/MainPageClient.css";
+import "@/app/_components/Nav.css";
+import "@/app/_components/Footer.css";
+import "@/app/_components/RecentlyPublished.css";
 import "swiper/css";
-import "../_components/MainPageClient.css"
-import "../_components/Nav.css"
-import "../_components/Footer.css"
-import "../_components/RecentlyPublished.css"
+import "@/app/_components/Swiper.css";
 
+import Footer from "@/app/_components/Footer.jsx";
+import Nav from "@/app/_components/Nav.jsx";
+import RecemmentPubliees from "./RecentlyPublished.jsx";
+import ReprendreLecture from "./KeepReading.jsx";
 
-import Footer from "../_components/Footer.jsx"
-import Nav from "../_components/Nav.jsx"
-import RecemmentPubliees from "./RecentlyPublished.jsx"
-import ReprendreLecture from "./KeepReading.jsx"
+// TODO: Intégrer la logique pour afficher les histoires à reprendre (Tags, bannière, titre et synopsis)
+// (ou ne pas l'afficher si l'utilisateur n'a jamais lu d'histoire et/ou il n'est pas connecté).
 
-const MainPageClient = ({ displayName }) => {
-  // useLenis();
-
+const MainPageClient = ({ user, recentStories = [] }) => {
   const {
     nodes,
     edges,
@@ -40,42 +45,53 @@ const MainPageClient = ({ displayName }) => {
   }, [selection]);
 
   useEffect(() => {
-    const swiper = new Swiper('.swiper', {
+    const swiper = new Swiper(".swiper", {
       slidesPerView: 2.5,
       spaceBetween: 30,
-      speed: 50,
-      freeMode: true
+      speed: 400,
+      grabCursor: true,
+      slidesOffsetAfter: 200,
     });
 
+    return () => {
+      swiper?.destroy?.();
+    };
   }, []);
-
 
   return (
     <div className="page">
-      {/* <h1>Main Page Client</h1>
-      <h2>Bienvenue, {displayName}</h2>
-      <button
-        className="mt-2 bg-amber-500 px-2 rounded"
-        onClick={() =>
-          addLocalNode({ id: "id-quatre", position: { x: 0, y: -30 } })
-        }
-      >
-        Ajouter un noeud
-
-      </button> */}
-
-
-      <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
       <header>
-        <Nav></Nav>
-        <h1 className="h1-header">
-          Où votre <br />
-          imagination <br />
-          mène l'histoire
-        </h1>
+        <Nav user={user} />
+        <div className="hero">
+          <div className="hero-container">
+            <h2 className="h2-header">Faites briller votre univers</h2>
+            <h1 className="h1-header">
+              Donnez vie à votre récit
+
+
+            </h1>
+            <img className="main-bg" src="../../../img/Background_1.jpg" alt="" />
+            <h3 className="h3-header">
+              Créez des chapitres comme des scènes de film : choisissez vos ambiances, ajoutez des effets et faites vibrer chaque moment.
+            </h3>
+            <div className="main-input-container">
+              <input
+                className="main-input"
+                placeholder="Le titre de votre histoire..."
+                required
+              />
+              <Link href="/storyform"
+              >
+                <div className="btn-input">
+                  <EastIcon />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
       </header>
 
-      <RecemmentPubliees />
+      <RecemmentPubliees stories={recentStories} />
       <hr />
       <ReprendreLecture />
       <Footer />
@@ -97,7 +113,7 @@ const MainPageClient = ({ displayName }) => {
           <Background variant={BackgroundVariant.Dots} />
         </ReactFlow>
       </div> */}
-    </div >
+    </div>
   );
 };
 export default MainPageClient;

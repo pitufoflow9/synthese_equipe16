@@ -1,0 +1,14 @@
+.profile-picture {
+  margin: 250px auto 40px auto;
+  border-radius: 100%;
+  width: 130px;
+  height: 130px;
+}
+
+.profile-name {
+  margin-bottom: 200px;
+  margin-bottom: 100px;
+  font-weight: 700;
+  font-size: 55px;
+  text-align: center;
+}

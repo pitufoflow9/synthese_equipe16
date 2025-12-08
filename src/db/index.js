@@ -1,9 +1,11 @@
 import "dotenv/config";
+import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import * as schema from './schemas';
+import * as schema from "./schemas";
 
-export const db = drizzle({
-    // logger: true,
-    connection: {url: process.env.DATABASE_URL},   
-    schema
+const client = createClient({
+  url: process.env.DATABASE_URL,
+  authToken: process.env.DATABASE_AUTH_TOKEN,
 });
+
+export const db = drizzle(client, { schema });

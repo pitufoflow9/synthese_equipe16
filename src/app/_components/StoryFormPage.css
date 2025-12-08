@@ -1,9 +1,10 @@
 .story-form-container {
+  z-index: 10;
   width: 100vw;
 }
 
 .h1-story-form {
-  margin: 30px 0 20px 0;
+  margin: 100px 0 20px 0;
   font-weight: 700;
   font-size: 55px;
   text-align: center;
@@ -12,7 +13,7 @@
 .story-form {
   display: flex;
   flex-direction: column;
-  margin: 0 auto 0 auto;
+  margin: 0 auto 200px auto;
   border: 1px solid var(--light-gray);
   border-radius: 25px;
   background-color: white;
@@ -49,6 +50,7 @@ input {
 }
 
 .btn-form {
+  cursor: pointer;
   border-radius: 35px;
   padding: 20px 40px;
   width: 100%;
@@ -56,31 +58,293 @@ input {
   font-size: 17px;
 }
 
-.btn-form-banner-img {
-  margin-bottom: 30px;
-  background-color: var(--primary-text-color);
-  color: white;
+.form-btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.btn-form-add-music {
+.btn-form-banner-img {
+  transition: background-position 0.6s ease;
+  margin-bottom: 30px;
+  background: linear-gradient(
+    90deg,
+    rgb(34, 34, 34) 0%,
+    rgb(110, 110, 110) 51%,
+    rgb(34, 34, 34) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.btn-form-add-ambiance,
+.btn-form-add-effect {
   position: relative;
   border: 1px solid var(--primary-text-color);
+  width: 48%;
   color: var(--primary-text-color);
+
+  &:hover {
+    background-color: var(--primary-text-color);
+    color: white;
+  }
 }
 
-.music-icon {
+.effect-preview {
+  display: flex;
+  flex-direction: row;
+}
+
+.effect-preview:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    rgba(142, 16, 231, 1) 0%,
+    rgba(220, 130, 255, 1) 51%,
+    rgba(142, 16, 231, 1) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  color: white;
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.effect-preview:hover .effect-preview-placeholder {
+  display: block;
+}
+
+.effect-preview-placeholder {
+  display: none;
+}
+
+.ambiance-icon {
   position: absolute;
   left: 0;
   padding-left: 20px;
 }
 
 .story-form-hr {
-  margin: 50px 0 50px 0;
+  margin: 30px 0;
   color: var(--light-gray);
 }
 
 .btn-form-continue {
   position: relative;
-  background-color: var(--purple);
+  transition: background-position 0.6s ease;
+  background: linear-gradient(
+    90deg,
+    rgba(142, 16, 231, 1) 0%,
+    rgba(220, 130, 255, 1) 51%,
+    rgba(142, 16, 231, 1) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
   color: white;
+  color: white;
+  &:hover {
+    background-position: right bottom;
+  }
 }
+
+.btn-form-continue.greyed-out {
+  position: relative;
+  border: 1px solid var(--light-gray);
+  background-color: transparent;
+  color: var(--light-gray);
+}
+
+.popup-container {
+  /* filter: brightness(0.8); TO DO */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.288);
+  width: 100vw;
+  height: 100vh;
+}
+.popup {
+  position: relative;
+  z-index: 11;
+  margin: 150px auto;
+  border: 1px solid var(--translucent-purple);
+  border-radius: 35;
+  background-color: white;
+  padding: 28px;
+  width: 800px;
+  height: auto;
+
+  h2 {
+    margin: 20px 0 40px 0;
+    font-weight: 700;
+    font-size: 30px;
+    text-align: center;
+  }
+}
+
+.popup-effect {
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 auto;
+}
+
+.btn-popup {
+  transition: background-position 0.6s ease;
+  cursor: pointer;
+  border-radius: 35px;
+  background: linear-gradient(
+    90deg,
+    rgb(34, 34, 34) 0%,
+    rgb(110, 110, 110) 51%,
+    rgb(34, 34, 34) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  padding: 20px 40px;
+  width: 100%;
+  color: white;
+  font-weight: 700;
+  font-size: 17px;
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.popup-banner-hr {
+  margin: 50px 0;
+  color: var(--light-gray);
+}
+
+/*  QUESTION PROF: Pourquoi la qsualité change temporairement lors de l'aniamtion du scale? (J'ai essayé will-change: transform */
+.banner-grid {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  border-radius: 25px;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  img {
+    transition: all 0.3s;
+    cursor: pointer;
+    width: 100%;
+    height: 170px;
+    overflow: hidden;
+    object-fit: cover;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+.img-wrapper {
+  overflow: hidden;
+}
+
+.popup-close-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 20px;
+}
+
+.ambiance-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ambiance-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
+  cursor: pointer;
+  margin: 5px;
+  border: 1px solid var(--translucent-purple);
+  border-radius: 25px;
+  padding: 30px;
+  width: 100%;
+  height: 40px;
+  font-weight: 500;
+}
+
+.ambiance-magique:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    #7c00adff 0%,
+    #d298e9ff 51%,
+    #7c00adff 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  color: white;
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.ambiance-horreur:hover {
+  transition: none;
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    #000000ff 0%,
+    #4d0000ff 51%,
+    #000000ff 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  color: white;
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.ambiance-medieval:hover {
+  transition: none;
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    #858585ff 0%,
+    #ffcab2ff 51%,
+    #858585ff 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  color: white;
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+/* background: linear-gradient(
+    90deg,
+    rgba(142, 16, 231, 1) 0%,
+    rgba(220, 130, 255, 1) 51%,
+    rgba(142, 16, 231, 1) 100%
+  );
+  color: white;
+  background-size: 200% 100%;
+  background-position: left bottom;
+  transition: background-position 0.6s ease;
+  &:hover {
+    background-position: right bottom;
+  } */

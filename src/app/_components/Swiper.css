@@ -1,0 +1,171 @@
+/* ----------Section récemment publiées----------- */
+
+.swiper-h2 {
+  margin-bottom: 40px;
+  margin-left: 4vw;
+  font-weight: 500;
+  font-size: 45px;
+}
+
+.swiper-slide {
+  cursor: pointer;
+  margin: 15px;
+  width: 670px;
+  height: auto;
+}
+
+.card {
+  height: auto;
+}
+
+.card::before {
+  position: absolute;
+  z-index: -1;
+  transition: all 0.2s;
+  inset: -15px;
+  border-radius: 35px;
+  background: transparent;
+  content: "";
+  scale: 0.9;
+}
+.card:hover::before {
+  background: #00000017;
+  scale: 1;
+}
+
+.swiper-first-slide {
+  margin-left: 4vw;
+}
+
+.img-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.slide-img {
+  border-radius: 25px;
+}
+
+.tags {
+  position: absolute;
+  top: 18px;
+  left: 15px;
+  color: var(--primary-text-color);
+  font-weight: 500;
+  font-size: 18;
+
+  span {
+    margin-right: 20px;
+    border-radius: 15px;
+    background-color: white;
+    padding: 8px 20px;
+  }
+}
+
+.swiper-synopsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 18px;
+  color: var(--secondary-text-color);
+}
+
+.swiper-buttons-flex-container {
+  display: flex;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin: 15px;
+}
+
+.edit-button {
+  border-radius: 100%;
+  background-color: white;
+  width: 50px;
+  height: 50px;
+
+  &:hover {
+    transition: all 0.3s;
+    border: transparent;
+    background-image: linear-gradient(to right, #8e10e7, #dc82ff);
+    color: white;
+
+    p {
+      color: white;
+    }
+  }
+}
+
+.read-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  border-radius: 25px;
+  background-color: white;
+  padding: 0 20px;
+  width: auto;
+  height: 50px;
+  font-weight: 500;
+
+  p {
+    transition: all 0.3s;
+    color: var(--primary-text-color);
+    font-weight: 500;
+    font-size: 19px;
+  }
+
+  &:hover {
+    transition: all 0.3s;
+    border: transparent;
+    background-image: linear-gradient(to right, #8e10e7, #dc82ff);
+    color: white;
+
+    p {
+      color: white;
+    }
+  }
+}
+
+.read-icon {
+  margin-top: 2px;
+  margin-left: 10px;
+}
+
+h3 {
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 27px;
+}
+
+/* p {
+  color: var(--secondary-text-color);
+  font-weight: 300;
+  font-size: 20px;
+} */
+
+hr {
+  margin: 100px 0;
+  color: #b8b8b8;
+}
+
+.button-container {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.swiper-author {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 16px;
+}

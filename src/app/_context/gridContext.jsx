@@ -2,6 +2,12 @@
 import { createContext, useContext, useState } from "react";
 import useGridInternals, { SelectionType } from "../_hooks/useGridInternals";
 import { addEdge, ReactFlowProvider } from "@xyflow/react";
+import { v4 as uuid } from "uuid";
+import {
+  createEdge as createEdgeAction,
+  createNode as createNodeAction,
+  updateNodePosition as updateNodePositionAction,
+} from "@/app/actions/story-actions";
 
 const gridContext = createContext({
   nodes: [],
@@ -9,6 +15,8 @@ const gridContext = createContext({
   selection: { node: null, edge: null, type: SelectionType.none },
   deselect: () => {},
   updateSelectionData: () => {},
+  setNodesState: () => {},
+  setEdgesState: () => {},
   addLocalNode: (newNode) => {},
   internals: {
     onNodesChange: (changes) => {},
@@ -19,52 +27,36 @@ const gridContext = createContext({
   _v: 0,
 });
 
-// Ce contexte/Provider vous donne la base pour accéder aux noeuds et branches de l'application.
-// Vous êtes évidemment encouragés à en faire la modification afin de centraliser la manipulation des noeuds/branches
-// On y propage aussi des variables/fonctions concernant la sélection en cours (noeud ou branche)
-// nodes/edges et internals sont également à utiliser pour les props de la composante ReactFlow
-
-// Les noeuds et branches provenant du serveur sont passer en props à ce Provider sous la forme attendue:
-// initialNodes: pour les noeuds, un tableau d'objets contenant ces propriétés au minimum (peut en contenir d'autres également):
-//  {id: '', position: {x: 0, y: 0}} // https://reactflow.dev/api-reference/types/node
-
-// initialEdges: pour les brancges, un tableau d'objets contenant ces propriétés au minimum (peut en contenir d'autres également):
-//  {id: '', source: '', target: ''} // https://reactflow.dev/api-reference/types/edge
-
-const GridProvider = ({ children, initialNodes = [], initialEdges = [] }) => {
-  // States à modifier pour ajouter/supprimer/mettre à jour les noeuds/branches
+const GridProvider = ({
+  children,
+  initialNodes = [],
+  initialEdges = [],
+  storyId,
+}) => {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
-  // Fonction appelée lors d'un déplacement d'un noeud (après 250 ms d'inactivité)
-  // Params: un objet contenant le id du noeud ainsi que sa nouvelle position
-  // Il ne reste qu'à envoyer sa position à la bd via une action serveur.
   const onUpdateNodePositionHandler = async ({ id, position }) => {
-    console.log("[NODE POSITION UPDATE]", id, position);
-    // ex:
-    // await updateNodePositionAction(node.storyId, node.id, node.position);
+    if (!storyId) return;
+    updateNodePositionAction(storyId, id, position);
   };
 
-  // Fonction appelée quand une branche est ajoutée entre deux noeuds.
-  // Il vous faut rendre le id unique et modifier l'objet newEdgeData au besoin.
-  // Il faudrait aussi y sauvegarder les données nécessaires via une action serveur.
   const onEdgeCreatedHandler = async ({ source, target }) => {
-    console.log("[NEW EDGE CREATED]: Entre:", source, target);
     const newEdgeData = {
-      id: "un-nouvel-id",
-      source: source, // le id du noeud de départ
-      target: target, // le id du noeud de fin
+      id: uuid(),
+      source,
+      target,
+      type: "default",
+      data: { edgeType: "regular" },
+      edgeType: "regular",
+      selectable: true,
     };
-
-    // ajoute la branche dans le state (addEdge s'occupe de faire une validation)
     setEdges((currentEdges) => addEdge(newEdgeData, currentEdges));
+    if (storyId) {
+      createEdgeAction(storyId, newEdgeData);
+    }
   };
 
-  // useGridInternal gère la mécanique interne déjà préparée
-  // selection: informe sur le noeud ou la branche sélectionnée
-  // deselect: permet de tout désélectionner
-  // updateSelectionData: rafraichissement manuel des données de la sélection à appeler au besoin (si désynchronisé)
-  // interals est à utiliser directement avec la composante ReactFlow
   const { selection, deselect, updateSelectionData, internals } =
     useGridInternals(
       nodes,
@@ -75,11 +67,25 @@ const GridProvider = ({ children, initialNodes = [], initialEdges = [] }) => {
       onEdgeCreatedHandler
     );
 
-  // implémenter/déclarer les manipulations du state à partir d'ici... ou ailleurs
-  // ex:
   const addLocalNode = (newNode) => {
-    // ajouter le noeud au state puis ensuite à bd via une action serveur
-    console.log("Bien essayé 🤣", newNode);
+    const node = {
+      id: newNode.id ?? uuid(),
+      type: "default",
+      position: newNode.position ?? { x: 0, y: 0 },
+      data: {
+        label: newNode.titre ?? "Nouveau noeud",
+        nodeType: newNode.type ?? "story",
+        isEnding: !!newNode.isEnding,
+        body: newNode.contenu ?? "",
+      },
+      draggable: true,
+      selectable: true,
+    };
+
+    setNodes((current) => [...current, node]);
+    if (storyId) {
+      createNodeAction(storyId, { ...newNode, id: node.id });
+    }
   };
 
   return (
@@ -91,6 +97,8 @@ const GridProvider = ({ children, initialNodes = [], initialEdges = [] }) => {
           selection,
           deselect,
           updateSelectionData,
+          setNodesState: setNodes,
+          setEdgesState: setEdges,
           internals,
           addLocalNode,
           _v: 1,
@@ -113,3 +121,4 @@ const useGrid = () => {
 export { GridProvider, useGrid };
 
 export default gridContext;
+
