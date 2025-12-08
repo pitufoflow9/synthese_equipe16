@@ -134,26 +134,40 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 <hr className="storyvisualizer-hr" />
             </div>
             {isStoryEnd ? (
-                <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
-                    <button className="storyvisualizer-continue-btn">
-                        Rejouer
-                    </button>
-                </Link>
+                <div className="storyvisualizer-flex-container">
+                    <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
+                        <button className="storyvisualizer-continue-btn">
+                            Relire
+                        </button>
+                    </Link>
+                    <Link href={"/#stories" + storyId + "/" + (edges[0]?.target || "")}>
+
+                        <button className="storyvisualizer-continue-btn">
+                            Retourner aux publications
+                        </button>
+                    </Link>
+                </div>
             ) : isChoiceAsked ? (
-                <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target}>
-                    <button className="storyvisualizer-continue-btn">
-                        Continuer
-                    </button>
-                </Link>
+                <div className="storyvisualizer-flex-container">
+                    <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target}>
+                        <button className="storyvisualizer-continue-btn">
+                            Continuer
+                        </button>
+                    </Link>
+                </div>
             ) : (
                 choiceIsOpen ? (
-                    <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
-                        <CloseIcon />
-                    </button>
+                    <div className="storyvisualizer-flex-container">
+                        <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
+                            <CloseIcon />
+                        </button>
+                    </div>
                 ) : (
-                    <button className="storyvisualizer-continue-btn" onClick={openChoicePopup}>
-                        Continuer
-                    </button>
+                    <div className="storyvisualizer-flex-container">
+                        <button className="storyvisualizer-continue-btn" onClick={openChoicePopup}>
+                            Continuer
+                        </button>
+                    </div>
                 )
             )}
         </div>

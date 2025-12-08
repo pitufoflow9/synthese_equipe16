@@ -17,7 +17,7 @@
   height: 100%;
 }
 
-.story-card {
+.overview-page-container .story-card {
   display: flex;
   position: relative;
   flex-direction: row;
@@ -79,7 +79,7 @@
   border-radius: 25px;
 }
 
-.read-button {
+.overview-page-container .read-button {
   display: flex;
   position: relative;
   flex-direction: row;
