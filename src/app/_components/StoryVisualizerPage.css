@@ -9,7 +9,7 @@
 }
 
 .storyvisualizer-title {
-  margin: 20 auto 0 auto;
+  margin: 100 auto 0 auto;
   width: 80vw;
   color: white;
   font-size: 40px;
@@ -20,8 +20,13 @@
   margin: 50 auto 0 auto;
   width: 80vw;
   color: white;
-  font-size: 40px;
+  font-size: 30px;
+  font-weight: 200;
   text-align: center;
+  white-space: normal; /* Allow text to wrap */
+  overflow-wrap: break-word; /* Break only between words */
+  word-break: normal; /* Don't break inside words */
+  hyphens: manual; /* Only break where you add soft hyphens */
 }
 
 .storyvisualizer-continue-btn {
@@ -131,7 +136,7 @@
 .storyvisualizer-btn-back {
   display: flex;
   position: absolute;
-  top: 130px;
+  top: 210px;
   left: 0;
   align-items: center;
   gap: 10px;
@@ -146,4 +151,3 @@
     color: var(--primary-text-color);
   }
 }
-

@@ -14,7 +14,7 @@
   height: auto;
 }
 
-.card{
+.card {
   height: auto;
 }
 
@@ -60,6 +60,16 @@
     background-color: white;
     padding: 8px 20px;
   }
+}
+
+.swiper-synopsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 18px;
+  color: var(--secondary-text-color);
 }
 
 .swiper-buttons-flex-container {
@@ -134,11 +144,11 @@ h3 {
   font-size: 27px;
 }
 
-p {
+/* p {
   color: var(--secondary-text-color);
   font-weight: 300;
   font-size: 20px;
-}
+} */
 
 hr {
   margin: 100px 0;

@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useGrid } from "../_context/gridContext";
 import Footer from "./Footer.jsx";
 import Nav from "./Nav.jsx";
 import CustomSwitch from "./CustomSwitch.jsx";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
-import { Background, BackgroundVariant, ReactFlow, Handle } from "@xyflow/react";
+import { X } from 'lucide-react';
+import { Background, BackgroundVariant, ReactFlow, Handle, isNode } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { v4 as uuid } from "uuid";
 import {
@@ -41,6 +43,8 @@ const StoryEditorPage = ({ story }) => {
   const [isEnding, setIsEnding] = useState(false);
   const [edgeType, setEdgeType] = useState("regular");
   const [historyKey, setHistoryKey] = useState("");
+  const [imagePickerIsOpen, setImagePickerIsOpen] = useState(false);
+  const imagePickerPopupRef = useRef();
 
   const isNodeSelected = selection?.type === "node" && selection.node;
   const isEdgeSelected = selection?.type === "edge" && selection.edge;
@@ -87,14 +91,14 @@ const StoryEditorPage = ({ story }) => {
       const updatedNodes = nodes.map((n) =>
         n.id === id
           ? {
-              ...n,
-              data: {
-                ...n.data,
-                label: isStartNode ? n.data.label : nodeTitle,
-                body: nodeText,
-                isEnding: isStartNode ? false : isEnding,
-              },
-            }
+            ...n,
+            data: {
+              ...n.data,
+              label: isStartNode ? n.data.label : nodeTitle,
+              body: nodeText,
+              isEnding: isStartNode ? false : isEnding,
+            },
+          }
           : n
       );
       setNodesState(updatedNodes);
@@ -110,11 +114,11 @@ const StoryEditorPage = ({ story }) => {
       const updatedEdges = edges.map((e) =>
         e.id === id
           ? {
-              ...e,
-              label: edgeTitle,
-              data: { ...e.data, edgeType, historyKey },
-              edgeType,
-            }
+            ...e,
+            label: edgeTitle,
+            data: { ...e.data, edgeType, historyKey },
+            edgeType,
+          }
           : e
       );
       setEdgesState(updatedEdges);
@@ -160,6 +164,28 @@ const StoryEditorPage = ({ story }) => {
     });
   };
 
+  const openImagePickerPopup = (e) => {
+    e.preventDefault();
+    setImagePickerIsOpen(true);
+    console.log("Image picker opened");
+  };
+
+  const closeImagePickerPopup = (e) => {
+    e.preventDefault();
+    setImagePickerIsOpen(false);
+    console.log("Image picker closed");
+  };
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (imagePickerIsOpen && imagePickerPopupRef.current && !imagePickerPopupRef.current.contains(e.target)) {
+        setImagePickerIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [imagePickerIsOpen]);
+
   const nodeTypes = useMemo(
     () => ({
       default: ({ data }) => {
@@ -169,20 +195,7 @@ const StoryEditorPage = ({ story }) => {
         const showSource = !isEnd;
 
         return (
-          <div
-            style={{
-              position: "relative",
-              padding: "12px 16px",
-              borderRadius: 10,
-              border: "1px solid #d6d6d6",
-              background: "#fff",
-              boxShadow:
-                "0 1px 2px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.06)",
-              minWidth: 140,
-              textAlign: "center",
-              fontWeight: 600,
-            }}
-          >
+          <div>
             {showTarget && (
               <Handle
                 type="target"
@@ -207,14 +220,7 @@ const StoryEditorPage = ({ story }) => {
 
   const canvas = useMemo(() => {
     return (
-      <div
-        className="editor-canvas"
-        style={{
-          width: "100%",
-          height: "calc(100vh - 200px)",
-          minHeight: 500,
-        }}
-      >
+      <div className="storyeditor-canva">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -248,69 +254,108 @@ const StoryEditorPage = ({ story }) => {
 
       <div className="flex-container-toolbar">
         <div className="tool-bar">
-          <div className="inputs-flex-container">
-            <label htmlFor="node-title">Titre du noeud</label>
-            <input
-              id="node-title"
-              className="choice-name"
-              placeholder="Ecrire..."
-              value={nodeTitle}
-              onChange={(e) => handleNodeTitleChange(e.target.value)}
-              disabled={!isNodeSelected}
-            />
-            {!isNodeSelected && (
-              <p className="editor-hint">Sélectionne un noeud pour modifier son titre.</p>
-            )}
-
-            <label htmlFor="edge-title">Titre du lien (optionnel)</label>
-            <input
-              id="edge-title"
-              className="choice-name"
-              placeholder="Ecrire..."
-              value={edgeTitle}
-              onChange={(e) => setEdgeTitle(e.target.value)}
-              disabled={!isEdgeSelected}
-            />
-            {!isEdgeSelected && (
-              <p className="editor-hint">Sélectionne un lien (arête) pour appliquer ce titre.</p>
-            )}
-
-            <label htmlFor="node-text">Texte affiché</label>
-            <textarea
-              id="node-text"
-              placeholder="Ecrire..."
-              rows={19}
-              value={nodeText}
-              onChange={(e) => setNodeText(e.target.value)}
-              disabled={!isNodeSelected}
-            />
+          <div className="inputs-flex-container-1">
             {isEdgeSelected && (
-              <p className="editor-hint">
-                Le texte du choix sera lu à partir du titre du noeud cible, vous pouvez laisser ce
-                champ vide.
-              </p>
+              <div className="inputs-flex-container-2">
+                <input
+                  id="node-title"
+                  className="choice-name"
+                  placeholder="Ecrire..."
+                  value={edgeTitle}
+                  onChange={(e) => {
+                    setEdgeTitle(e.target.value);
+                    handleNodeTitleChange(e.target.value);
+                  }}
+                />
+              </div>
+            )}
+            {isNodeSelected && (
+              <div className="inputs-flex-container-2">
+                <div className="inputs-flex-container-3">
+                  <label htmlFor="node-text">Nom du noeud</label>
+                  <p className="inputs-optionnal">(Optionnel)</p>
+                </div>
+                <input
+                  id="node-text"
+                  placeholder="Ecrire..."
+                  rows={1}
+                  value={nodeTitle}
+                  onChange={(e) => setNodeTitle(e.target.value)}
+                />
+                <label htmlFor="node-text">Texte affiché *</label>
+                <textarea
+                  id="node-text"
+                  placeholder="Ecrire..."
+                  rows={10}
+                  value={nodeText}
+                  onChange={(e) => setNodeText(e.target.value)}
+                />
+                <button type="button" onClick={openImagePickerPopup} className="add-image-button">
+                  Ajouter une image
+                </button>
+              </div>
             )}
           </div>
-          <div className="switch-container">
-            <p>Fin</p>
-            <CustomSwitch
-              checked={isEnding}
-              onChange={() => setIsEnding((v) => !v)}
-              disabled={!isNodeSelected || isStartNode}
-            />
-          </div>
-          <button className="btn btn-editor-appliquer" onClick={handleApply}>
-            Appliquer
-          </button>
+          {isNodeSelected && (
+            <div className="switch-container">
+              <p>Fin</p>
+              <CustomSwitch
+                checked={isEnding}
+                onChange={() => setIsEnding((v) => !v)}
+                disabled={!isNodeSelected || isStartNode}
+              />
+            </div>
+          )}
+
+          {(isEdgeSelected || isNodeSelected) && (
+            <button className="btn btn-editor-appliquer" onClick={handleApply}>
+              Appliquer
+            </button>
+          )}
         </div>
 
-        <div className="stroy-title-container">
-          <div className="story-name">{story.title}</div>
-          <div style={{ flex: 1, minHeight: "calc(100vh - 110px)" }}>
-            {canvas}
+      {imagePickerIsOpen && (
+        <div className="popup-container">
+          <div className="popup" ref={imagePickerPopupRef}>
+            <button type="button" onClick={closeImagePickerPopup} className="popup-close-icon">
+              <X />
+            </button>
+            <h2 className="">Parcourir la banque d'images</h2>
+            <div className="banner-grid">
+              <div className="img-wrapper">
+                <img className="" src="../../../img/banniere_1.jpg" alt="" />
+              </div>
+              <div className="img-wrapper">
+                <img className="" src="../../../img/banniere_2.jpg" alt="" />
+              </div>
+              <div className="img-wrapper">
+                <img className="" src="../../../img/banniere_3.jpg" alt="" />
+              </div>
+              <div className="img-wrapper">
+                <img className="" src="../../../img/banniere_4.jpg" alt="" />
+              </div>
+              <div className="img-wrapper">
+                <img className="" src="../../../img/banniere_5.jpg" alt="" />
+              </div>
+              <div className="img-wrapper">
+                <img className="" src="../../../img/banniere_6.jpg" alt="" />
+              </div>
+            </div>
+            <hr className="popup-banner-hr" />
+            <Link href="../upload">
+              <button type="button" className="btn-popup">
+                Téléverser à partir de l'appareil
+              </button>
+            </Link>
           </div>
+        </div>
+      )}
+        <div className="story-title-container">
+          <div className="story-name">{story.title}</div>
+          {canvas}
         </div>
       </div>
+
 
       <div className="flex-container-icons">
         <button className="icon delete-icon" onClick={handleDelete}>
@@ -330,10 +375,16 @@ const StoryEditorPage = ({ story }) => {
           />
         </button>
       </div>
-
-      <button className="publish-icon" onClick={handlePublish}>
-        {story.is_published ? "Remettre en brouillon" : "Publier"}
-      </button>
+      <div className="publish-container">
+        <button className="draft-button" onClick={handlePublish}>
+          Enregistrer comme brouillon
+        </button>
+        <Link href="/">
+          <button className="publish-button" onClick={handlePublish}>
+            {story.is_published ? "Remettre en brouillon" : "Publier"}
+          </button>
+        </Link>
+      </div>
       <Footer />
     </div>
   );

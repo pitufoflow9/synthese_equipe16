@@ -45,7 +45,8 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
         if (textEffect == "1") {
             changeSource("", true);
             const split = new SplitText(storyTextRef.current, {
-                type: "lines"
+                type: "lines",
+                wordsClass: "word"
             });
             const lines = split.lines;
 
@@ -62,7 +63,9 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
 
         else if (textEffect == "2") {
             const split = new SplitText(storyTextRef.current, {
-                type: "chars"
+                type: "chars",
+                type: "words,chars",
+                wordsClass: "word"
             });
 
             gsap.from(split.chars, {
@@ -75,7 +78,9 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
 
         else {
             const split = new SplitText(storyTextRef.current, {
-                type: "chars"
+                type: "chars",
+                type: "words,chars",
+                wordsClass: "word"
             });
 
             gsap.set(split.chars, { opacity: 0, scale: 0 });

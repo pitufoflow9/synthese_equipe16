@@ -42,7 +42,7 @@ const RecemmentPubliees = ({ stories = [] }) => {
                     />
                     <div className="swiper-buttons-flex-container">
                       <Link
-                        href={`/storyvisualizer/${story.id}`}
+                        href={`/storyoverview/${story.id}`}
                         className="read-button"
                         aria-label={`Lire ${story.title}`}
                       >
@@ -55,7 +55,7 @@ const RecemmentPubliees = ({ stories = [] }) => {
                     <span>{story.theme || "Public"}</span>
                   </div>
                   <h3>{story.title}</h3>
-                  <p>{truncate(story.synopsis)}</p>
+                  <p className="swiper-synopsis">{truncate(story.synopsis)}</p>
                 </div>
               </div>
             ))}

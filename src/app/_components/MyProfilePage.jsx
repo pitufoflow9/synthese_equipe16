@@ -28,10 +28,9 @@ const MyProfilePage = () => {
             grabCursor: true,
             slidesOffsetAfter: 200
         });
-
     }, []);
-    return (
 
+    return (
         <div className="page-container">
             <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
             <Nav />
@@ -65,7 +64,7 @@ const MyProfilePage = () => {
 
                                     <h3>Les derniers jours de Noctis</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Dans un manoir oublié par le temps, un vampire centenaire se retrouve confronté à un choix impossible : embrasser l'éternité dans les ténèbres ou chercher la rédemption avant l'aube finale. Chaque...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -91,7 +90,7 @@ const MyProfilePage = () => {
 
                                     <h3>Entre les Pétales et les Épines</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Au cœur d'une forêt enchantée, une jeune fée est chargée de restaurer l'équilibre entre les royaumes de lumière et d'ombre. Elle explore des clairières mystérieuses, noue des alliances avec les...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -117,7 +116,7 @@ const MyProfilePage = () => {
 
                                     <h3>La Révolte du Paladin</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Le royaume est au bord du gouffre et un noble chevalier doit choisir entre l'honneur et la rébellion. Alors que la corruption gangrène la cour royale, ses décisions détermineront s'il deviendra un héros...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -143,7 +142,7 @@ const MyProfilePage = () => {
 
                                     <h3>Magie Blanche et Ombre</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Au seuil de l'Académie des Arcanes, un apprenti mage découvre que chaque sortilège a un prix. Aux pouvoirs naissants, il devra naviguer entre traditions ancestrales et magie interdite. Ses choix...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -153,7 +152,6 @@ const MyProfilePage = () => {
                     </div>
                 </div>
             </div>
-
 
             <hr />
 
@@ -181,7 +179,7 @@ const MyProfilePage = () => {
 
                                     <h3>Les derniers jours de Noctis</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Dans un manoir oublié par le temps, un vampire centenaire se retrouve confronté à un choix impossible : embrasser l'éternité dans les ténèbres ou chercher la rédemption avant l'aube finale. Chaque...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -207,7 +205,7 @@ const MyProfilePage = () => {
 
                                     <h3>Entre les Pétales et les Épines</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Au cœur d'une forêt enchantée, une jeune fée est chargée de restaurer l'équilibre entre les royaumes de lumière et d'ombre. Elle explore des clairières mystérieuses, noue des alliances avec les...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -233,7 +231,7 @@ const MyProfilePage = () => {
 
                                     <h3>La Révolte du Paladin</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Le royaume est au bord du gouffre et un noble chevalier doit choisir entre l'honneur et la rébellion. Alors que la corruption gangrène la cour royale, ses décisions détermineront s'il deviendra un héros...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -259,7 +257,7 @@ const MyProfilePage = () => {
 
                                     <h3>Magie Blanche et Ombre</h3>
 
-                                    <p>
+                                    <p className="swiper-synopsis">
                                         Au seuil de l'Académie des Arcanes, un apprenti mage découvre que chaque sortilège a un prix. Aux pouvoirs naissants, il devra naviguer entre traditions ancestrales et magie interdite. Ses choix...
                                     </p>
                                     <p className='swiper-author'>Alexandre Gratton</p>
@@ -270,12 +268,9 @@ const MyProfilePage = () => {
                 </div>
             </div>
 
-
             <Footer />
         </div >
     )
 }
 
 export default MyProfilePage;
-
-
