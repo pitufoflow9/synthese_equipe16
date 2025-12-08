@@ -362,7 +362,7 @@ const StoryEditorPage = ({ story }) => {
   }, [nodes, edges, internals, nodeTypes]);
 
   return (
-    <div className="page-container">
+    <div className="storyeditor-page-container">
       <Nav />
       <div className="nav-bg"></div>
 
@@ -621,7 +621,6 @@ const StoryEditorPage = ({ story }) => {
           </button>
         </Link>
       </div>
-      <Footer />
     </div>
   );
 }

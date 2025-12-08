@@ -28,6 +28,7 @@ const NodeView = async ({ params }) => {
   const isChoiceAsked = edges.length === 1;
   //Est-ce que c'est le dernier noeud?
   const isStoryEnd = (current.is_ending === true);
+  console.log(isChoiceAsked)
   return (
     <StoryVisualizerPage
       story={story}
