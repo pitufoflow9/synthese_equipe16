@@ -12,7 +12,6 @@ import WestIcon from '@mui/icons-material/West';
 
 import "@/app/_components/Nav.css"
 import "@/app/_components/StoryVisualizerPage.css"
-import { clone } from "better-auth/*";
 gsap.registerPlugin(useGSAP, SplitText);
 
 export default function storyvisualizerclient({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) {
@@ -131,45 +130,45 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
 
     const handleChoiceClick = (e, edgeId) => {
         e.preventDefault();
-        if (!alreadyClicked) {
-            const clickedElement = choiceRefs.current[edgeId];
-            const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
-            const clone = clickedElement.cloneNode(true);
-            choicePopupRef.current.appendChild(clone);
-            clone.classList.add("clone")
-            clonedRef.current = clone;
+        // if (!alreadyClicked) {
+        const clickedElement = choiceRefs.current[edgeId];
+        const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
+        const clone = clickedElement.cloneNode(true);
+        choicePopupRef.current.appendChild(clone);
+        clone.classList.add("clone")
+        clonedRef.current = clone;
 
-            let tl = gsap.timeline();
+        let tl = gsap.timeline();
 
-            tl.to(allChoices, {
-                opacity: 0,
-                duration: 0.1,
-                filter: "blur(5px)",
-                ease: "none"
-            });
-            tl.to(".storyvisualizer-hr", {
-                opacity: 0,
-                duration: 0.1,
-                filter: "blur(5px)",
-                ease: "none"
-            }, "<");
-            tl.to(clonedRef.current, {
-                opacity: 1,
-                filter: "blur(0px)",
-                duration: 0.4,
-                ease: "power4.in"
-            }, "<-0.2")
-            tl.to(clonedRef.current, {
-                scale: 1.5,
-                duration: 0.6,
-                ease: "power2.out"
-            }, "<")
+        tl.to(allChoices, {
+            opacity: 0,
+            duration: 0.1,
+            filter: "blur(5px)",
+            ease: "none"
+        });
+        tl.to(".storyvisualizer-hr", {
+            opacity: 0,
+            duration: 0.1,
+            filter: "blur(5px)",
+            ease: "none"
+        }, "<");
+        tl.to(clonedRef.current, {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.4,
+            ease: "power4.in"
+        }, "<-0.2")
+        tl.to(clonedRef.current, {
+            scale: 1.5,
+            duration: 0.6,
+            ease: "power2.out"
+        }, "<")
 
-            alreadyClicked = true;
-        }
-        else {
-            //voir comment faire lorsque le bouton x est peser, revert eveythng back
-        }
+        alreadyClicked = true;
+        // }
+        // else {
+        //voir comment faire lorsque le bouton x est peser, revert eveythng back
+        // }
     }
 
 
