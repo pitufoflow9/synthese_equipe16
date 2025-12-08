@@ -12,6 +12,7 @@ export const Histoires = sqliteTable("histoires", {
     .default(false)
     .notNull(),
   created_at: integer("created_at", { mode: "timestamp_ms" }).default(0),
+  // likes: integer("likes").default(0).notNull(),
 });
 
 export const Nodes = sqliteTable("nodes", {

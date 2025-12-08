@@ -75,7 +75,7 @@ const StoryEditorPage = ({ story }) => {
 
   const handleNodeTitleChange = (value) => {
     setNodeTitle(value);
-    if (isNodeSelected && !isStartNode) {
+    if (isNodeSelected) {
       setNodesState((current) =>
         current.map((n) =>
           n.id === selection.node.id ? { ...n, data: { ...n.data, label: value } } : n
@@ -94,7 +94,7 @@ const StoryEditorPage = ({ story }) => {
             ...n,
             data: {
               ...n.data,
-              label: isStartNode ? n.data.label : nodeTitle,
+              label: nodeTitle,
               body: nodeText,
               isEnding: isStartNode ? false : isEnding,
             },
@@ -104,7 +104,7 @@ const StoryEditorPage = ({ story }) => {
       setNodesState(updatedNodes);
       updateSelectionData();
       updateNode(story.id, id, {
-        titre: isStartNode ? selection.node.data?.label : nodeTitle,
+        titre: nodeTitle,
         contenu: nodeText,
         type: selection.node.data?.nodeType ?? "story",
         isEnding: isStartNode ? false : isEnding,
@@ -280,7 +280,7 @@ const StoryEditorPage = ({ story }) => {
                   placeholder="Ecrire..."
                   rows={1}
                   value={nodeTitle}
-                  onChange={(e) => setNodeTitle(e.target.value)}
+                  onChange={(e) => handleNodeTitleChange(e.target.value)}
                 />
                 <label htmlFor="node-text">Texte affiché *</label>
                 <textarea

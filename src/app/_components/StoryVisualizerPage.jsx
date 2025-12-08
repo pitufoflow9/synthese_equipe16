@@ -14,36 +14,62 @@ import "@/app/_components/Nav.css"
 import "@/app/_components/StoryVisualizerPage.css"
 gsap.registerPlugin(useGSAP, SplitText);
 
-export default function StoryVisualizerClient({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) {
+export default function storyvisualizerclient({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const choicePopupRef = useRef();
     const storyTextRef = useRef();
     const backgroundRef = useRef();
     const { changeSource } = useAudio(true);
+    const ambiancePresets = {
+        "ambiance-horror": {
+            audio: "/audio/horror_ambiance.mp3",
+            background: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
+        },
+        "ambiance-magic": {
+            audio: "/audio/magic_ambiance.mp3",
+            background: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
+        },
+        "ambiance-medieval": {
+            audio: "/audio/medieval_ambiance.mp3",
+            background: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
+        },
+        "1": {
+            audio: "/audio/horror_ambiance.mp3",
+            background: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
+        },
+        "2": {
+            audio: "/audio/magic_ambiance.mp3",
+            background: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
+        },
+        "3": {
+            audio: "/audio/medieval_ambiance.mp3",
+            background: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
+        },
+    };
+    const textEffectMap = {
+        "effect-rise": "rise",
+        "effect-blur": "blur",
+        "effect-typewriter": "typewriter",
+        "1": "rise",
+        "2": "blur",
+        "3": "typewriter",
+    };
 
     useGSAP(() => {
-        if (ambiance == "1") {
-            changeSource("/audio/horror_ambiance.mp3", true);
-            gsap.set(backgroundRef.current, {
-                background: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
-            });
-        }
+        const ambianceConfig = ambiancePresets[ambiance] || ambiancePresets["ambiance-magic"];
+        const resolvedEffect = textEffectMap[textEffect] || "blur";
 
-        else if (ambiance == "2") {
-            changeSource("/audio/magic_ambiance.mp3", true);
+        if (backgroundRef.current) {
             gsap.set(backgroundRef.current, {
-                background: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
+                background: ambianceConfig.background,
             });
         }
-        else {
-            changeSource("/audio/medieval_ambiance.mp3", true);
-            gsap.set(backgroundRef.current, {
-                background: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
-            });
-        }
+        changeSource(ambianceConfig.audio, true);
 
-        if (textEffect == "1") {
-            changeSource("", true);
+        if (!storyTextRef.current) return;
+        storyTextRef.current.innerHTML = storyTextRef.current.textContent;
+
+        if (resolvedEffect === "rise") {
             const split = new SplitText(storyTextRef.current, {
                 type: "lines",
                 wordsClass: "word"
@@ -61,9 +87,8 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
             });
         }
 
-        else if (textEffect == "2") {
+        else if (resolvedEffect === "blur") {
             const split = new SplitText(storyTextRef.current, {
-                type: "chars",
                 type: "words,chars",
                 wordsClass: "word"
             });
@@ -78,7 +103,6 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
 
         else {
             const split = new SplitText(storyTextRef.current, {
-                type: "chars",
                 type: "words,chars",
                 wordsClass: "word"
             });
@@ -95,7 +119,7 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 stagger: gsap.utils.random(0.01, 0.04),
             });
         }
-    }, []);
+    }, { dependencies: [ambiance, textEffect, current?.id] });
 
     const openChoicePopup = (e) => {
         e.preventDefault();
@@ -126,7 +150,7 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                     <a
                         className="storyvisualizer-choices"
                         key={edge.id}
-                        href={"/storyvisualizer/" + storyId + "/" + edge.target}
+                        href={"/StoryVisualizer/" + storyId + "/" + edge.target}
                     >
                         {edge.texte || "Choix"}
                     </a>
@@ -134,13 +158,13 @@ export default function StoryVisualizerClient({ story, current, edges, storyId, 
                 <hr className="storyvisualizer-hr" />
             </div>
             {isStoryEnd ? (
-                <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
+                <Link href={"/StoryVisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
                     <button className="storyvisualizer-continue-btn">
                         Rejouer
                     </button>
                 </Link>
             ) : isChoiceAsked ? (
-                <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target}>
+                <Link href={"/StoryVisualizer/" + storyId + "/" + edges[0].target}>
                     <button className="storyvisualizer-continue-btn">
                         Continuer
                     </button>

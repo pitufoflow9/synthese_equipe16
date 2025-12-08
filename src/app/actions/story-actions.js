@@ -17,6 +17,9 @@ export async function createStory(formData) {
   }
   const titre = formData.get("titre")?.toString().trim();
   const synopsis = formData.get("synopsis")?.toString().trim();
+  const banniere = formData.get("banniere")?.toString().trim() || null;
+  const ambiance = formData.get("ambiance")?.toString().trim() || null;
+  const textEffect = formData.get("textEffect")?.toString().trim() || null;
   if (!titre || !synopsis) return;
   const storyId = uuid();
 
@@ -24,6 +27,9 @@ export async function createStory(formData) {
     id: storyId,
     title: titre,
     synopsis,
+    theme: banniere || null,
+    musique: ambiance || null,
+    animation: textEffect || null,
     creator_id: userId,
     is_published: false,
     created_at: new Date(),
@@ -49,6 +55,9 @@ export async function updateStoryMeta(storyId, payload) {
     .set({
       title: payload.title,
       synopsis: payload.synopsis,
+      theme: payload.theme ?? null,
+      musique: payload.ambiance ?? payload.musique ?? null,
+      animation: payload.textEffect ?? payload.animation ?? null,
       is_published: payload.isPublished,
     })
     .where(eq(Histoires.id, storyId));
