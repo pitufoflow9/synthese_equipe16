@@ -12,8 +12,8 @@ const NodeView = async ({ params }) => {
   const story = {
     id: storyInfo.id,
     title: storyInfo.title,
-    ambiance: storyInfo.ambiance || 1,
-    textEffect: storyInfo.textEffect || 2,
+    ambiance: storyInfo.ambiance,
+    textEffect: storyInfo.textEffect,
   };
   //Le noeud que l'utilisateur lit en ce moment
   const current = nodeData.node;
@@ -24,6 +24,8 @@ const NodeView = async ({ params }) => {
     type: branch.type,
     target: branch.targetNodeId,
   }));
+  //Est-ce que c'est le premier node de l'histoire?
+  const isFirstNode = (current.id === storyInfo.startNodeId);
   //Est-ce qu'il y a un choix à faire? (Sinon, ne pas afficher les choix, passer au prochains noeuds directement)
   const isChoiceAsked = edges.length === 1;
   //Est-ce que c'est le dernier noeud?
@@ -38,6 +40,7 @@ const NodeView = async ({ params }) => {
       textEffect={story.textEffect}
       isStoryEnd={isStoryEnd}
       isChoiceAsked={isChoiceAsked}
+      isFirstNode={isFirstNode}
     />
   );
 };

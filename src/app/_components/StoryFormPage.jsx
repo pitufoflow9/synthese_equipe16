@@ -23,9 +23,9 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [bannerIsOpen, setBannerIsOpen] = useState(false);
     const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
     const [effectIsOpen, setEffectIsOpen] = useState(false);
-    const [selectedBanner, setSelectedBanner] = useState();
-    const [selectedAmbiance, setSelectedAmbiance] = useState();
-    const [selectedTextEffect, setSelectedTextEffect] = useState();
+    const [selectedBanner, setSelectedBanner] = useState("");
+    const [selectedAmbiance, setSelectedAmbiance] = useState("");
+    const [selectedTextEffect, setSelectedTextEffect] = useState("");
     const bannerPopupRef = useRef();
     const ambiancePopupRef = useRef();
     const effectPopupRef = useRef();
@@ -131,7 +131,9 @@ const StoryFormPage = ({ formAction, user = null }) => {
         }
         document.addEventListener("mousedown", handleClickOutside);
     })
-
+    console.log(selectedAmbiance)
+    console.log(selectedTextEffect)
+    console.log(selectedBanner)
 
     return (
         <div className="story-form-container">
@@ -207,13 +209,13 @@ const StoryFormPage = ({ formAction, user = null }) => {
                             </button>
                             <h2 className="">Parcourir nos choix d'ambiances</h2>
                             <div className="ambiance-list" >
-                                <button type="button" className="ambiance-button ambiance-horreur" onClick={() => selectAmbiance("ambiance-horror")} >
+                                <button type="button" className="ambiance-button ambiance-horreur" onClick={() => selectAmbiance(1)} >
                                     <div className="ambiance-title">Ambiance d'horreur</div>
                                 </button>
-                                <button type="button" className="ambiance-button ambiance-magique" onClick={() => selectAmbiance("ambiance-magic")} >
+                                <button type="button" className="ambiance-button ambiance-magique" onClick={() => selectAmbiance(2)} >
                                     <div className="ambiance-title">Ambiance magique</div>
                                 </button>
-                                <button type="button" className="ambiance-button ambiance-medieval" onClick={() => selectAmbiance("ambiance-medieval")}>
+                                <button type="button" className="ambiance-button ambiance-medieval" onClick={() => selectAmbiance(3)}>
                                     <div className="ambiance-title">Ambiance médiéval</div>
                                 </button>
                             </div>
@@ -234,7 +236,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <button type="button" className="ambiance-button effect-preview effect-preview-1"
                                     onMouseEnter={() => previewButtonEnter(1, preview1Ref, true)}
                                     onMouseLeave={() => previewButtonLeave(preview1Ref)}
-                                    onClick={() => selectTextEffect("effect-rise")}
+                                    onClick={() => selectTextEffect(1)}
                                 >
                                     <div className="ambiance-title">Effet d'entrée par le bas  </div>
                                     <div className="effect-preview-placeholder" ref={preview1Ref}>
@@ -246,7 +248,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <button type="button" className="ambiance-button effect-preview effect-preview-2"
                                     onMouseEnter={() => previewButtonEnter(2, preview2Ref, true)}
                                     onMouseLeave={() => previewButtonLeave(preview2Ref)}
-                                    onClick={() => selectTextEffect("effect-blur")}
+                                    onClick={() => selectTextEffect(2)}
                                 >
                                     <div className="ambiance-title">Effet de flou</div>
                                     <div className="effect-preview-placeholder" ref={preview2Ref}>
@@ -258,7 +260,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <button type="button" className="ambiance-button effect-preview effect-preview-3"
                                     onMouseEnter={() => previewButtonEnter(3, preview3Ref, true)}
                                     onMouseLeave={() => previewButtonLeave(preview3Ref)}
-                                    onClick={() => selectTextEffect("effect-typewriter")}
+                                    onClick={() => selectTextEffect(3)}
                                 >
                                     <div className="ambiance-title">Effet de machine à écrire</div>
                                     <div className="effect-preview-placeholder" ref={preview3Ref}>

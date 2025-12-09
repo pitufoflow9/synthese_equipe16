@@ -32,8 +32,8 @@
   }
 }
 
-textarea,
-input {
+.story-form-container textarea,
+.story-form-container input {
   transition: all 0.2s ease-out;
   border: 1px solid var(--translucent-purple);
   border-radius: 15px;

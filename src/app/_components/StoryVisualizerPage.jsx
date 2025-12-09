@@ -23,7 +23,8 @@ const StoryVisualizerPage = ({
     textEffect,
     ambiance,
     isStoryEnd,
-    isChoiceAsked
+    isChoiceAsked,
+    isFirstNode
 }) => {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
@@ -36,7 +37,6 @@ const StoryVisualizerPage = ({
     const { changeSource } = useAudio(true);
     const timelineRef = useRef(null);
 
-
     useEffect(() => {
         if (storyTextRef.current) {
             StoryCustomization(
@@ -45,10 +45,14 @@ const StoryVisualizerPage = ({
                 changeSource,
                 textEffect,
                 ambiance,
-                false
+                false,
+                isFirstNode
             );
         }
     }, [ambiance, textEffect, current?.id]);
+    //Logique musique
+
+
 
     const openChoiceConfirmation = (e, edgeId) => {
         const clickedElement = choiceRefs.current[edgeId];

@@ -5,7 +5,7 @@ import SplitText from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(SplitText, useGSAP);
-const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, ambiance, preview) => {
+const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, ambiance, preview, isFirstNode) => {
 
     console.log("StoryCustomization appelée avec:");
     console.log("textEffect:", textEffect, "type:", typeof textEffect);
@@ -17,7 +17,7 @@ const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, 
     storyText.innerHTML = storyText.textContent;
 
     // PREVIEW Theme 1 (entrée par le bas)
-    if (textEffect === 1 && preview === true) {
+    if (textEffect === "1" && preview === true) {
         const split = new SplitText(storyText, { type: "lines" });
         const lines = split.lines;
         gsap.set(lines, { opacity: 0, y: 50, color: "#ffffff" });
@@ -33,7 +33,7 @@ const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, 
     }
 
     // PREVIEW Theme 2 (flou)
-    if (textEffect === 2 && preview === true) {
+    if (textEffect === "2" && preview === true) {
         const split = new SplitText(storyText, { type: "chars" });
         return gsap.from(split.chars, {
             opacity: 0,
@@ -44,7 +44,7 @@ const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, 
     }
 
     // PREVIEW Theme 3 (machine à écrire)
-    else if (textEffect === 3 && preview === true) {
+    else if (textEffect === "3" && preview === true) {
         const split = new SplitText(storyText, { type: "chars" });
         gsap.set(split.chars, { opacity: 0, scale: 0 });
         const tl = gsap.timeline();
@@ -60,28 +60,27 @@ const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, 
         return tl;
     }
 
-    if (ambiance === 1) {
-        changeSource("/audio/horror_ambiance.mp3", true);
+    if (ambiance === "1") {
+        if (isFirstNode) changeSource("/audio/horror_ambiance.mp3", true);
         gsap.set(backgroundRef, {
             backgroundImage: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
         });
     }
 
-    if (ambiance === 2) {
-        changeSource("/audio/magic_ambiance.mp3", true);
+    if (ambiance === "2") {
+        if (isFirstNode) changeSource("/audio/magic_ambiance.mp3", true);
         gsap.set(backgroundRef, {
             backgroundImage: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
         });
     }
-    if (ambiance === 3) {
-        changeSource("/audio/medieval_ambiance.mp3", true);
+    if (ambiance === "3") {
+        if (isFirstNode) changeSource("/audio/medieval_ambiance.mp3", true);
         gsap.set(backgroundRef, {
             backgroundImage: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
         });
     }
 
-    if (textEffect === 1) {
-        changeSource("", true);
+    if (textEffect === "1") {
         const split = new SplitText(storyText, {
             type: "lines",
             wordsClass: "word"
@@ -103,7 +102,7 @@ const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, 
         });
     }
 
-    if (textEffect === 2) {
+    if (textEffect === "2") {
         const split = new SplitText(storyText, {
             type: "chars",
             type: "words,chars",
@@ -117,7 +116,7 @@ const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, 
         });
     }
 
-    if (textEffect == 3) {
+    if (textEffect === "3") {
         const split = new SplitText(storyText, {
             type: "chars",
             type: "words,chars",
