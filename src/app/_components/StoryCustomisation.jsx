@@ -5,14 +5,25 @@ import SplitText from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(SplitText, useGSAP);
-const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, ambiance, preview, isFirstNode) => {
 
-    console.log("StoryCustomization appelée avec:");
-    console.log("textEffect:", textEffect, "type:", typeof textEffect);
-    console.log("ambiance:", ambiance, "type:", typeof ambiance);
-    console.log("preview:", preview);
-    console.log("storyText:", storyText);
-    console.log("backgroundRef:", backgroundRef);
+const StoryCustomization = (
+    storyText,
+    backgroundRef,
+    changeSource,
+    textEffect,
+    ambiance,
+    preview,
+    isFirstNode,
+    hasStartedRef
+) => {
+
+    // console.log("StoryCustomization appelée avec:");
+    // console.log("textEffect:", textEffect, "type:", typeof textEffect);
+    // console.log("ambiance:", ambiance, "type:", typeof ambiance);
+    // console.log("preview:", preview);
+    // console.log("storyText:", storyText);
+    // console.log("backgroundRef:", backgroundRef);
+    console.log("isFirstNode:", isFirstNode)
 
     storyText.innerHTML = storyText.textContent;
 
@@ -61,20 +72,18 @@ const StoryCustomization = (storyText, backgroundRef, changeSource, textEffect, 
     }
 
     if (ambiance === "1") {
-        if (isFirstNode) changeSource("/audio/horror_ambiance.mp3", true);
         gsap.set(backgroundRef, {
             backgroundImage: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
         });
     }
 
     if (ambiance === "2") {
-        if (isFirstNode) changeSource("/audio/magic_ambiance.mp3", true);
         gsap.set(backgroundRef, {
             backgroundImage: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
         });
     }
+
     if (ambiance === "3") {
-        if (isFirstNode) changeSource("/audio/medieval_ambiance.mp3", true);
         gsap.set(backgroundRef, {
             backgroundImage: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
         });
