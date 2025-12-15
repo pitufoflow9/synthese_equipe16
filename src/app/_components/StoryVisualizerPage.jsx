@@ -30,7 +30,7 @@ const StoryVisualizerPage = ({
     isNodeImg = true,
     //PLACE HOLDERs (TODO: enlever avant la remise)
     nodeImgUrl = "../../../img/blue-purple_gradient.png",
-    isNodeTempCustom = true,
+    isNodeTempCustom = false,
     tempNodeAmbiance = "2",
     tempNodeTextEffect = "2"
 }) => {

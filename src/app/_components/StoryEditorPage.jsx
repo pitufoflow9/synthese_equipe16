@@ -722,7 +722,7 @@ const StoryEditorPage = ({ story }) => {
         >
           {isPublished ? "Mettre en brouillon" : "Déjà en brouillon"}
         </button>
-        <Link href="/">
+        <Link href="/profiles/myprofile">
           <button
             className="publish-button"
             onClick={handlePublishStory}

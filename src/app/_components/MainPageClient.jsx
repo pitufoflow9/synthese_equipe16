@@ -73,7 +73,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
     })
     tl.set(loaderLogoRef.current, {
       opacity: 1,
-      y: "150%",
+      y: "155%",
       top: "50%",
       left: "50%",
       xPercent: -50,
@@ -84,18 +84,23 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       left: "50%",
       transform: "translate(-50%, -50%)",
       opacity: 0,
+      filter: "blur(15px)",
     });
 
     tl.to(loaderNumberRef.current, {
       opacity: 1,
-      duration: 0.4
+      duration: 0.4,
+    });
+    tl.to(loaderNumberRef.current, {
+      filter: "blur(0px)",
+      duration: 1.4,
     });
     tl.to(loaderNumberRef.current, {
       innerText: 100,
       duration: 5,
       snap: { innerText: 2 },
       ease: "power4.out"
-    });
+    }, "<");
 
     tl.to(loaderNumberRef.current, {
       y: "-100%",
@@ -142,8 +147,8 @@ const MainPageClient = ({ user, recentStories = [] }) => {
     }, {
       opacity: 1,
       y: 0,
-      stagger: 0.08,
-      duration: 0.7,
+      stagger: 0.07,
+      duration: 0.6,
       ease: "power2.out"
     }
     )

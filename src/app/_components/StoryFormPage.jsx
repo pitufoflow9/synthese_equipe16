@@ -27,6 +27,8 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [selectedBanner, setSelectedBanner] = useState(null);
     const [selectedAmbiance, setSelectedAmbiance] = useState(null);
     const [selectedTextEffect, setSelectedTextEffect] = useState(null);
+    const [title, setTitle] = useState("");
+    const [synopsis, setSynopsis] = useState("");
     const bannerPopupRef = useRef();
     const ambiancePopupRef = useRef();
     const effectPopupRef = useRef();
@@ -147,6 +149,8 @@ const StoryFormPage = ({ formAction, user = null }) => {
                         className="title"
                         placeholder="Écrire..."
                         required
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         rows={1}
                     ></input>
                 </div>
@@ -157,6 +161,8 @@ const StoryFormPage = ({ formAction, user = null }) => {
                         name="synopsis"
                         placeholder="Écrire..."
                         required
+                        value={synopsis}
+                        onChange={(e) => setSynopsis(e.target.value)}
                         rows={3}
                     ></textarea>
                 </div>
@@ -305,7 +311,12 @@ const StoryFormPage = ({ formAction, user = null }) => {
                 <input type="hidden" name="banniere" value={selectedBanner || ""} />
                 <input type="hidden" name="ambiance" value={selectedAmbiance || ""} />
                 <input type="hidden" name="textEffect" value={selectedTextEffect || ""} />
-                <button type="submit" className="btn-form btn-form-continue" >
+
+                <button
+                    type="submit"
+                    className="btn-form btn-form-continue"
+                    disabled={!title.trim() || !synopsis.trim() || !selectedBanner || !selectedAmbiance || !selectedTextEffect}
+                >
                     Continuer
                 </button>
             </form >

@@ -156,6 +156,13 @@
   &:hover {
     background-position: right bottom;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: transparent;
+    border: 1px solid var(--light-gray);
+    color: var(--light-gray);
+  }
 }
 
 .btn-form-continue.greyed-out {

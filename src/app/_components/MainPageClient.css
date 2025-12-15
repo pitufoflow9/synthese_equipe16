@@ -128,6 +128,7 @@ Meme chose pour quand je vais dans l'overview d'une histoire et que je revins su
 }
 
 .main-loader {
+  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -163,6 +164,7 @@ Meme chose pour quand je vais dans l'overview d'une histoire et que je revins su
 }
 
 .loader-logo-container {
+  pointer-events: none;
   display: flex;
   position: absolute;
   top: 50%;
