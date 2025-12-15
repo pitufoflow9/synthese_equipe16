@@ -9,7 +9,6 @@ import { useGSAP } from "@gsap/react";
 import { usePathname } from 'next/navigation'
 import useLenis from "../_hooks/useLenis.jsx";
 import HistoireTemp from "./HistoireTemp";
-import Swiper from 'swiper';
 import gsap from "gsap";
 import EastIcon from '@mui/icons-material/East';
 import Link from "next/link";
@@ -25,7 +24,6 @@ import "@/app/_components/Nav.css";
 import "@/app/_components/Footer.css";
 import "@/app/_components/RecentlyPublished.css";
 import "@/app/_components/Swiper.css";
-import "swiper/css";
 
 import Footer from "@/app/_components/Footer.jsx";
 import Nav from "@/app/_components/Nav.jsx";
@@ -52,20 +50,6 @@ const MainPageClient = ({ user, recentStories = [] }) => {
   useEffect(() => {
     console.log(selection);
   }, [selection]);
-
-  useEffect(() => {
-    const swiper = new Swiper(".swiper", {
-      slidesPerView: 2.5,
-      spaceBetween: 30,
-      speed: 400,
-      grabCursor: true,
-      slidesOffsetAfter: 200,
-    });
-
-    return () => {
-      swiper?.destroy?.();
-    };
-  }, []);
 
   useGSAP(() => {
     document.body.style.overflow = "hidden";
