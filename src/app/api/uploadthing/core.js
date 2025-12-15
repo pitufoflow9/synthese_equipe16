@@ -8,7 +8,6 @@ import { getSession } from "@/lib/auth";
 const f = createUploadthing();
 
 const authenticateRequest = async () => {
-  // Auth best-effort to avoid 400s on prod if cookies/sessions are missing.
   try {
     const session = await getSession();
     if (session?.user?.id) {
@@ -47,7 +46,6 @@ export const ourFileRouter = {
         }
       } catch (error) {
         console.error("Failed to persist uploaded image (continuing anyway)", error);
-        // Ne bloque pas l'upload si la table n'existe pas (ex: migrations non appliquées en prod).
       }
 
       console.log("Upload complete for userId:", metadata.userId);
