@@ -278,7 +278,7 @@ label {
   height: 100vh;
 }
 
-.popup {
+.storyeditor-popup {
   position: relative;
   z-index: 11;
   margin: 150px auto;

@@ -5,6 +5,7 @@
   background-color: rgb(0, 0, 0);
   padding-top: 110px;
   width: 100vw;
+  height: auto;
   min-height: 100vh;
 }
 
@@ -184,12 +185,13 @@
 
 .storyvisualizer-flex-container {
   display: flex;
-  position: absolute;
+  position: relative;
+  /* position: absolute;
   bottom: 0;
-  left: 0;
+  left: 0; */
   justify-content: center;
   gap: 30px;
-  z-index: 0;
+  z-index: 1;
   width: 100%;
   height: auto;
 
@@ -251,5 +253,6 @@
   outline: 1px solid white;
   outline-offset: 9px;
   border-radius: 35px;
-  width: 900px;
+  max-width: 900px;
+  max-height: 700px;
 }

@@ -625,50 +625,53 @@ const StoryEditorPage = ({ story }) => {
 
         {imagePickerIsOpen && (
           <div className="popup-container">
-            <div className="popup" ref={imagePickerPopupRef}>
+            <div className="storyeditor-popup" ref={imagePickerPopupRef}>
               <button type="button" onClick={closeImagePickerPopup} className="popup-close-icon">
                 <X />
               </button>
               <h2 className="">Parcourir la banque d'images</h2>
-              {userImages.length > 0 && (
-                <>
-                  <p className="user-images-label">Vos téléversements</p>
-                  <div className="banner-grid">
-                    {userImages.map((img) => (
+              <div className="banners-container">
+                {userImages.length > 0 && (
+                  <>
+                    <p className="user-images-label">Vos téléversements</p>
+                    <div className="banner-grid">
+                      {userImages.map((img) => (
+                        <button
+                          type="button"
+                          key={img.id}
+                          className="img-wrapper"
+                          onClick={() => {
+                            setSelectedTempImg(img.url);
+                            setImagePickerIsOpen(false);
+                          }}
+                        >
+                          <img className="" src={img.url} alt={img.description || "Image"} />
+                        </button>
+                      ))}
+                    </div>
+                    <hr className="popup-banner-hr" />
+                  </>
+                )}
+                {isLoadingUserImages && <p>Chargement de vos images...</p>}
+                <p className="user-images-label">Galerie d’images</p>
+                {userImagesError && <p className="upload-error">{userImagesError}</p>}
+                <div className="banner-grid">
+                  {["banniere_1.jpg", "banniere_2.jpg", "banniere_3.jpg", "banniere_4.jpg", "banniere_5.jpg", "banniere_6.jpg"].map(
+                    (img) => (
                       <button
                         type="button"
-                        key={img.id}
+                        key={img}
                         className="img-wrapper"
                         onClick={() => {
-                          setSelectedTempImg(img.url);
+                          setSelectedTempImg(`../../../img/${img}`);
                           setImagePickerIsOpen(false);
                         }}
                       >
-                        <img className="" src={img.url} alt={img.description || "Image"} />
+                        <img className="" src={`../../../img/${img}`} alt={img} />
                       </button>
-                    ))}
-                  </div>
-                  <hr className="popup-banner-hr" />
-                </>
-              )}
-              {isLoadingUserImages && <p>Chargement de vos images...</p>}
-              {userImagesError && <p className="upload-error">{userImagesError}</p>}
-              <div className="banner-grid">
-                {["banniere_1.jpg", "banniere_2.jpg", "banniere_3.jpg", "banniere_4.jpg", "banniere_5.jpg", "banniere_6.jpg"].map(
-                  (img) => (
-                    <button
-                      type="button"
-                      key={img}
-                      className="img-wrapper"
-                      onClick={() => {
-                        setSelectedTempImg(`../../../img/${img}`);
-                        setImagePickerIsOpen(false);
-                      }}
-                    >
-                      <img className="" src={`../../../img/${img}`} alt={img} />
-                    </button>
-                  )
-                )}
+                    )
+                  )}
+                </div>
               </div>
               <hr className="popup-banner-hr" />
               <Link href="../upload">
@@ -681,7 +684,7 @@ const StoryEditorPage = ({ story }) => {
         )}
         {ambianceIsOpen && (
           <div className="popup-container">
-            <div className="popup popup-ambiance" ref={ambiancePopupRef}>
+            <div className="storyeditor-popup popup-ambiance" ref={ambiancePopupRef}>
               <button type="button" onClick={closeAmbiancePopup} className="popup-close-icon">
                 <X />
               </button>
@@ -715,7 +718,7 @@ const StoryEditorPage = ({ story }) => {
 
         {effectIsOpen && (
           <div className="popup-container">
-            <div className="popup popup-effect" ref={effectPopupRef}>
+            <div className="storyeditor-popup popup-effect" ref={effectPopupRef}>
               <button type="button" onClick={closeEffectPopup} className="popup-close-icon">
                 <X />
               </button>
