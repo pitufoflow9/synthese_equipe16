@@ -166,8 +166,6 @@ const MainPageClient = ({ user, recentStories = [] }) => {
     });
   })
 
-  GSDevTools.create();
-
   //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {
     pause();
