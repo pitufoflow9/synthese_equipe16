@@ -52,7 +52,7 @@ const StoryEditorPage = ({ story }) => {
   const [effectIsOpen, setEffectIsOpen] = useState(false);
   const [isPublished, setIsPublished] = useState(!!story.is_published);
   const [selectedTempEffect, setSelectedTempEffect] = useState(null);
-  const [selectedTempAmbiance, setselectedTempAmbiance] = useState(null);
+  const [selectedTempBG, setSelectedTempBG] = useState(null);
   const [selectedTempImg, setSelectedTempImg] = useState(null);
   const [userImages, setUserImages] = useState([]);
   const [isLoadingUserImages, setIsLoadingUserImages] = useState(false);
@@ -77,6 +77,9 @@ const StoryEditorPage = ({ story }) => {
       setNodeTitle(selection.node.data?.label ?? "");
       setNodeText(selection.node.data?.body ?? "");
       setIsEnding(!!selection.node.data?.isEnding);
+      setSelectedTempBG(selection.node.data?.tempAmbiance ?? null);
+      setSelectedTempEffect(selection.node.data?.tempEffect ?? null);
+      setSelectedTempImg(selection.node.data?.tempImageUrl ?? null);
       setEdgeTitle("");
     } else if (isEdgeSelected) {
       setEdgeTitle(selection.edge.label ?? "");
@@ -85,6 +88,9 @@ const StoryEditorPage = ({ story }) => {
       setNodeTitle("");
       setNodeText("");
       setIsEnding(false);
+      setSelectedTempBG(null);
+      setSelectedTempEffect(null);
+      setSelectedTempImg(null);
     } else {
       setNodeTitle("");
       setNodeText("");
@@ -92,6 +98,9 @@ const StoryEditorPage = ({ story }) => {
       setIsEnding(false);
       setEdgeType("regular");
       setHistoryKey("");
+      setSelectedTempBG(null);
+      setSelectedTempEffect(null);
+      setSelectedTempImg(null);
     }
   }, [isNodeSelected, isEdgeSelected, selection]);
 
@@ -126,6 +135,11 @@ const StoryEditorPage = ({ story }) => {
   const handleApply = async () => {
     if (isNodeSelected) {
       const id = selection.node.id;
+      const tempAmbiance = selectedTempBG;
+      const tempEffect = selectedTempEffect;
+      const tempImageUrl = selectedTempImg;
+      const hasTempCustom = !!(tempAmbiance || tempEffect || tempImageUrl);
+      const hasTempImg = !!tempImageUrl;
       const updatedNodes = nodes.map((n) =>
         n.id === id
           ? {
@@ -135,6 +149,11 @@ const StoryEditorPage = ({ story }) => {
               label: nodeTitle,
               body: nodeText,
               isEnding: isStartNode ? false : isEnding,
+              tempAmbiance,
+              tempEffect,
+              tempImageUrl,
+              isNodeTempCustom: hasTempCustom,
+              isNodeImg: hasTempImg,
             },
           }
           : n
@@ -146,6 +165,11 @@ const StoryEditorPage = ({ story }) => {
         contenu: nodeText,
         type: selection.node.data?.nodeType ?? "story",
         isEnding: isStartNode ? false : isEnding,
+        tempAmbiance,
+        tempEffect,
+        tempImageUrl,
+        isNodeTempCustom: hasTempCustom,
+        isNodeImg: hasTempImg,
       });
     } else if (isEdgeSelected) {
       const id = selection.edge.id;
@@ -213,6 +237,11 @@ const StoryEditorPage = ({ story }) => {
       type: "story",
       titre: "Nouveau noeud",
       position: { x: Math.random() * 400, y: Math.random() * 200 },
+      isNodeTempCustom: false,
+      isNodeImg: false,
+      tempAmbiance: null,
+      tempEffect: null,
+      tempImageUrl: null,
     });
   };
 
@@ -543,7 +572,7 @@ const StoryEditorPage = ({ story }) => {
                   <div className="inputs-flex-container-5">
                     <div className="form-btn-container">
 
-                      {selectedTempAmbiance === null ? (
+                      {selectedTempBG === null ? (
                         <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance">
                           Choisir une ambiance
                         </button>
@@ -659,23 +688,23 @@ const StoryEditorPage = ({ story }) => {
               <h2 className="">Parcourir nos choix d'ambiances</h2>
               <div className="ambiance-list">
                 <button type="button"
-                  className={"ambiance-button ambiance-horreur " + (selectedTempAmbiance === "1" ? "active-1" : "")}
-                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "1" ? null : "1")}
+                  className={"ambiance-button ambiance-horreur " + (selectedTempBG === "1" ? "active-1" : "")}
+                  onClick={() => setSelectedTempBG(selectedTempBG === "1" ? null : "1")}
                 >
                   <div
                     className="ambiance-title"
                   >Ambiance d'horreur</div>
                 </button>
                 <button type="button"
-                  className={"ambiance-button ambiance-magique " + (selectedTempAmbiance === "2" ? "active-2" : "")}
-                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "2" ? null : "2")}
+                  className={"ambiance-button ambiance-magique " + (selectedTempBG === "2" ? "active-2" : "")}
+                  onClick={() => setSelectedTempBG(selectedTempBG === "2" ? null : "2")}
                 >
                   <div
                     className="ambiance-title">Ambiance magique</div>
                 </button>
                 <button type="button"
-                  className={"ambiance-button ambiance-medieval " + (selectedTempAmbiance === "3" ? "active-3" : "")}
-                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "3" ? null : "3")}
+                  className={"ambiance-button ambiance-medieval " + (selectedTempBG === "3" ? "active-3" : "")}
+                  onClick={() => setSelectedTempBG(selectedTempBG === "3" ? null : "3")}
                 >
                   <div className="ambiance-title">Ambiance médiéval</div>
                 </button>

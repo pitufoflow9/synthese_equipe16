@@ -28,12 +28,11 @@ const StoryVisualizerPage = ({
     isStoryEnd,
     isChoiceAsked,
     isFirstNode,
-    isNodeImg = true,
-    //PLACE HOLDERs (TODO: enlever avant la remise)
-    nodeImgUrl = "../../../img/blue-purple_gradient.png",
+    isNodeImg = false,
+    nodeImgUrl = null,
     isNodeTempCustom = false,
-    tempNodeAmbiance = "2",
-    tempNodeTextEffect = "2"
+    tempNodeAmbiance = null,
+    tempNodeTextEffect = null
 }) => {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
@@ -63,7 +62,7 @@ const StoryVisualizerPage = ({
             tempNodeTextEffect
         );
 
-    }, [textEffect, current?.id, ambiance]);
+    }, [textEffect, ambiance, isFirstNode, isNodeTempCustom, tempNodeAmbiance, tempNodeTextEffect]);
 
     //Change le volume de la musique
     useEffect(() => {
@@ -219,7 +218,7 @@ const StoryVisualizerPage = ({
                 <WestIcon />Retour
             </button>
             <h1 className="storyvisualizer-title">{story.title}</h1>
-            {isNodeImg && (
+            {isNodeImg && nodeImgUrl && (
                 <img src={nodeImgUrl} className="storyvisualizer-node-img" />
             )}
             <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>

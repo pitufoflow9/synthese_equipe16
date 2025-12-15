@@ -50,6 +50,13 @@
       "when": 1765820613164,
       "tag": "0006_awesome_micromax",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1765826160082,
+      "tag": "0007_windy_stone_men",
+      "breakpoints": true
     }
   ]
 }

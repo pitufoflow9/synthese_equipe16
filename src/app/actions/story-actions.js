@@ -81,6 +81,11 @@ export async function createNode(storyId, node) {
     type: node.type ?? "story",
     titre: node.titre ?? "Nouveau noeud",
     contenu: node.contenu ?? "",
+    is_node_temp_custom: node.isNodeTempCustom ?? false,
+    is_node_img: node.isNodeImg ?? false,
+    temp_ambiance: node.tempAmbiance ?? null,
+    temp_effect: node.tempEffect ?? null,
+    temp_image_url: node.tempImageUrl ?? null,
     position_x: node.position?.x ?? 0,
     position_y: node.position?.y ?? 0,
     is_ending: node.isEnding ?? false,
@@ -107,14 +112,32 @@ export async function updateNodePosition(storyId, nodeId, position) {
 }
 
 export async function updateNode(storyId, nodeId, payload) {
+  const updates = {
+    titre: payload.titre,
+    contenu: payload.contenu,
+    type: payload.type,
+    is_ending: payload.isEnding,
+  };
+
+  if ("isNodeTempCustom" in payload) {
+    updates.is_node_temp_custom = payload.isNodeTempCustom ?? false;
+  }
+  if ("isNodeImg" in payload) {
+    updates.is_node_img = payload.isNodeImg ?? false;
+  }
+  if ("tempAmbiance" in payload) {
+    updates.temp_ambiance = payload.tempAmbiance ?? null;
+  }
+  if ("tempEffect" in payload) {
+    updates.temp_effect = payload.tempEffect ?? null;
+  }
+  if ("tempImageUrl" in payload) {
+    updates.temp_image_url = payload.tempImageUrl ?? null;
+  }
+
   await db
     .update(Nodes)
-    .set({
-      titre: payload.titre,
-      contenu: payload.contenu,
-      type: payload.type,
-      is_ending: payload.isEnding,
-    })
+    .set(updates)
     .where(and(eq(Nodes.id, nodeId), eq(Nodes.histoire_id, storyId)));
 }
 

@@ -22,6 +22,13 @@ export const Nodes = sqliteTable("nodes", {
   contenu: text("contenu"),
   type: text("type").default("story").notNull(), // start|story|end
   is_ending: integer("is_ending", { mode: "boolean" }).default(false).notNull(),
+  is_node_temp_custom: integer("is_node_temp_custom", { mode: "boolean" })
+    .default(false)
+    .notNull(),
+  is_node_img: integer("is_node_img", { mode: "boolean" }).default(false).notNull(),
+  temp_ambiance: text("temp_ambiance"),
+  temp_effect: text("temp_effect"),
+  temp_image_url: text("temp_image_url"),
   position_x: integer("position_x").default(0).notNull(),
   position_y: integer("position_y").default(0).notNull(),
 });
