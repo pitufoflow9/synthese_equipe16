@@ -61,7 +61,7 @@ const UserAccountPage = ({
   };
 
   return (
-    <div className="page-container">
+    <div className="signupin-page-container">
       <img className="bg" src="../../../img/Background_3.jpg" alt="" />
       <Nav />
       <div className="flex-container">
