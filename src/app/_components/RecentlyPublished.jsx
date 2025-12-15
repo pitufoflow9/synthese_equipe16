@@ -1,11 +1,14 @@
 "use client";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
+import { useEffect, useRef } from "react";
+import Swiper from "swiper";
+import "swiper/css";
 
 const truncate = (value, max = 180) => {
   if (!value) return "Pas de synopsis pour le moment.";
   if (value.length <= max) return value;
-  return `${value.slice(0, max)}…`;
+  return `${value.slice(0, max)}.`;
 };
 
 const resolveImage = (theme) => {
@@ -17,13 +20,40 @@ const resolveImage = (theme) => {
 };
 
 const RecemmentPubliees = ({ stories = [] }) => {
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    if (!stories.length) {
+      swiperRef.current?.destroy?.(true, true);
+      swiperRef.current = null;
+      return undefined;
+    }
+
+    const el = document.querySelector(".recently-published-swiper");
+    if (!el) return undefined;
+
+    swiperRef.current?.destroy?.(true, true);
+    swiperRef.current = new Swiper(el, {
+      slidesPerView: 2.5,
+      spaceBetween: 30,
+      speed: 400,
+      grabCursor: true,
+      slidesOffsetAfter: 200,
+    });
+
+    return () => {
+      swiperRef.current?.destroy?.(true, true);
+      swiperRef.current = null;
+    };
+  }, [stories.length]);
+
   if (!stories.length) {
     return (
       <section>
         <h2 className="section-title recently-published-h2" id="stories">Récemment publiées</h2>
         <p className="placeholder-text">
           Aucune histoire publique n'est disponible pour l'instant. Parcourez les
-          créations dès qu'elles seront publiées — même en mode invité.
+          créations dès qu'elles seront publiées - même en mode invité.
         </p>
       </section>
     );
