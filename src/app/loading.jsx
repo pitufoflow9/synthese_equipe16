@@ -1,4 +1,5 @@
+import "@/app/_components/LoadingScreenPage.css";
 const LoadingPage = () => {
-  return <div>Chargement...</div>;
+  return <div className="loadingscreen-text">Chargement...</div>;
 };
 export default LoadingPage;

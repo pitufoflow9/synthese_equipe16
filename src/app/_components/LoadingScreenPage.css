@@ -1,0 +1,12 @@
+.loadingscreen-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, var(--purple) 30%, var(--blue) 100%);
+  background-clip: text;
+  color: #333;
+  color: transparent;
+  font-weight: 700;
+  font-size: 24px;
+}

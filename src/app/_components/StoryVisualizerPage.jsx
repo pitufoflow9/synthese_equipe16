@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import { useAudio } from "../_context/AudioContext.jsx";
@@ -9,164 +9,255 @@ import { useAudio } from "../_context/AudioContext.jsx";
 import Nav from "@/app/_components/Nav.jsx";
 import CloseIcon from '@mui/icons-material/Close';
 import WestIcon from '@mui/icons-material/West';
+import StoryCustomization from "@/app/_components/StoryCustomisation";
 
 import "@/app/_components/Nav.css"
 import "@/app/_components/StoryVisualizerPage.css"
+
 gsap.registerPlugin(useGSAP, SplitText);
 
-export default function storyvisualizerclient({ story, current, edges, storyId, textEffect = "2", ambiance = "2", isStoryEnd, isChoiceAsked }) {
+
+const StoryVisualizerPage = ({
+    story,
+    current,
+    edges,
+    storyId,
+    textEffect,
+    ambiance,
+    isStoryEnd,
+    isChoiceAsked,
+    isFirstNode,
+    isNodeImg = true,
+    //PLACE HOLDERs (TODO: enlever avant la remise)
+    nodeImgUrl = "../../../img/blue-purple_gradient.png",
+    isNodeTempCustom = false,
+    tempNodeAmbiance = "2",
+    tempNodeTextEffect = "2"
+}) => {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
+    const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
+    const [selectedChoice, setSelectedChoice] = useState(null);
+    const clonedRef = useRef(null);
+    const choiceRefs = useRef({});
     const choicePopupRef = useRef();
     const storyTextRef = useRef();
     const backgroundRef = useRef();
-    const { changeSource } = useAudio(true);
-    const ambiancePresets = {
-        "ambiance-horror": {
-            audio: "/audio/horror_ambiance.mp3",
-            background: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
-        },
-        "ambiance-magic": {
-            audio: "/audio/magic_ambiance.mp3",
-            background: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
-        },
-        "ambiance-medieval": {
-            audio: "/audio/medieval_ambiance.mp3",
-            background: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
-        },
-        "1": {
-            audio: "/audio/horror_ambiance.mp3",
-            background: "linear-gradient(135deg, #000000ff 0%, #4d0000ff 100%)",
-        },
-        "2": {
-            audio: "/audio/magic_ambiance.mp3",
-            background: "linear-gradient(135deg, #7c00adff 0%, #d298e9ff 100%)",
-        },
-        "3": {
-            audio: "/audio/medieval_ambiance.mp3",
-            background: "linear-gradient(135deg, #858585ff 0%, #ffcab2ff 100%)",
-        },
-    };
-    const textEffectMap = {
-        "effect-rise": "rise",
-        "effect-blur": "blur",
-        "effect-typewriter": "typewriter",
-        "1": "rise",
-        "2": "blur",
-        "3": "typewriter",
-    };
+    const timelineRef = useRef(null);
+    const { changeSource, play, isReady, changeVolume, pause } = useAudio(false);
 
-    useGSAP(() => {
-        const ambianceConfig = ambiancePresets[ambiance] || ambiancePresets["ambiance-magic"];
-        const resolvedEffect = textEffectMap[textEffect] || "blur";
 
-        if (backgroundRef.current) {
-            gsap.set(backgroundRef.current, {
-                background: ambianceConfig.background,
-            });
+    //Change le background, l'effet de texte et la musique.
+    useEffect(() => {
+        StoryCustomization(
+            storyTextRef.current,
+            backgroundRef.current,
+            changeSource,
+            textEffect,
+            ambiance,
+            false,
+            isFirstNode,
+            isNodeTempCustom,
+            tempNodeAmbiance,
+            tempNodeTextEffect
+        );
+
+    }, [textEffect, current?.id, ambiance]);
+
+    //Change le volume de la musique
+    useEffect(() => {
+        if (isReady) {
+            changeVolume(0.03);
         }
-        changeSource(ambianceConfig.audio, true);
+    }, [isReady, changeVolume]);
 
-        if (!storyTextRef.current) return;
-        storyTextRef.current.innerHTML = storyTextRef.current.textContent;
 
-        if (resolvedEffect === "rise") {
-            const split = new SplitText(storyTextRef.current, {
-                type: "lines",
-                wordsClass: "word"
-            });
-            const lines = split.lines;
-
-            gsap.set(lines, { opacity: 0, y: 50, color: "#ffffff" });
-
-            gsap.to(lines, {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                stagger: 0.5,
-                ease: "power2.out",
-            });
-        }
-
-        else if (resolvedEffect === "blur") {
-            const split = new SplitText(storyTextRef.current, {
-                type: "words,chars",
-                wordsClass: "word"
-            });
-
-            gsap.from(split.chars, {
-                opacity: 0,
-                duration: 0.6,
-                stagger: 0.01,
-                filter: "blur(4px)",
-            });
-        }
-
-        else {
-            const split = new SplitText(storyTextRef.current, {
-                type: "words,chars",
-                wordsClass: "word"
-            });
-
-            gsap.set(split.chars, { opacity: 0, scale: 0 });
-
-            gsap.set(split.chars, {
-                opacity: 1,
-                scale: 1,
-                y: () => gsap.utils.random(-3, 3),
-                x: () => gsap.utils.random(-1, 1),
-                rotation: () => gsap.utils.random(-1, 1),
-                duration: 0.1,
-                stagger: gsap.utils.random(0.01, 0.04),
-            });
-        }
-    }, { dependencies: [ambiance, textEffect, current?.id] });
-
+    //Click handlers pour le popup de confirmation de choix
     const openChoicePopup = (e) => {
         e.preventDefault();
         setChoiceIsOpen(true);
-        console.log("Choice opened");
     };
 
     const closeChoicePopup = (e) => {
         e.preventDefault();
         setChoiceIsOpen(false);
-        console.log("Choice closed");
+    };
+
+    //Ouvre le popup de confirmation de choix
+    const openChoiceConfirmation = (e, edgeId) => {
+        if (selectedChoice === edgeId) return;
+        e.preventDefault();
+
+        const clickedElement = choiceRefs.current[edgeId];
+        const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
+        const clone = clickedElement.cloneNode(true);
+
+        setSelectedChoice(edgeId);
+        setChoiceConfirmationIsOpen(true);
+
+
+        if (clonedRef.current) {
+            clonedRef.current.remove();
+            clonedRef.current = null;
+        }
+
+        choicePopupRef.current.appendChild(clone);
+        clone.classList.add("clone")
+        clonedRef.current = clone;
+
+        let tl = gsap.timeline();
+        timelineRef.current = tl;
+        tl.set(clonedRef.current, {
+            opacity: 0,
+            filter: "blur(15px)"
+        })
+        tl.set(".choice-confirmation-indication", {
+            opacity: 0,
+            filter: "blur(15px)"
+        })
+        tl.to(allChoices, {
+            opacity: 0,
+            duration: 0.2,
+            filter: "blur(15px)",
+            ease: "none"
+        });
+        tl.to(".storyvisualizer-hr", {
+            opacity: 0,
+            duration: 0.2,
+            filter: "blur(15px)",
+            ease: "none"
+        }, "<");
+        tl.to(".choice-confirmation-indication", {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.4,
+            ease: "power4.in"
+        }, "<")
+        tl.to(clonedRef.current, {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.4,
+            ease: "power4.in"
+        }, "<")
+        tl.to(".choice-confirmation-indication", {
+            scale: 1.3,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "<")
+        tl.to(clonedRef.current, {
+            scale: 1.3,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "<")
+    }
+
+    //Ferme le popup de confirmation de choix
+    const closeChoiceConfirmation = () => {
+        setChoiceConfirmationIsOpen(false);
+
+        const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
+        const reverseTl = gsap.timeline({
+            onComplete: () => {
+                if (clonedRef.current) {
+                    clonedRef.current.remove();
+                    clonedRef.current = null;
+                }
+                timelineRef.current = null;
+                setSelectedChoice(null);
+            }
+        });
+
+        reverseTl.to(clonedRef.current, {
+            opacity: 0,
+            filter: "blur(15px)",
+            duration: 0.2,
+            ease: "none"
+        }, "<+0.1")
+        reverseTl.to(".choice-confirmation-indication", {
+            opacity: 0,
+            filter: "blur(15px)",
+            duration: 0.2,
+            ease: "none"
+        }, "<")
+        reverseTl.to(allChoices, {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.2,
+            ease: "none"
+        }, "-=0.1")
+        reverseTl.to(".storyvisualizer-hr", {
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 0.2,
+            ease: "none"
+        }, "<");
+        reverseTl.set(clonedRef.current, {
+            scale: 1,
+        })
+        reverseTl.set(".choice-confirmation-indication", {
+            scale: 1,
+        })
     };
 
     return (
         <div className="storyvisualizer-page" ref={backgroundRef}>
             <Nav />
             <Link href="/#stories">
-                <button className="storyvisualizer-btn-back ">
+                <button className="storyvisualizer-btn-back btn"
+                    onClick={() => pause()}>
                     <WestIcon />Retour
                 </button>
             </Link>
             <h1 className="storyvisualizer-title">{story.title}</h1>
+            {isNodeImg && (
+                <img src={nodeImgUrl} className="storyvisualizer-node-img" />
+            )}
             <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>
-            <div
-                className={choiceIsOpen ? "storyvisualizer-choices-container opened" : "storyvisualizer-choices-container"}
+            <div className={choiceIsOpen ? "backdrop-blur open" : "backdrop-blur"} />
+            <div className={"storyvisualizer-choices-container " + (choiceIsOpen ? "opened " : "") + "choice-" + edges.length}
                 ref={choicePopupRef}>
                 {edges.map((edge) => (
-                    <a
-                        className="storyvisualizer-choices"
+                    <div
+                        className={`storyvisualizer-choices ${selectedChoice === edge.id ? 'selected' : ''}`}
                         key={edge.id}
-                        href={"/storyvisualizer/" + storyId + "/" + edge.target}
-                    >
+                        ref={(e) => (choiceRefs.current[edge.id] = e
+                        )}
+                        onClick={(e) => {
+                            openChoiceConfirmation(e, edge.id)
+                        }}>
                         {edge.texte || "Choix"}
-                    </a>
+                    </div>
                 ))}
-                <hr className="storyvisualizer-hr" />
+                {edges.length < 3 && <hr className="storyvisualizer-hr" />
+                }
             </div>
+            {choiceIsOpen && choiceConfirmationIsOpen ? (
+
+                <div className="storyvisualizer-flex-container">
+                    <button className="storyvisualizer-close-btn confirmation btn" onClick={closeChoiceConfirmation}>
+                        <CloseIcon />
+                    </button>
+                </div>
+
+            ) : choiceIsOpen ? (
+                <div className="storyvisualizer-flex-container">
+                    <button className="storyvisualizer-close-btn btn" onClick={closeChoicePopup}>
+                        <CloseIcon />
+                    </button>
+                </div>
+            ) : null}
+
+            <p className="choice-confirmation-indication">Appuyez à nouveau pour confirmer votre choix</p>
             {isStoryEnd ? (
                 <div className="storyvisualizer-flex-container">
                     <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
-                        <button className="storyvisualizer-continue-btn">
+                        <button className="storyvisualizer-continue-btn btn"
+                            onClick={() => pause()}>
                             Relire
                         </button>
                     </Link>
-                    <Link href={"/#stories" + storyId + "/" + (edges[0]?.target || "")}>
-
-                        <button className="storyvisualizer-continue-btn">
+                    <Link href="/#stories">
+                        <button className="storyvisualizer-continue-btn btn"
+                            onClick={() => pause()}>
                             Retourner aux publications
                         </button>
                     </Link>
@@ -174,26 +265,37 @@ export default function storyvisualizerclient({ story, current, edges, storyId, 
             ) : isChoiceAsked ? (
                 <div className="storyvisualizer-flex-container">
                     <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target}>
-                        <button className="storyvisualizer-continue-btn">
+                        <button className="storyvisualizer-continue-btn btn">
                             Continuer
                         </button>
                     </Link>
                 </div>
             ) : (
-                choiceIsOpen ? (
-                    <div className="storyvisualizer-flex-container">
-                        <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
-                            <CloseIcon />
-                        </button>
-                    </div>
-                ) : (
-                    <div className="storyvisualizer-flex-container">
-                        <button className="storyvisualizer-continue-btn" onClick={openChoicePopup}>
-                            Continuer
-                        </button>
-                    </div>
-                )
+                <div className="storyvisualizer-flex-container">
+                    <button className="storyvisualizer-continue-btn btn" onClick={openChoicePopup}>
+                        Continuer
+                    </button>
+                </div>
+            )}
+
+            {selectedChoice && (
+                <Link
+                    href={"/storyvisualizer/" + storyId + "/" + edges.find(edge => edge.id === selectedChoice)?.target}
+                    className="overlay-navigation-link"
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        zIndex: 9999,
+                        cursor: 'pointer',
+                        pointerEvents: 'all'
+                    }}>
+                </Link>
             )}
         </div>
     );
 }
+
+export default StoryVisualizerPage;

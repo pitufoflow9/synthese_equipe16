@@ -47,7 +47,6 @@ const CustomSwitch = styled((props) => (
     boxSizing: 'border-box',
     width: 22,
     height: 22,
-    // border: "1px solid #bc61fe",
 
   },
   '& .MuiSwitch-track': {

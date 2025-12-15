@@ -16,10 +16,6 @@ import "@/app/_components/MainPageClient.css"
 import "@/app/_components/UserPage.css"
 import "@/app/_components/Swiper.css"
 
-//TODO: Afficher dynamiquement le nom et la photo de profil de l'utilisateur.
-//TODO: Intégrer la logique pour afficher les récits partagés de l'utilisateur.
-//TODO: Intégrer la logique pour le bouton lire (rediriger vers la bonne page).
-
 const UserPage = () => {
     const { data: session } = authClient.useSession();
     const displayName = session?.user?.name || "Invite";

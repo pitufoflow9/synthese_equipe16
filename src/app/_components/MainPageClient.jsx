@@ -2,15 +2,19 @@
 import "@xyflow/react/dist/style.css";
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useGrid } from "../_context/gridContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { session } from "@/db/schemas";
 import useLenis from "../_hooks/useLenis.jsx";
 import HistoireTemp from "./HistoireTemp";
 import Swiper from 'swiper';
+import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { usePathname } from 'next/navigation'
 import EastIcon from '@mui/icons-material/East';
 import Link from "next/link";
+import { useAudio } from "@/app/_context/AudioContext";
+import SplitText from "gsap/SplitText";
+import GSDevTools from "gsap/GSDevTools";
 
 import "@/app/_components/MainPageClient.css"
 import "@/app/_components/Nav.css"
@@ -28,10 +32,14 @@ import Nav from "@/app/_components/Nav.jsx";
 import RecemmentPubliees from "./RecentlyPublished.jsx";
 import ReprendreLecture from "./KeepReading.jsx";
 
-// TODO: Intégrer la logique pour afficher les histoires à reprendre (Tags, bannière, titre et synopsis)
-// (ou ne pas l'afficher si l'utilisateur n'a jamais lu d'histoire et/ou il n'est pas connecté).
+gsap.registerPlugin(useGSAP, GSDevTools, SplitText,
+  // CustomEase
+);
 
 const MainPageClient = ({ user, recentStories = [] }) => {
+  const loaderNumberRef = useRef();
+  const loaderLogoRef = useRef();
+  const { pause } = useAudio(false);
   const {
     nodes,
     edges,
@@ -58,19 +66,124 @@ const MainPageClient = ({ user, recentStories = [] }) => {
     };
   }, []);
 
+  useGSAP(() => {
+    const tl = gsap.timeline();
+    tl.set(".main-logo", {
+      opacity: 0,
+    })
+    tl.set(loaderLogoRef.current, {
+      opacity: 1,
+      y: "155%",
+      top: "50%",
+      left: "50%",
+      xPercent: -50,
+      yPercent: -50,
+    });
+    tl.set(loaderNumberRef.current, {
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      opacity: 0,
+      filter: "blur(15px)",
+    });
+
+    tl.to(loaderNumberRef.current, {
+      opacity: 1,
+      duration: 0.4,
+    });
+    tl.to(loaderNumberRef.current, {
+      filter: "blur(0px)",
+      duration: 1.4,
+    });
+    tl.to(loaderNumberRef.current, {
+      innerText: 100,
+      duration: 5,
+      snap: { innerText: 2 },
+      ease: "power4.out"
+    }, "<");
+
+    tl.to(loaderNumberRef.current, {
+      y: "-100%",
+      duration: 1,
+      ease: "power4.in"
+    }, "-=0.9");
+
+    tl.to(loaderLogoRef.current, {
+      y: "0%",
+      duration: 1,
+      ease: "power4.out",
+      delay: 3
+    }, "<-2.1",);
+
+    tl.set(".loader-logo-container ", {
+      height: "100%",
+    });
+
+    tl.to(loaderLogoRef.current, {
+      top: "40px",
+      left: "4vw",
+      xPercent: 0,
+      yPercent: 0,
+      width: "120px",
+      duration: 1.6,
+      ease: "power4.inOut"
+    },);
+
+    tl.to(".header-nav",
+      {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out"
+      }, "<0.9")
+
+    tl.to(".hero", {
+      opacity: 1,
+      duration: 0.4,
+      ease: "power2.out"
+    }, "<"
+    )
+    tl.fromTo(".hero-container > *", {
+      y: -20
+    }, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.07,
+      duration: 0.6,
+      ease: "power2.out"
+    }
+    )
+    tl.set(".main-logo", {
+      delay: 0.5,
+      opacity: 1,
+    })
+    tl.to(".loader-logo", {
+      opacity: 0,
+    });
+  })
+
+  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
+  useEffect(() => {
+    pause();
+  }, []);
+
   return (
-    <div className="page">
-      <header>
+
+    <div className="main-page">
+      <div className="main-loader">
+        <div className="loader-number-container">
+          <p className="loader-number" ref={loaderNumberRef}>0</p>
+        </div>
+        <div className="loader-logo-container"><img className="loader-logo" ref={loaderLogoRef} src="../../../img/logo_inkveil_large.png" alt="" /></div>
+      </div>
+      <header className="main-header">
         <Nav user={user} />
         <div className="hero">
+          <img className="main-bg" src="../../../img/Background_1.jpg" alt="" />
           <div className="hero-container">
             <h2 className="h2-header">Faites briller votre univers</h2>
             <h1 className="h1-header">
               Donnez vie à votre récit
-
-
             </h1>
-            <img className="main-bg" src="../../../img/Background_1.jpg" alt="" />
             <h3 className="h3-header">
               Créez des chapitres comme des scènes de film : choisissez vos ambiances, ajoutez des effets et faites vibrer chaque moment.
             </h3>
@@ -78,10 +191,8 @@ const MainPageClient = ({ user, recentStories = [] }) => {
               <input
                 className="main-input"
                 placeholder="Le titre de votre histoire..."
-                required
-              />
-              <Link href="/storyform"
-              >
+                required />
+              <Link href="/storyform">
                 <div className="btn-input">
                   <EastIcon />
                 </div>
@@ -95,24 +206,6 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       <hr />
       <ReprendreLecture />
       <Footer />
-
-      {/* <div style={{ width: 1000, height: 1000 }}>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onSelectionChange={onSelectionChange}
-          onConnect={onConnect}
-          // Multi-sélection désactivée pour simplifier votre travail
-          multiSelectionKeyCode={null}
-          // Suppression par le clavier désactivée pour simplifier votre travail
-          deleteKeyCode={null}
-          fitView
-        >
-          <Background variant={BackgroundVariant.Dots} />
-        </ReactFlow>
-      </div> */}
     </div>
   );
 };

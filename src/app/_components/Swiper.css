@@ -20,17 +20,17 @@
 
 .card::before {
   position: absolute;
+  scale: 0.95;
   z-index: -1;
   transition: all 0.2s;
   inset: -15px;
   border-radius: 35px;
   background: transparent;
   content: "";
-  scale: 0.9;
 }
 .card:hover::before {
-  background: #00000017;
   scale: 1;
+  background: #00000017;
 }
 
 .swiper-first-slide {
@@ -40,10 +40,16 @@
 .img-container {
   position: relative;
   margin-bottom: 20px;
+  width: 100%;
+  height: 370px;
+  overflow: hidden;
 }
 
 .slide-img {
   border-radius: 25px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tags {
@@ -67,9 +73,8 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 18px;
   color: var(--secondary-text-color);
+  font-size: 18px;
 }
 
 .swiper-buttons-flex-container {
@@ -88,6 +93,9 @@
   background-color: white;
   width: 50px;
   height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     transition: all 0.3s;
@@ -150,7 +158,7 @@ h3 {
   font-size: 20px;
 } */
 
-hr {
+.page hr {
   margin: 100px 0;
   color: #b8b8b8;
 }

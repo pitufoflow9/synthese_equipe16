@@ -2,8 +2,17 @@ import { GridProvider } from "@/app/_context/gridContext";
 import StoryEditorPage from "@/app/_components/StoryEditorPage";
 import { db } from "@/db";
 import { Histoires, Nodes, Branches } from "@/db/schemas/schema";
+import { getStoryInfoById } from "@/app/_data/histoires.js";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const storyInfo = await getStoryInfoById(id);
+  return {
+    title: "Lecture de " + storyInfo.title + " - Inkveil.",
+  };
+}
 
 const mapNode = (n) => ({
   id: n.id,

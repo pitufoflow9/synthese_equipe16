@@ -8,7 +8,7 @@
 .story-card-container {
   position: relative;
   justify-self: center;
-  margin: 250px 0 300px 0;
+  margin: 200px 0 300px 0;
   border: 1px solid var(--purple);
   border-radius: 25px;
   background-color: white;
@@ -42,7 +42,7 @@
   gap: 25px;
   transition: all 0.3 ease;
 
-  &>* {
+  & > * {
     cursor: pointer;
 
     &:hover {
@@ -52,8 +52,8 @@
   }
 }
 
-.like-container,
-.dislike-container {
+.overview-page-container .like-container,
+.overview-page-container .dislike-container {
   display: flex;
   gap: 5px;
 
@@ -74,7 +74,7 @@
   }
 }
 
-.img-container {
+.overview-page-container .img-container {
   position: relative;
   width: 500px;
 }
@@ -94,10 +94,12 @@
   margin: 0 auto;
   border: 1px solid white;
   border-radius: 25px;
-  background: linear-gradient(90deg,
-      rgba(142, 16, 231, 1) 0%,
-      rgba(220, 130, 255, 1) 51%,
-      rgba(142, 16, 231, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(142, 16, 231, 1) 0%,
+    rgba(220, 130, 255, 1) 51%,
+    rgba(142, 16, 231, 1) 100%
+  );
   background-position: left bottom;
   background-size: 200% 100%;
   padding: 0 20px;
@@ -120,8 +122,8 @@
 }
 
 .read-button:disabled {
-  cursor: not-allowed;
   opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .overview-h3 {
@@ -130,7 +132,7 @@
   font-size: 27px;
 }
 
-p {
+.overview-page-container p {
   color: var(--secondary-text-color);
   font-weight: 300;
   font-size: 20px;
@@ -145,11 +147,11 @@ p.overview-synopsis {
   cursor: pointer;
   font-weight: 700;
 }
-
+/* 
 hr {
   margin: 100px 0;
   color: #b8b8b8;
-}
+} */
 
 .button-container {
   display: flex;

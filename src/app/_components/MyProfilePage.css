@@ -1,3 +1,10 @@
+.myprofile-page-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+}
+
 .profile-picture {
   margin: 250px auto 40px auto;
   border-radius: 100%;
@@ -11,4 +18,18 @@
   font-weight: 700;
   font-size: 55px;
   text-align: center;
+}
+
+.profil-hr {
+  margin: 100px 0;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
 }

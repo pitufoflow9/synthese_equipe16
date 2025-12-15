@@ -3,6 +3,12 @@ import { createStory } from "@/app/actions/story-actions";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
+export async function generateMetadata({ params }) {
+  return {
+    title: "Création d'une histoire - Inkveil.",
+  };
+}
+
 const StoryForm = async () => {
   const session = await getSession();
   if (!session?.user) {

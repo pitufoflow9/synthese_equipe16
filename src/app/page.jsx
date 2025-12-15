@@ -4,8 +4,7 @@ import { getSession } from "@/lib/auth";
 import { getRecentPublished } from "./_data/histoires";
 
 export const metadata = {
-  title: "Web 5",
-  description: "Gabarit de départ - Web 5",
+  title: "Accueil - Inkveil.",
 };
 
 const HomePage = async () => {
@@ -52,7 +51,7 @@ const HomePage = async () => {
 
   return (
     <GridProvider initialNodes={initialNodes} initialEdges={initialEdges}>
-      <main className="">
+      <main className="main-page">
         {/* <main className="flex flex-col items-center justify-center gap-2 py-5"> */}
         {/* <h1>Gabarit de départ</h1> */}
         <MainPageClient

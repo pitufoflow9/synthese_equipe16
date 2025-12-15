@@ -2,6 +2,12 @@ import MyProfilePage from "@/app/_components/MyProfilePage.jsx";
 import { getSession } from "@/lib/auth";
 import { getStoriesByAuthor } from "@/app/_data/histoires.js";
 
+export async function generateMetadata({ params }) {
+  return {
+    title: "Mon profil - Inkveil.",
+  };
+}
+
 const MyProfile = async () => {
   const session = await getSession();
   const userId = session?.user?.id || null;

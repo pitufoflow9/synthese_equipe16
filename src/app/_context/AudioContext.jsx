@@ -33,7 +33,7 @@ const AudioProvider = ({ children }) => {
     if (!audioRef.current) return;
 
     const handleCanPlay = () => {
-      console.log("canplay");
+      ;
       setReady(true);
     };
     audioRef.current.addEventListener("canplaythrough", handleCanPlay);

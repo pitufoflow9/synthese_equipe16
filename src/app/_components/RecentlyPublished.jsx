@@ -30,7 +30,7 @@ const RecemmentPubliees = ({ stories = [] }) => {
   }
 
   return (
-    <section >
+    <section className="recentlypublished-section" >
       <h2 className="section-title recently-published-h2" id="stories">Récemment publiées</h2>
       <div className="swiper-container">
         <div className="swiper">
@@ -41,30 +41,26 @@ const RecemmentPubliees = ({ stories = [] }) => {
                   } ${index === stories.length - 1 ? "swiper-last-slide" : ""}`}
                 key={story.id}
               >
-                <div className="card">
-                  <div className="img-container">
-                    <img
-                      src={resolveImage(story.theme)}
-                      className="slide-img"
-                      alt={story.title || "Illustration de l'histoire"}
-                    />
-                    <div className="swiper-buttons-flex-container">
-                      <Link
-                        href={`/storyoverview/${story.id}`}
-                        className="read-button"
-                        aria-label={`Lire ${story.title}`}
-                      >
-                        <p>Lire</p>
-                        <BookOpen className="read-icon" />
-                      </Link>
+                <Link href={`/storyoverview/${story.id}`} className="swiper-link">
+                  <div className="card">
+                    <div className="img-container">
+                      <img
+                        src={resolveImage(story.theme)}
+                        className="slide-img"
+                        alt={story.title || "Illustration de l'histoire"}
+                      />
+                      <div className="swiper-buttons-flex-container">
+                        <button className="read-button">
+                          <p>Lire</p>
+                          <BookOpen className="read-icon" />
+                        </button>
+                      </div>
                     </div>
+                    <h3>{story.title}</h3>
+                    <p className="swiper-synopsis">{truncate(story.synopsis)}</p>
+                    <p className='swiper-author'>{story.authorName || 'Auteur inconnu'}</p>
                   </div>
-                  <div className="tags">
-                    <span>{story.theme || "Public"}</span>
-                  </div>
-                  <h3>{story.title}</h3>
-                  <p className="swiper-synopsis">{truncate(story.synopsis)}</p>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

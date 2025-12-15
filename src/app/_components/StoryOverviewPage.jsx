@@ -6,6 +6,8 @@ import { BookOpen } from "lucide-react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import WestIcon from "@mui/icons-material/West";
+import { useAudio } from "@/app/_context/AudioContext";
+import { useEffect } from 'react';
 
 import "@/app/_components/Nav.css";
 import "@/app/_components/Footer.css";
@@ -22,6 +24,7 @@ const StoryOverviewPage = ({ story }) => {
     startNodeId,
     theme
   } = story ?? {};
+  const { pause } = useAudio(false);
 
   const readHref = startNodeId
     ? `/storyvisualizer/${id}/${startNodeId}`
@@ -37,6 +40,12 @@ const StoryOverviewPage = ({ story }) => {
     }
     return `../../../img/${theme}`;
   })();
+
+
+  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
+  useEffect(() => {
+    pause();
+  }, []);
 
   return (
     <div className="overview-page-container">
