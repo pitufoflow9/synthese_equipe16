@@ -639,7 +639,10 @@ const StoryEditorPage = ({ story }) => {
                         type="button"
                         key={img.id}
                         className="img-wrapper"
-                        onClick={() => setSelectedTempImg(img.url)}
+                        onClick={() => {
+                          setSelectedTempImg(img.url);
+                          setImagePickerIsOpen(false);
+                        }}
                       >
                         <img className="" src={img.url} alt={img.description || "Image"} />
                       </button>
@@ -651,24 +654,21 @@ const StoryEditorPage = ({ story }) => {
               {isLoadingUserImages && <p>Chargement de vos images...</p>}
               {userImagesError && <p className="upload-error">{userImagesError}</p>}
               <div className="banner-grid">
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_1.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_2.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_3.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_4.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_5.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_6.jpg" alt="" />
-                </div>
+                {["banniere_1.jpg", "banniere_2.jpg", "banniere_3.jpg", "banniere_4.jpg", "banniere_5.jpg", "banniere_6.jpg"].map(
+                  (img) => (
+                    <button
+                      type="button"
+                      key={img}
+                      className="img-wrapper"
+                      onClick={() => {
+                        setSelectedTempImg(`../../../img/${img}`);
+                        setImagePickerIsOpen(false);
+                      }}
+                    >
+                      <img className="" src={`../../../img/${img}`} alt={img} />
+                    </button>
+                  )
+                )}
               </div>
               <hr className="popup-banner-hr" />
               <Link href="../upload">
