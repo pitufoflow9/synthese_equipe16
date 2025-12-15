@@ -32,7 +32,7 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const fileUrl = file.url ?? file.ufsUrl;
+      const fileUrl = file.ufsUrl ?? file.url;
       const description = file.name ?? "Image televersee";
 
       try {
