@@ -65,6 +65,8 @@ export async function getStoriesByAuthor(authorId) {
       synopsis: story.synopsis,
       theme: story.theme,
       isPublished: story.is_published,
+      likes: story.likes ?? 0,
+      dislikes: story.dislikes ?? 0,
       startNodeId,
     });
   }
@@ -173,6 +175,8 @@ export async function getStoryInfoById(storyId) {
     theme: story.theme,
     ambiance: story.musique,
     textEffect: story.animation,
+    likes: story.likes ?? 0,
+    dislikes: story.dislikes ?? 0,
   };
 }
 

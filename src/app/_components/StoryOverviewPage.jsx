@@ -7,7 +7,7 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import WestIcon from "@mui/icons-material/West";
 import { useAudio } from "@/app/_context/AudioContext";
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import "@/app/_components/Nav.css";
@@ -26,6 +26,10 @@ const StoryOverviewPage = ({ story }) => {
     theme
   } = story ?? {};
   const { pause } = useAudio(false);
+  const [likeCount, setLikeCount] = useState(story?.likes ?? 0);
+  const [dislikeCount, setDislikeCount] = useState(story?.dislikes ?? 0);
+  const [pendingReaction, setPendingReaction] = useState(null);
+  const [reactionError, setReactionError] = useState(null);
 
   const readHref = startNodeId
     ? `/storyvisualizer/${id}/${startNodeId}`
@@ -57,6 +61,47 @@ const StoryOverviewPage = ({ story }) => {
     router.push("/#stories");
   };
 
+  const handleReaction = useCallback(
+    async (reactionType) => {
+      if (!id || pendingReaction) return;
+      setReactionError(null);
+      setPendingReaction(reactionType);
+
+      const prevLikes = likeCount;
+      const prevDislikes = dislikeCount;
+
+      if (reactionType === "like") {
+        setLikeCount((current) => current + 1);
+      } else {
+        setDislikeCount((current) => current + 1);
+      }
+
+      try {
+        const response = await fetch(`/api/stories/${id}/${reactionType}`, {
+          method: "POST",
+        });
+
+        if (!response.ok) {
+          throw new Error("La r\u00e9ponse du serveur est invalide.");
+        }
+
+        const payload = await response.json();
+        setLikeCount(payload.likes ?? prevLikes + (reactionType === "like" ? 1 : 0));
+        setDislikeCount(
+          payload.dislikes ?? prevDislikes + (reactionType === "dislike" ? 1 : 0)
+        );
+      } catch (error) {
+        console.error("Erreur lors de la r\u00e9action :", error);
+        setLikeCount(prevLikes);
+        setDislikeCount(prevDislikes);
+        setReactionError("Impossible d'enregistrer ta r\u00e9action pour le moment.");
+      } finally {
+        setPendingReaction(null);
+      }
+    },
+    [dislikeCount, id, likeCount, pendingReaction]
+  );
+
   return (
     <div className="overview-page-container">
       <img className="bg" src="../../../img/Background_3.jpg" alt="" />
@@ -77,16 +122,30 @@ const StoryOverviewPage = ({ story }) => {
                 />
               </div>
               <div className="like-dislike-container">
-                <div className="like-container">
-                  <p className="like-counter">0</p>
-                  <ThumbUpAltIcon sx={{ color: "#656565", fontSize: "30px" }} />
-                </div>
-                <div className="dislike-container">
-                  <p className="like-counter">0</p>
-                  <ThumbDownAltIcon
-                    sx={{ color: "#656565", fontSize: "30px" }}
+                <button
+                  type="button"
+                  className="like-container reaction-button"
+                  onClick={() => handleReaction("like")}
+                  disabled={pendingReaction === "like"}
+                  aria-label="Aimer cette histoire"
+                >
+                  <p className="like-counter">{likeCount}</p>
+                  <ThumbUpAltIcon
+                    sx={{ color: pendingReaction === "like" ? "#9a9a9a" : "#656565", fontSize: "30px" }}
                   />
-                </div>
+                </button>
+                <button
+                  type="button"
+                  className="dislike-container reaction-button"
+                  onClick={() => handleReaction("dislike")}
+                  disabled={pendingReaction === "dislike"}
+                  aria-label="Ne pas aimer cette histoire"
+                >
+                  <p className="like-counter">{dislikeCount}</p>
+                  <ThumbDownAltIcon
+                    sx={{ color: pendingReaction === "dislike" ? "#9a9a9a" : "#656565", fontSize: "30px" }}
+                  />
+                </button>
               </div>
               <Link href={authorHref}>
                 <p className="author">{authorName}</p>
@@ -95,6 +154,9 @@ const StoryOverviewPage = ({ story }) => {
             <div className="overview-flex-3">
               <div>
                 <h3 className="overview-h3">{title}</h3>
+                {reactionError ? (
+                  <p className="reaction-error">{reactionError}</p>
+                ) : null}
                 <p className="overview-synopsis">
                   {synopsis || "Aucun synopsis fourni pour cette histoire."}
                 </p>
