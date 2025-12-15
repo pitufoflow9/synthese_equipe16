@@ -22,7 +22,7 @@ const truncate = (value, max = 180) => {
 
 const KeepReading = () => {
   const [items, setItems] = useState([]);
-  console.log("items lenght"+items.length)
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
