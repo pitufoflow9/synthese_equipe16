@@ -7,6 +7,7 @@
   --light-gray: #b8b8b8;
   --white-gray: #f5f5f5;
   --purple: #bc61fe;
+  --light-purple: #cf8bff;
   --translucent-purple: #bd61fe8c;
   --blue: #5f9eff;
   --texte-histoire: #333333;
@@ -15,6 +16,10 @@
 html {
   box-sizing: border-box;
   scrollbar-width: none;
+  &::selection{
+    background: var(--purple);
+    color: white;
+  }
 }
 body {
   background: var(--background);
@@ -39,6 +44,8 @@ body {
 .btn {
   cursor: pointer;
 }
+
+
 
 @font-face {
   font-style: normal;

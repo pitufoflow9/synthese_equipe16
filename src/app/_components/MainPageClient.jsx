@@ -4,15 +4,15 @@ import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useGrid } from "../_context/gridContext";
 import { useEffect, useRef, useState } from "react";
 import { session } from "@/db/schemas";
+import { useAudio } from "@/app/_context/AudioContext";
+import { useGSAP } from "@gsap/react";
+import { usePathname } from 'next/navigation'
 import useLenis from "../_hooks/useLenis.jsx";
 import HistoireTemp from "./HistoireTemp";
 import Swiper from 'swiper';
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { usePathname } from 'next/navigation'
 import EastIcon from '@mui/icons-material/East';
 import Link from "next/link";
-import { useAudio } from "@/app/_context/AudioContext";
 import SplitText from "gsap/SplitText";
 import GSDevTools from "gsap/GSDevTools";
 
@@ -24,13 +24,13 @@ import "@/app/_components/MainPageClient.css";
 import "@/app/_components/Nav.css";
 import "@/app/_components/Footer.css";
 import "@/app/_components/RecentlyPublished.css";
-import "swiper/css";
 import "@/app/_components/Swiper.css";
+import "swiper/css";
 
 import Footer from "@/app/_components/Footer.jsx";
 import Nav from "@/app/_components/Nav.jsx";
-import RecemmentPubliees from "./RecentlyPublished.jsx";
-import ReprendreLecture from "./KeepReading.jsx";
+import RecemmentPubliees from "@/app/_components/RecentlyPublished.jsx";
+import ReprendreLecture from "@/app/_components/KeepReading.jsx";
 
 gsap.registerPlugin(useGSAP, GSDevTools, SplitText,
   // CustomEase
@@ -68,7 +68,9 @@ const MainPageClient = ({ user, recentStories = [] }) => {
   }, []);
 
   useGSAP(() => {
+    document.body.style.overflow = "hidden";
     const tl = gsap.timeline();
+
     tl.set(".main-logo", {
       opacity: 0,
     })
@@ -107,18 +109,18 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       y: "-100%",
       duration: 1,
       ease: "power4.in"
-    }, "-=0.9");
+    }, "-=1.9");
 
     tl.to(loaderLogoRef.current, {
       y: "0%",
       duration: 1,
       ease: "power4.out",
       delay: 3
-    }, "<-2.1",);
+    }, "<-2.2",);
 
     tl.set(".loader-logo-container ", {
       height: "100%",
-    });
+    }, );
 
     tl.to(loaderLogoRef.current, {
       top: "40px",
@@ -136,13 +138,15 @@ const MainPageClient = ({ user, recentStories = [] }) => {
         duration: 0.3,
         ease: "power2.out"
       }, "<0.9")
+    tl.set(document.body, { style: { overflow: 'hidden' } });
 
     tl.to(".hero", {
       opacity: 1,
-      duration: 0.4,
+      duration: 0.7,
       ease: "power2.out"
-    }, "<"
+    }, "<-0.5"
     )
+
     tl.fromTo(".hero-container > *", {
       y: -20
     }, {
@@ -151,7 +155,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       stagger: 0.07,
       duration: 0.6,
       ease: "power2.out"
-    }
+    }, "<0.1"
     )
     tl.set(".main-logo", {
       delay: 0.5,
@@ -209,7 +213,6 @@ const MainPageClient = ({ user, recentStories = [] }) => {
           </div>
         </div>
       </header>
-
       <RecemmentPubliees stories={recentStories} />
       <hr />
       <ReprendreLecture />

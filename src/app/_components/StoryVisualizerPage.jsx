@@ -34,7 +34,7 @@ const StoryVisualizerPage = ({
     tempNodeAmbiance = null,
     tempNodeTextEffect = null
 }) => {
-  const [choiceIsOpen, setChoiceIsOpen] = useState(false);
+    const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
     const [selectedChoice, setSelectedChoice] = useState(null);
     const clonedRef = useRef(null);
@@ -267,14 +267,14 @@ const StoryVisualizerPage = ({
             </div>
             {choiceIsOpen && choiceConfirmationIsOpen ? (
 
-                <div className="storyvisualizer-flex-container">
+                <div className="storyvisualizer-flex-container close">
                     <button className="storyvisualizer-close-btn confirmation btn" onClick={closeChoiceConfirmation}>
                         <CloseIcon />
                     </button>
                 </div>
 
             ) : choiceIsOpen ? (
-                <div className="storyvisualizer-flex-container">
+                <div className="storyvisualizer-flex-container close">
                     <button className="storyvisualizer-close-btn btn" onClick={closeChoicePopup}>
                         <CloseIcon />
                     </button>
@@ -284,25 +284,17 @@ const StoryVisualizerPage = ({
             <p className="choice-confirmation-indication">Appuyez à nouveau pour confirmer votre choix</p>
             {isStoryEnd ? (
                 <div className="storyvisualizer-flex-container">
-                    <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
-                        <button className="storyvisualizer-continue-btn btn"
-                            onClick={() => pause()}>
-                            Relire
-                        </button>
+                    <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")} onClick={() => pause()} className="storyvisualizer-continue-btn btn">
+                        Relire
                     </Link>
-                    <Link href="/#stories">
-                        <button className="storyvisualizer-continue-btn btn"
-                            onClick={() => pause()}>
-                            Retourner aux publications
-                        </button>
+                    <Link href="/#stories" className="storyvisualizer-continue-btn btn" onClick={() => pause()}>
+                        Retourner aux publications
                     </Link>
                 </div>
             ) : isChoiceAsked ? (
                 <div className="storyvisualizer-flex-container">
-                    <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target}>
-                        <button className="storyvisualizer-continue-btn btn">
-                            Continuer
-                        </button>
+                    <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target} className="storyvisualizer-continue-btn btn">
+                        Continuer
                     </Link>
                 </div>
             ) : (

@@ -21,7 +21,20 @@ const StoryCustomization = (
     tempNodeTextEffect
 ) => {
 
-    console.log(ambiance)
+    console.log('storyText:', storyText);
+    console.log('backgroundRef:', backgroundRef);
+    console.log('changeSource:', changeSource);
+    console.log('textEffect:', textEffect);
+    console.log('ambiance:', ambiance);
+    console.log('preview:', preview);
+    console.log('isFirstNode:', isFirstNode);
+    console.log('isNodeTempCustom:', isNodeTempCustom);
+    console.log('tempNodeAmbiance:', tempNodeAmbiance);
+    console.log('tempNodeTextEffect:', tempNodeTextEffect);
+
+
+
+
     storyText.innerHTML = storyText.textContent;
 
     const ambiances = {
