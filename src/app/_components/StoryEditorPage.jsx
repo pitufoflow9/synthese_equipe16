@@ -287,10 +287,6 @@ const StoryEditorPage = ({ story }) => {
     setIsPublished(false);
   };
 
-
-
-
-
   const openImagePickerPopup = (e) => {
     e.preventDefault();
     setImagePickerIsOpen(true);
@@ -797,17 +793,17 @@ const StoryEditorPage = ({ story }) => {
         <button
           className="draft-button"
           onClick={handleSaveDraft}
-          disabled={!isPublished}
+          // disabled={!isPublished}
         >
-          {isPublished ? "Mettre en brouillon" : "Déjà en brouillon"}
+          {isPublished ? "Sauvegarder en brouillon" : "Sauvegarder le brouillon"}
         </button>
         <Link href="/profiles/myprofile">
           <button
             className="publish-button"
             onClick={handlePublishStory}
-            disabled={isPublished}
+            // disabled={isPublished}
           >
-            {isPublished ? "Histoire déjà publiée" : "Publier"}
+            {isPublished ? "Sauvegarder" : "Publier"}
           </button>
         </Link>
       </div>
