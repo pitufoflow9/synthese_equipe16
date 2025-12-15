@@ -267,14 +267,14 @@ const StoryVisualizerPage = ({
             </div>
             {choiceIsOpen && choiceConfirmationIsOpen ? (
 
-                <div className="storyvisualizer-flex-container">
+                <div className="storyvisualizer-flex-container close">
                     <button className="storyvisualizer-close-btn confirmation btn" onClick={closeChoiceConfirmation}>
                         <CloseIcon />
                     </button>
                 </div>
 
             ) : choiceIsOpen ? (
-                <div className="storyvisualizer-flex-container">
+                <div className="storyvisualizer-flex-container close">
                     <button className="storyvisualizer-close-btn btn" onClick={closeChoicePopup}>
                         <CloseIcon />
                     </button>
