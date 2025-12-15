@@ -51,6 +51,9 @@ const StoryEditorPage = ({ story }) => {
   const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
   const [effectIsOpen, setEffectIsOpen] = useState(false);
   const [isPublished, setIsPublished] = useState(!!story.is_published);
+  const [selectedTempEffect, setSelectedTempEffect] = useState(null);
+  const [selectedTempAmbiance, setselectedTempAmbiance] = useState(null);
+  const [selectedTempImg, setSelectedTempImg] = useState(null);
   const ambiancePopupRef = useRef();
   const effectPopupRef = useRef();
   const imagePickerPopupRef = useRef();
@@ -59,7 +62,6 @@ const StoryEditorPage = ({ story }) => {
   const preview3Ref = useRef(null);
   const previewTlRef = useRef(null);
   const toolbarRef = useRef();
-
 
   const isNodeSelected = selection?.type === "node" && selection.node;
   const isEdgeSelected = selection?.type === "edge" && selection.edge;
@@ -286,16 +288,27 @@ const StoryEditorPage = ({ story }) => {
     setEffectIsOpen(false);
   };
 
-  const previewButtonEnter = (textEffect, target, preview) => {
-    previewTlRef.current = StoryCustomisation(target.current, preview, textEffect);
+  const previewButtonEnter = (textEffect, text) => {
+    if (previewTlRef.current) {
+      previewTlRef.current.kill();
+    }
+    previewTlRef.current = StoryCustomisation(
+      text.current,
+      null,
+      null,
+      textEffect,
+      null,
+      true
+    );
   };
 
   const previewButtonLeave = (ref) => {
-
-    if (ref.current) {
-      ref.current.innerHTML = ref.current.textContent;
+    if (previewTlRef.current) {
+      previewTlRef.current.kill();
     }
+    ref.current.innerHTML = ref.current.textContent;
   };
+
 
   useGSAP(() => {
     const tl = gsap.timeline();
@@ -451,7 +464,7 @@ const StoryEditorPage = ({ story }) => {
                         className="choice-name"
                         placeholder="Ecrire..."
                       />
-                      <p className="storyvisualization-history-conditional-fields">     Ce choix ne s'affichera que si le joueur a préalablement sélectionné un choix <span>Historique</span> avec le même identifiant (ex: il faut d'abord ramasser la clé pour pouvoir l'utiliser).</p>
+                      <p className="storyvisualization-history-conditional-fields">     Ce choix sera seulement offert au lecteur si celui-ci a préalablement sélectionné un choix du type <span>Historique </span>avec le même identifiant.</p>
                     </div>
                   </div>
                 }
@@ -463,7 +476,7 @@ const StoryEditorPage = ({ story }) => {
                         className="choice-name"
                         placeholder="Ecrire..."
                       />
-                      <p className="storyvisualization-history-conditional-fields"> Ce choix enregistrera cet identifiant dans l'historique du joueur. Vous pourrez ensuite utiliser ce même identifiant dans un choix <span>Conditionnel</span> pour créer des conséquences (ex: ramasser une clé, puis l'utiliser plus tard).</p>
+                      <p className="storyvisualization-history-conditional-fields"> Ce choix enregistrera cet identifiant dans l'historique du joueur. Vous pourrez ensuite utiliser ce même identifiant dans un choix <span>Conditionnel</span> pour créer des conséquences.</p>
                     </div>
                   </div>
                 }
@@ -502,16 +515,38 @@ const StoryEditorPage = ({ story }) => {
                   <label className="storyvisualizer-label" htmlFor="node-text">Effets temporaires</label>
                   <div className="inputs-flex-container-5">
                     <div className="form-btn-container">
-                      <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance">
-                        Choisir une ambiance
-                      </button>
-                      <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect">
-                        Choisir un effet
-                      </button>
+
+                      {selectedTempAmbiance === null ? (
+                        <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance">
+                          Choisir une ambiance
+                        </button>
+                      ) : (
+                        <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance chosen">
+                          Changer l'ambiance
+                        </button>
+                      )}
+
+                      {selectedTempEffect === null ? (
+
+                        <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect">
+                          Choisir un effet
+                        </button>
+                      ) : (
+                        <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect chosen">
+                          Changer l'effet
+                        </button>
+                      )}
                     </div>
-                    <button type="button" onClick={openImagePickerPopup} className="add-image-button">
-                      Ajouter une image
-                    </button>
+
+                    {selectedTempImg === null ? (
+                      <button type="button" onClick={openImagePickerPopup} className="btn-add-img btn-form">
+                        Ajouter une image
+                      </button>
+                    ) : (
+                      <button type="button" onClick={openImagePickerPopup} className="btn-add-img btn-form chosen">
+                        Changer l'image
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -570,24 +605,34 @@ const StoryEditorPage = ({ story }) => {
         )}
         {ambianceIsOpen && (
           <div className="popup-container">
-            <div className="popup" ref={ambiancePopupRef}>
+            <div className="popup popup-ambiance" ref={ambiancePopupRef}>
               <button type="button" onClick={closeAmbiancePopup} className="popup-close-icon">
                 <X />
               </button>
               <h2 className="">Parcourir nos choix d'ambiances</h2>
               <div className="ambiance-list">
-                <button type="button" className="ambiance-button ambiance-horreur">
-                  <div className="ambiance-title">Ambiance d'horreur</div>
+                <button type="button"
+                  className={"ambiance-button ambiance-horreur " + (selectedTempAmbiance === "1" ? "active-1" : "")}
+                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "1" ? null : "1")}
+                >
+                  <div
+                    className="ambiance-title"
+                  >Ambiance d'horreur</div>
                 </button>
-                <button type="button" className="ambiance-button ambiance-magique">
-                  <div className="ambiance-title">Ambiance magique</div>
+                <button type="button"
+                  className={"ambiance-button ambiance-magique " + (selectedTempAmbiance === "2" ? "active-2" : "")}
+                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "2" ? null : "2")}
+                >
+                  <div
+                    className="ambiance-title">Ambiance magique</div>
                 </button>
-                <button type="button" className="ambiance-button ambiance-medieval">
+                <button type="button"
+                  className={"ambiance-button ambiance-medieval " + (selectedTempAmbiance === "3" ? "active-3" : "")}
+                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "3" ? null : "3")}
+                >
                   <div className="ambiance-title">Ambiance médiéval</div>
                 </button>
               </div>
-              <hr className="popup-banner-hr" />
-              <Link href="../upload"><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
             </div>
           </div>
         )}
@@ -601,7 +646,9 @@ const StoryEditorPage = ({ story }) => {
               <h2 className="">Parcourir nos d'effets</h2>
               <div className="ambiance-list" >
                 {/* Theme 1 */}
-                <button type="button" className="ambiance-button effect-preview effect-preview-1"
+                <button type="button" className={"ambiance-button effect-preview effect-preview-1 " + (selectedTempEffect === "1" ? "active" : "")}
+                  onClick={() => setSelectedTempEffect(selectedTempEffect === "1" ? null : "1")}
+
                   onMouseEnter={() => previewButtonEnter(1, preview1Ref, true)}
                   onMouseLeave={() => previewButtonLeave(preview1Ref)}
                 >
@@ -612,7 +659,9 @@ const StoryEditorPage = ({ story }) => {
                 </button>
 
                 {/* Theme 2 */}
-                <button type="button" className="ambiance-button effect-preview effect-preview-2"
+                <button type="button"
+                  className={"ambiance-button effect-preview effect-preview-2 " + (selectedTempEffect === "2" ? "active" : "")}
+                  onClick={() => setSelectedTempEffect(selectedTempEffect === "2" ? null : "2")}
                   onMouseEnter={() => previewButtonEnter(2, preview2Ref, true)}
                   onMouseLeave={() => previewButtonLeave(preview2Ref)}
                 >
@@ -623,12 +672,16 @@ const StoryEditorPage = ({ story }) => {
                 </button>
 
                 {/* Theme 3 */}
-                <button type="button" className="ambiance-button effect-preview effect-preview-3"
+                <button type="button"
+                  className={"ambiance-button effect-preview effect-preview-3 " + (selectedTempEffect === "3" ? "active" : "")}
+                  onClick={() => setSelectedTempEffect(selectedTempEffect === "3" ? null : "3")}
                   onMouseEnter={() => previewButtonEnter(3, preview3Ref, true)}
                   onMouseLeave={() => previewButtonLeave(preview3Ref)}
                 >
                   <div className="ambiance-title">Effet de machine à écrire</div>
-                  <div className="effect-preview-placeholder" ref={preview3Ref}>
+                  <div
+                    className="effect-preview-placeholder"
+                    ref={preview3Ref}>
                     Ceci est un aperçu
                   </div>
                 </button>

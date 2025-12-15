@@ -2,8 +2,10 @@ import StoryVisualizerPage from "@/app/_components/StoryVisualizerPage.jsx";
 import { getStoryInfoById, getNodeInfoById } from "@/app/_data/histoires.js";
 
 export async function generateMetadata({ params }) {
+  const { storyId } = await params;
+  const storyInfo = await getStoryInfoById(storyId);
   return {
-    title: "Lecture de " + " - Inkveil.",
+    title: "Lecture de " + storyInfo.title + " - Inkveil.",
   };
 }
 

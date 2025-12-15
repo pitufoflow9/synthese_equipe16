@@ -10,6 +10,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import SplitText from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
+import { useAudio } from "@/app/_context/AudioContext";
 
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
@@ -23,15 +24,16 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [bannerIsOpen, setBannerIsOpen] = useState(false);
     const [ambianceIsOpen, setAmbianceIsOpen] = useState(false);
     const [effectIsOpen, setEffectIsOpen] = useState(false);
-    const [selectedBanner, setSelectedBanner] = useState("");
-    const [selectedAmbiance, setSelectedAmbiance] = useState("");
-    const [selectedTextEffect, setSelectedTextEffect] = useState("");
+    const [selectedBanner, setSelectedBanner] = useState(null);
+    const [selectedAmbiance, setSelectedAmbiance] = useState(null);
+    const [selectedTextEffect, setSelectedTextEffect] = useState(null);
     const bannerPopupRef = useRef();
     const ambiancePopupRef = useRef();
     const effectPopupRef = useRef();
     const preview1Ref = useRef(null);
     const preview2Ref = useRef(null);
     const preview3Ref = useRef(null);
+    const { pause } = useAudio(false);
 
     const previewTlRef = useRef(null);
     const bannerImages = [
@@ -42,6 +44,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
         "banniere_5.jpg",
         "banniere_6.jpg",
     ];
+
     const openBannerPopup = (e) => {
         e.preventDefault();
         setBannerIsOpen(true);
@@ -51,6 +54,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
         e.preventDefault();
         setBannerIsOpen(false);
     };
+
     const openAmbiancePopup = (e) => {
         e.preventDefault();
         setAmbianceIsOpen(true);
@@ -71,17 +75,17 @@ const StoryFormPage = ({ formAction, user = null }) => {
         setEffectIsOpen(false);
     };
 
-    const previewButtonEnter = (textEffect, target, preview) => {
+    const previewButtonEnter = (textEffect, text) => {
         if (previewTlRef.current) {
             previewTlRef.current.kill();
         }
         previewTlRef.current = StoryCustomisation(
-            target.current,
+            text.current,
             null,
-            () => { },
+            null,
             textEffect,
             null,
-            preview
+            true
         );
     };
 
@@ -89,10 +93,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
         if (previewTlRef.current) {
             previewTlRef.current.kill();
         }
-        if (ref.current) {
-            ref.current.innerHTML = ref.current.textContent;
-            gsap.set(ref.current, { clearProps: "all" });
-        }
+        ref.current.innerHTML = ref.current.textContent;
     };
 
     const selectBanner = (banner) => {
@@ -110,7 +111,6 @@ const StoryFormPage = ({ formAction, user = null }) => {
         setEffectIsOpen(false);
     };
 
-
     useEffect(() => {
         function handleClickOutside(e) {
             if (bannerIsOpen && bannerPopupRef.current && !bannerPopupRef.current.contains(e.target)) {
@@ -124,11 +124,17 @@ const StoryFormPage = ({ formAction, user = null }) => {
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
-    })
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [bannerIsOpen, ambianceIsOpen, effectIsOpen]);
+
+    //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
+    useEffect(() => {
+        pause();
+    }, []);
 
     return (
         <div className="story-form-container">
-            <img className="bg" src="../../../img/blue-purple_gradient.png" alt="" />
+            <img className="bg" src="../../../img/Background_2.jpg" alt="" />
             <Nav user={user} />
 
             <h1 className="h1-story-form">Nouvelle histoire</h1>
@@ -155,16 +161,23 @@ const StoryFormPage = ({ formAction, user = null }) => {
                     ></textarea>
                 </div>
 
-                <button type="button" onClick={openBannerPopup} className="btn-form btn-form-banner-img" >
-                    Choisir une image de bannière
-                </button>
+                {selectedBanner === null ? (
+                    <button type="button" onClick={openBannerPopup} className="btn-form btn-add-img">
+                        Choisir une image de bannière
+                    </button>
+                ) : (
+                    <button type="button" onClick={openBannerPopup} className="btn-form btn-add-img chosen">
+                        Changer l'image de bannière
+                    </button>
+                )}
+
                 {bannerIsOpen &&
                     <div className="popup-container" >
                         <div className="popup" ref={bannerPopupRef}>
                             <button type="button" onClick={closeBannerPopup} className="popup-close-icon">
                                 <X />
                             </button>
-                            <h2 className="">Parcourir la banque d’images</h2>
+                            <h2 className="">Parcourir la banque d'images</h2>
                             <div className="banner-grid" >
                                 {bannerImages.map((img) => (
                                     <button
@@ -185,33 +198,55 @@ const StoryFormPage = ({ formAction, user = null }) => {
                 }
 
                 <div className="form-btn-container">
-                    <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance" >
-                        Choisir une ambiance
-                    </button>
-                    <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect" >
-                        Choisir une effet
-                    </button>
+                    {selectedAmbiance === null ? (
+                        <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance">
+                            Choisir une ambiance
+                        </button>
+                    ) : (
+                        <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance chosen">
+                            Changer l'ambiance
+                        </button>
+                    )}
+
+                    {selectedTextEffect === null ? (
+                        <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect">
+                            Choisir un effet
+                        </button>
+                    ) : (
+                        <button type="button" onClick={openEffectPopup} className="btn-form btn-form-add-effect chosen">
+                            Changer l'effet
+                        </button>
+                    )}
                 </div>
+
                 {ambianceIsOpen &&
                     <div className="popup-container">
-                        <div className="popup" ref={ambiancePopupRef}>
+                        <div className="popup popup-ambiance" ref={ambiancePopupRef}>
                             <button type="button" onClick={closeAmbiancePopup} className="popup-close-icon">
                                 <X />
                             </button>
                             <h2 className="">Parcourir nos choix d'ambiances</h2>
                             <div className="ambiance-list" >
-                                <button type="button" className="ambiance-button ambiance-horreur" onClick={() => selectAmbiance(1)} >
+                                <button type="button"
+                                    className={"ambiance-button ambiance-horreur " + (selectedAmbiance === "1" ? "active-1" : "")}
+                                    onClick={() => setSelectedAmbiance(selectedAmbiance === "1" ? null : "1")}
+                                >
                                     <div className="ambiance-title">Ambiance d'horreur</div>
                                 </button>
-                                <button type="button" className="ambiance-button ambiance-magique" onClick={() => selectAmbiance(2)} >
+                                <button type="button"
+                                    className={"ambiance-button ambiance-magique " + (selectedAmbiance === "2" ? "active-2" : "")}
+                                    onClick={() => setSelectedAmbiance(selectedAmbiance === "2" ? null : "2")}
+                                >
                                     <div className="ambiance-title">Ambiance magique</div>
                                 </button>
-                                <button type="button" className="ambiance-button ambiance-medieval" onClick={() => selectAmbiance(3)}>
+                                <button type="button"
+                                    className={"ambiance-button ambiance-medieval " + (selectedAmbiance === "3" ? "active-3" : "")}
+                                    onClick={() => setSelectedAmbiance(selectedAmbiance === "3" ? null : "3")}
+                                >
                                     <div className="ambiance-title">Ambiance médiéval</div>
                                 </button>
                             </div>
-                            <hr className="popup-banner-hr" />
-                            <Link href="../upload" ><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
+
                         </div>
                     </div>
                 }
@@ -224,10 +259,11 @@ const StoryFormPage = ({ formAction, user = null }) => {
                             <h2 className="">Parcourir nos d'effets</h2>
                             <div className="ambiance-list" >
                                 {/* Theme 1 */}
-                                <button type="button" className="ambiance-button effect-preview effect-preview-1"
-                                    onMouseEnter={() => previewButtonEnter(1, preview1Ref, true)}
+                                <button type="button"
+                                    className={"ambiance-button effect-preview effect-preview-1 " + (selectedTextEffect === "1" ? "active" : "")}
+                                    onClick={() => setSelectedTextEffect(selectedTextEffect === "1" ? null : "1")}
+                                    onMouseEnter={() => previewButtonEnter(1, preview1Ref)}
                                     onMouseLeave={() => previewButtonLeave(preview1Ref)}
-                                    onClick={() => selectTextEffect(1)}
                                 >
                                     <div className="ambiance-title">Effet d'entrée par le bas  </div>
                                     <div className="effect-preview-placeholder" ref={preview1Ref}>
@@ -236,10 +272,11 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 </button>
 
                                 {/* Theme 2 */}
-                                <button type="button" className="ambiance-button effect-preview effect-preview-2"
-                                    onMouseEnter={() => previewButtonEnter(2, preview2Ref, true)}
+                                <button type="button"
+                                    className={"ambiance-button effect-preview effect-preview-2 " + (selectedTextEffect === "2" ? "active" : "")}
+                                    onClick={() => setSelectedTextEffect(selectedTextEffect === "2" ? null : "2")}
+                                    onMouseEnter={() => previewButtonEnter(2, preview2Ref)}
                                     onMouseLeave={() => previewButtonLeave(preview2Ref)}
-                                    onClick={() => selectTextEffect(2)}
                                 >
                                     <div className="ambiance-title">Effet de flou</div>
                                     <div className="effect-preview-placeholder" ref={preview2Ref}>
@@ -248,10 +285,11 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 </button>
 
                                 {/* Theme 3 */}
-                                <button type="button" className="ambiance-button effect-preview effect-preview-3"
-                                    onMouseEnter={() => previewButtonEnter(3, preview3Ref, true)}
+                                <button type="button"
+                                    className={"ambiance-button effect-preview effect-preview-3 " + (selectedTextEffect === "3" ? "active" : "")}
+                                    onClick={() => setSelectedTextEffect(selectedTextEffect === "3" ? null : "3")}
+                                    onMouseEnter={() => previewButtonEnter(3, preview3Ref)}
                                     onMouseLeave={() => previewButtonLeave(preview3Ref)}
-                                    onClick={() => selectTextEffect(3)}
                                 >
                                     <div className="ambiance-title">Effet de machine à écrire</div>
                                     <div className="effect-preview-placeholder" ref={preview3Ref}>
@@ -264,9 +302,9 @@ const StoryFormPage = ({ formAction, user = null }) => {
                 }
 
                 <hr className="story-form-hr" />
-                <input type="hidden" name="banniere" value={selectedBanner} />
-                <input type="hidden" name="ambiance" value={selectedAmbiance} />
-                <input type="hidden" name="textEffect" value={selectedTextEffect} />
+                <input type="hidden" name="banniere" value={selectedBanner || ""} />
+                <input type="hidden" name="ambiance" value={selectedAmbiance || ""} />
+                <input type="hidden" name="textEffect" value={selectedTextEffect || ""} />
                 <button type="submit" className="btn-form btn-form-continue" >
                     Continuer
                 </button>
@@ -279,7 +317,3 @@ const StoryFormPage = ({ formAction, user = null }) => {
 }
 
 export default StoryFormPage;
-
-
-
-

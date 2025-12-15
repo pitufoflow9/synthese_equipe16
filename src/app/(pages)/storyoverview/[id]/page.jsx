@@ -3,9 +3,11 @@ import StoryOverviewPage from "@/app/_components/StoryOverviewPage.jsx";
 import { getStoryInfoById } from "@/app/_data/histoires.js";
 
 export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const storyInfo = await getStoryInfoById(id);
   return {
-    title: " - Inkveil.",
-  };
+    title: "Aperçu de " + storyInfo.title + " - Inkveil.",
+  }
 }
 
 const StoryOverview = async ({ params }) => {

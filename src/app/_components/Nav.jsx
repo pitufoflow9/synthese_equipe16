@@ -9,12 +9,15 @@ import { CustomEase } from "gsap/all";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { usePathname } from 'next/navigation'
+import { useAudio } from "../_context/AudioContext.jsx";
+
 gsap.registerPlugin(useGSAP, ScrollTrigger, CustomEase);
 
 const Nav = ({ user: initialUser }) => {
   const [user, setUser] = useState(initialUser ?? null);
   const pathname = usePathname();
   const isVisualizerPage = pathname?.includes("/storyvisualizer");
+  const { changeSource, play, isReady, changeVolume, pause } = useAudio(false);
 
   useEffect(() => {
     if (initialUser !== undefined) return;
@@ -63,35 +66,37 @@ const Nav = ({ user: initialUser }) => {
       start: "top top",
       end: 99999,
       onUpdate: () => {
-        nav.classList.toggle('is-not-at-top', window.scrollY > 20);
+        if (!pathname?.includes("/storyvisualizer"))
+          nav.classList.toggle('is-not-at-top', window.scrollY > 20);
       },
     });
   }, { dependencies: [pathname] });
 
 
   return (
-    <nav className="header-nav">
+    <nav className={pathname === "/" ? ("header-nav no-opacity") : ("header-nav")}>
       {!isAuthenticated && (
         <ul className="nav-list">
-          <li><a href="/"><img className="logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
+
+          <li onClick={() => pause()}><a href="/"><img className="logo main-logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
           <div className="account-actions-container">
-            <li>
+            <li onClick={() => pause()}>
               <Link href="/auth/signin" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
                 Se connecter
               </Link>
             </li>
-            <li>
+            <li onClick={() => pause()}>
               <Link href="/auth/signup" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
                 S'inscrire
               </Link>
             </li>
-            <li>
+            <li onClick={() => pause()}>
               <Link href="/#stories" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>
                 Lire
               </Link>
             </li>
           </div>
-          <li>
+          <li onClick={() => pause()}>
             <Link href="/storyform" className={isVisualizerPage ? "btn-nav btn-create white" : "btn-nav btn-create"}>
               Créer une histoire
             </Link>
@@ -102,8 +107,8 @@ const Nav = ({ user: initialUser }) => {
 
       {isAuthenticated && (
         <ul className={isVisualizerPage ? "nav-list nav-list-connected white" : "nav-list nav-list-connected"}>
-          <li><a href="/"><img className="logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
-          <li>
+          <li onClick={() => pause()}><a href="/"><img className="logo loader main-logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
+          <li onClick={() => pause()}>
             <Link href="/profiles/myprofile" className="account-flex-container">
               <span className="btn-nav account-name">
                 {user?.name || "Mon compte"}
@@ -113,7 +118,7 @@ const Nav = ({ user: initialUser }) => {
               </span>
             </Link>
           </li>
-          <li>
+          <li onClick={() => pause()}>
             <form action={signOut}>
               <button
                 type="submit"
@@ -125,7 +130,7 @@ const Nav = ({ user: initialUser }) => {
               </button>
             </form>
           </li>
-          <li>
+          <li onClick={() => pause()}>
             <Link href="/storyform" className={isVisualizerPage ? "btn-nav btn-create white" : "btn-nav btn-create"}>
               Créer une histoire
             </Link>

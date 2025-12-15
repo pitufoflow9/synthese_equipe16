@@ -62,35 +62,39 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 20px;
 }
-
-.btn-form-banner-img {
-  transition: background-position 0.6s ease;
+.btn-add-img {
   margin-bottom: 30px;
-  background: linear-gradient(
-    90deg,
-    rgb(34, 34, 34) 0%,
-    rgb(110, 110, 110) 51%,
-    rgb(34, 34, 34) 100%
-  );
-  background-position: left bottom;
-  background-size: 200% 100%;
-  color: white;
-  &:hover {
-    background-position: right bottom;
-  }
 }
 
-.story-form-container .btn-form-add-ambiance,
-.story-form-container .btn-form-add-effect {
+.btn-form-add-ambiance,
+.btn-form-add-effect,
+.btn-add-img {
   position: relative;
   border: 1px solid var(--primary-text-color);
-  width: 48%;
   color: var(--primary-text-color);
 
   &:hover {
     background-color: var(--primary-text-color);
     color: white;
+  }
+  &.chosen {
+    position: relative;
+    transition: background-position 0.6s ease;
+    border: 1px solid white;
+    background: linear-gradient(
+      90deg,
+      rgb(34, 34, 34) 0%,
+      rgb(110, 110, 110) 51%,
+      rgb(34, 34, 34) 100%
+    );
+    background-position: left bottom;
+    background-size: 200% 100%;
+    color: white;
+    &:hover {
+      background-position: right bottom;
+    }
   }
 }
 
@@ -191,7 +195,8 @@
   }
 }
 
-.popup-effect {
+.popup-effect,
+.popup-ambiance {
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
@@ -279,7 +284,60 @@
   font-weight: 500;
 }
 
+.ambiance-horreur:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(77, 0, 0, 0.75) 51%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.ambiance-horreur.active-1 {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(77, 0, 0, 1) 51%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
 .ambiance-magique:hover {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 0, 173, 0.75) 0%,
+    rgba(210, 152, 233, 75.329) 51%,
+    rgba(124, 0, 173, 0.75) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+.ambiance-magique.active-2 {
   transition: background-position 0.6s ease;
   border: 1px solid white;
   background: linear-gradient(
@@ -291,33 +349,31 @@
   background-position: left bottom;
   background-size: 200% 100%;
   color: white;
-  color: white;
-  &:hover {
-    background-position: right bottom;
-  }
-}
 
-.ambiance-horreur:hover {
-  transition: none;
-  transition: background-position 0.6s ease;
-  border: 1px solid white;
-  background: linear-gradient(
-    90deg,
-    #000000ff 0%,
-    #4d0000ff 51%,
-    #000000ff 100%
-  );
-  background-position: left bottom;
-  background-size: 200% 100%;
-  color: white;
-  color: white;
   &:hover {
     background-position: right bottom;
   }
 }
 
 .ambiance-medieval:hover {
-  transition: none;
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    rgba(133, 133, 133, 0.6) 0%,
+    rgba(255, 202, 178, 0.6) 51%,
+    rgba(133, 133, 133, 0.6) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}
+
+.ambiance-medieval.active-3 {
   transition: background-position 0.6s ease;
   border: 1px solid white;
   background: linear-gradient(
@@ -329,22 +385,45 @@
   background-position: left bottom;
   background-size: 200% 100%;
   color: white;
-  color: white;
+
   &:hover {
     background-position: right bottom;
   }
 }
 
-/* background: linear-gradient(
-    90deg,
-    rgba(142, 16, 231, 1) 0%,
-    rgba(220, 130, 255, 1) 51%,
-    rgba(142, 16, 231, 1) 100%
-  );
-  color: white;
-  background-size: 200% 100%;
-  background-position: left bottom;
+.effect-preview:hover {
   transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 0, 173, 0.75) 0%,
+    rgba(210, 152, 233, 0.75) 51%,
+    rgba(124, 0, 173, 0.75) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  color: white;
+
   &:hover {
     background-position: right bottom;
-  } */
+  }
+}
+.effect-preview.active {
+  transition: background-position 0.6s ease;
+  border: 1px solid white;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 0, 173, 1) 0%,
+    rgba(210, 152, 233, 1) 51%,
+    rgba(124, 0, 173, 1) 100%
+  );
+  background-position: left bottom;
+  background-size: 200% 100%;
+  color: white;
+  color: white;
+
+  &:hover {
+    background-position: right bottom;
+  }
+}

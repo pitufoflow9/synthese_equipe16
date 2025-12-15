@@ -5,6 +5,7 @@ import Nav from "./Nav.jsx";
 import { BookOpen } from "lucide-react";
 import { useEffect } from "react";
 import "swiper/css";
+import { useAudio } from "@/app/_context/AudioContext";
 
 import "@/app/_components/Nav.css";
 import "@/app/_components/Footer.css";
@@ -54,6 +55,13 @@ const MyProfilePage = ({
       swipers.forEach((instance) => instance?.destroy?.());
     };
   }, [publishedStories.length, draftStories.length]);
+
+  const { pause } = useAudio(false);
+
+  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
+  useEffect(() => {
+    pause();
+  }, []);
 
   return (
     <div className="myprofile-page-container">

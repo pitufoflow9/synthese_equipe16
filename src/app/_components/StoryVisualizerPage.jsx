@@ -27,6 +27,12 @@ const StoryVisualizerPage = ({
     isStoryEnd,
     isChoiceAsked,
     isFirstNode,
+    isNodeImg = true,
+    //PLACE HOLDERs (TODO: enlever avant la remise)
+    nodeImgUrl = "../../../img/blue-purple_gradient.png",
+    isNodeTempCustom = true,
+    tempNodeAmbiance = "2",
+    tempNodeTextEffect = "2"
 }) => {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
@@ -37,7 +43,8 @@ const StoryVisualizerPage = ({
     const storyTextRef = useRef();
     const backgroundRef = useRef();
     const timelineRef = useRef(null);
-    const { changeSource, play, isReady, changeVolume } = useAudio(false);
+    const { changeSource, play, isReady, changeVolume, pause } = useAudio(false);
+
 
     //Change le background, l'effet de texte et la musique.
     useEffect(() => {
@@ -49,6 +56,9 @@ const StoryVisualizerPage = ({
             ambiance,
             false,
             isFirstNode,
+            isNodeTempCustom,
+            tempNodeAmbiance,
+            tempNodeTextEffect
         );
 
     }, [textEffect, current?.id, ambiance]);
@@ -192,11 +202,15 @@ const StoryVisualizerPage = ({
         <div className="storyvisualizer-page" ref={backgroundRef}>
             <Nav />
             <Link href="/#stories">
-                <button className="storyvisualizer-btn-back ">
+                <button className="storyvisualizer-btn-back btn"
+                    onClick={() => pause()}>
                     <WestIcon />Retour
                 </button>
             </Link>
             <h1 className="storyvisualizer-title">{story.title}</h1>
+            {isNodeImg && (
+                <img src={nodeImgUrl} className="storyvisualizer-node-img" />
+            )}
             <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>
             <div className={choiceIsOpen ? "backdrop-blur open" : "backdrop-blur"} />
             <div className={"storyvisualizer-choices-container " + (choiceIsOpen ? "opened " : "") + "choice-" + edges.length}
@@ -216,16 +230,34 @@ const StoryVisualizerPage = ({
                 {edges.length < 3 && <hr className="storyvisualizer-hr" />
                 }
             </div>
+            {choiceIsOpen && choiceConfirmationIsOpen ? (
+
+                <div className="storyvisualizer-flex-container">
+                    <button className="storyvisualizer-close-btn confirmation btn" onClick={closeChoiceConfirmation}>
+                        <CloseIcon />
+                    </button>
+                </div>
+
+            ) : choiceIsOpen ? (
+                <div className="storyvisualizer-flex-container">
+                    <button className="storyvisualizer-close-btn btn" onClick={closeChoicePopup}>
+                        <CloseIcon />
+                    </button>
+                </div>
+            ) : null}
+
             <p className="choice-confirmation-indication">Appuyez à nouveau pour confirmer votre choix</p>
             {isStoryEnd ? (
                 <div className="storyvisualizer-flex-container">
                     <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")}>
-                        <button className="storyvisualizer-continue-btn">
+                        <button className="storyvisualizer-continue-btn btn"
+                            onClick={() => pause()}>
                             Relire
                         </button>
                     </Link>
                     <Link href="/#stories">
-                        <button className="storyvisualizer-continue-btn">
+                        <button className="storyvisualizer-continue-btn btn"
+                            onClick={() => pause()}>
                             Retourner aux publications
                         </button>
                     </Link>
@@ -233,33 +265,17 @@ const StoryVisualizerPage = ({
             ) : isChoiceAsked ? (
                 <div className="storyvisualizer-flex-container">
                     <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target}>
-                        <button className="storyvisualizer-continue-btn">
+                        <button className="storyvisualizer-continue-btn btn">
                             Continuer
                         </button>
                     </Link>
                 </div>
             ) : (
-                choiceIsOpen && choiceConfirmationIsOpen ? (
-                    <div>
-                        <div className="storyvisualizer-flex-container">
-                            <button className="storyvisualizer-close-btn confirmation" onClick={closeChoiceConfirmation}>
-                                <CloseIcon />
-                            </button>
-                        </div>
-                    </div>
-                ) : choiceIsOpen ? (
-                    <div className="storyvisualizer-flex-container">
-                        <button className="storyvisualizer-close-btn" onClick={closeChoicePopup}>
-                            <CloseIcon />
-                        </button>
-                    </div>
-                ) : (
-                    <div className="storyvisualizer-flex-container">
-                        <button className="storyvisualizer-continue-btn" onClick={openChoicePopup}>
-                            Continuer
-                        </button>
-                    </div>
-                )
+                <div className="storyvisualizer-flex-container">
+                    <button className="storyvisualizer-continue-btn btn" onClick={openChoicePopup}>
+                        Continuer
+                    </button>
+                </div>
             )}
 
             {selectedChoice && (
