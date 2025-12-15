@@ -33,8 +33,8 @@ export const ourFileRouter = {
           });
         }
       } catch (error) {
-        console.error("Failed to persist uploaded image", error);
-        throw new UploadThingError("Unable to save uploaded image");
+        console.error("Failed to persist uploaded image (continuing anyway)", error);
+        // Ne bloque pas l'upload si la table n'existe pas (ex: migrations non appliquées en prod).
       }
 
       console.log("Upload complete for userId:", metadata.userId);
