@@ -1,114 +1,96 @@
 "use client";
-import { BookOpen } from 'lucide-react';
-import "@/app/_components/KeepReading.css";
+import { useEffect, useState } from "react";
+import { BookOpen } from "lucide-react";
 import Link from "next/link";
-const KeepReading = () => {
-    return (
-        <section>
-            <h2 className='section-title keep-reading-h2' id="stories-1">Reprenez votre aventure</h2>
-            <div className="swiper-container">
-                <div className="swiper">
-                    <div className="swiper-wrapper">
-                        {/*Slide 1 */}
-                        <div className="swiper-slide swiper-first-slide">
-                            <Link href="/storyoverview/id" className="swiper-link">
-                                <div className="card">
-                                    <div className="img-container">
-                                        <img src="../../../img/placeholder.png" className="slide-img" alt="" />
-                                        <div className="swiper-buttons-flex-container">
-                                            <button className="read-button">
-                                                <p>Lire</p>
-                                                <BookOpen className='read-icon' />
-                                            </button>
-                                        </div>
-                                    </div>
-                            
-                                    <h3>Les derniers jours de Noctis</h3>
-                                    <p className="swiper-synopsis ">
-                                        Dans un manoir oublié par le temps, un vampire centenaire se retrouve confronté à un choix impossible : embrasser l'éternité dans les ténèbres ou chercher la rédemption avant l'aube finale. Chaque...
-                                    </p>
-                                    <p className='swiper-author'>Alexandre Gratton</p>
-                                </div>
-                            </Link>
-                        </div>
-                        {/* Slide 2 */}
-                        <div className="swiper-slide">
-                            <Link href="/storyoverview/id" className="swiper-link">
-                                <div className="card">
-                                    <div className="img-container">
-                                        <img src="../../../img/placeholder.png" className="slide-img" alt="" />
-                                        <div className="swiper-buttons-flex-container">
-                                            <button className="read-button">
-                                                <p>Lire</p>
-                                                <BookOpen className='read-icon' />
-                                            </button>
-                                        </div>
-                                    </div>
-                                
-                                    <h3>Entre les Pétales et les Épines</h3>
-                                    <p className="swiper-synopsis">
-                                        Au cœur d'une forêt enchantée, une jeune fée est chargée de restaurer l'équilibre entre les royaumes de lumière et d'ombre. Elle explore des clairières mystérieuses, noue des alliances avec les...
-                                    </p>
-                                    <p className='swiper-author'>Alexandre Gratton</p>
-                                </div>
-                            </Link>
-                        </div>
+import "@/app/_components/KeepReading.css";
 
-                        {/* Slide 3 */}
-                        <div className="swiper-slide">
-                            <Link href="/storyoverview/id" className="swiper-link">
-                                <div className="card">
-                                    <div className="img-container">
-                                        <img src="../../../img/placeholder.png" className="slide-img" alt="" />
-                                        <div className="swiper-buttons-flex-container">
-                                            <button className="read-button">
-                                                <p>Lire</p>
-                                                <BookOpen className='read-icon' />
-                                            </button>
-                                        </div>
-                                    </div>
-                                
-                                    <h3>La Révolte du Paladin</h3>
-                                    <p className="swiper-synopsis ">
-                                        Le royaume est au bord du gouffre et un noble chevalier doit choisir entre l'honneur et la rébellion. Alors que la corruption gangrène la cour royale, ses décisions détermineront s'il deviendra un héros...
-                                    </p>
-                                    <p className='swiper-author'>Alexandre Gratton</p>
-                                </div>
-                            </Link>
+const resolveImage = (theme) => {
+  if (!theme) return "../../../img/placeholder.png";
+  if (theme.startsWith("http") || theme.startsWith("/") || theme.startsWith("./")) {
+    return theme;
+  }
+  return `../../../img/${theme}`;
+};
+
+const truncate = (value, max = 180) => {
+  if (!value) return "Pas de synopsis pour le moment.";
+  if (value.length <= max) return value;
+  return `${value.slice(0, max)}...`;
+};
+
+const KeepReading = () => {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const stored = JSON.parse(localStorage.getItem("inkveil-recent") || "[]");
+      setItems(Array.isArray(stored) ? stored : []);
+    } catch (err) {
+      setItems([]);
+    }
+  }, []);
+
+  if (!items.length) {
+    return (
+      <section>
+        <h2 className="section-title keep-reading-h2" id="stories-1">
+          Reprenez votre aventure
+        </h2>
+        <p className="placeholder-text">
+          Aucune lecture récente pour l’instant. Lancez une histoire pour la retrouver ici.
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <section>
+      <h2 className="section-title keep-reading-h2" id="stories-1">
+        Reprenez votre aventure
+      </h2>
+      <div className="swiper-container">
+        <div className="swiper">
+          <div className="swiper-wrapper">
+            {items.map((story, index) => {
+              const href = `/storyvisualizer/${story.storyId}/${story.nodeId}`;
+              const slideClass =
+                index === 0
+                  ? "swiper-slide swiper-first-slide"
+                  : index === items.length - 1
+                  ? "swiper-slide swiper-last-slide"
+                  : "swiper-slide";
+              return (
+                <div className={slideClass} key={`${story.storyId}-${story.nodeId}`}>
+                  <Link href={href} className="swiper-link">
+                    <div className="card">
+                      <div className="img-container">
+                        <img
+                          src={resolveImage(story.image || story.theme)}
+                          className="slide-img"
+                          alt={story.title || "Illustration de l'histoire"}
+                        />
+                        <div className="swiper-buttons-flex-container">
+                          <button className="read-button">
+                            <p>Lire</p>
+                            <BookOpen className="read-icon" />
+                          </button>
                         </div>
-                        {/* Slide 4 */}
-                        <div className="swiper-slide swiper-last-slide">
-                            <Link href="/storyoverview/id" className="swiper-link">
-                                <div className="card">
-                                    <div className="img-container">
-                                        <img src="../../../img/placeholder.png" className="slide-img" alt="" />
-                                        <div className="swiper-buttons-flex-container">
-                                            <button className="read-button">
-                                                <p>Lire</p>
-                                                <BookOpen className='read-icon' />
-                                            </button>
-                                        </div>
-                                    </div>
-                              
-                                    <h3>Magie Blanche et Ombre</h3>
-                                    <p className="swiper-synopsis ">
-                                        Au seuil de l'Académie des Arcanes, un apprenti mage découvre que chaque sortilège a un prix. Aux pouvoirs naissants, il devra naviguer entre traditions ancestrales et magie interdite. Ses choix...
-                                    </p>
-                                    <p className='swiper-author'>Alexandre Gratton</p>
-                                </div>
-                            </Link>
-                        </div>
+                      </div>
+
+                      <h3>{story.title || "Titre inconnu"}</h3>
+                      <p className="swiper-synopsis">{truncate(story.synopsis)}</p>
+                      <p className="swiper-author">{story.authorName || "Auteur inconnu"}</p>
                     </div>
+                  </Link>
                 </div>
-            </div>
-        </section >
-    )
-}
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default KeepReading;
-
-
-
-
-
-

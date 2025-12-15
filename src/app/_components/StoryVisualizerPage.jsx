@@ -34,7 +34,7 @@ const StoryVisualizerPage = ({
     tempNodeAmbiance = null,
     tempNodeTextEffect = null
 }) => {
-    const [choiceIsOpen, setChoiceIsOpen] = useState(false);
+  const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
     const [selectedChoice, setSelectedChoice] = useState(null);
     const clonedRef = useRef(null);
@@ -63,6 +63,31 @@ const StoryVisualizerPage = ({
         );
 
     }, [textEffect, ambiance, isFirstNode, isNodeTempCustom, tempNodeAmbiance, tempNodeTextEffect]);
+
+    // Persist last-read info for KeepReading (localStorage only)
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        try {
+            const entry = {
+                storyId,
+                nodeId: current?.id,
+                title: story?.title,
+                synopsis: story?.synopsis,
+                authorName: story?.authorName,
+                theme: story?.theme,
+                image: nodeImgUrl || story?.theme,
+                updatedAt: Date.now(),
+            };
+            const stored = JSON.parse(localStorage.getItem("inkveil-recent") || "[]");
+            const filtered = Array.isArray(stored)
+                ? stored.filter((i) => i.storyId !== entry.storyId)
+                : [];
+            const next = [entry, ...filtered].slice(0, 6);
+            localStorage.setItem("inkveil-recent", JSON.stringify(next));
+        } catch (err) {
+            // ignore write errors
+        }
+    }, [storyId, current?.id, story?.title, story?.synopsis, story?.authorName, story?.theme, nodeImgUrl]);
 
     //Change le volume de la musique
     useEffect(() => {
