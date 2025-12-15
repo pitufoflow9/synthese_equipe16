@@ -73,6 +73,8 @@ export const histoires = sqliteTable("histoires", {
 	theme: text(),
 	musique: text(),
 	animation: text(),
+	likes: integer().default(0).notNull(),
+	dislikes: integer().default(0).notNull(),
 	isPublished: integer("is_published").default(false).notNull(),
 	createdAt: integer("created_at").default(0),
 });
@@ -105,4 +107,3 @@ export const userImages = sqliteTable("user_images", {
 	description: text(),
 	createdAt: integer("created_at").default(0),
 });
-

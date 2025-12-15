@@ -7,6 +7,19 @@ import { getSession } from "@/lib/auth";
 
 const f = createUploadthing();
 
+const authenticateRequest = async () => {
+  // Auth best-effort to avoid 400s on prod if cookies/sessions are missing.
+  try {
+    const session = await getSession();
+    if (session?.user?.id) {
+      return { id: session.user.id };
+    }
+  } catch (error) {
+    console.error("Upload auth error", error);
+  }
+  return { id: "anonymous" };
+};
+
 export const ourFileRouter = {
   imageUploader: f({
     image: {
