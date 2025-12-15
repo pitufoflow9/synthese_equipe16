@@ -20,6 +20,7 @@ const truncate = (value, max = 180) => {
 
 const KeepReading = () => {
   const [items, setItems] = useState([]);
+  console.log("items lenght"+items.length)
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -46,11 +47,9 @@ const KeepReading = () => {
 
   return (
     <section>
-      <h2 className="section-title keep-reading-h2" id="stories-1">
-        Reprenez votre aventure
-      </h2>
+      <h2 className="section-title keep-reading-h2" id="stories-1">Reprenez votre aventure</h2>
       <div className="swiper-container">
-        <div className="swiper">
+        <div className="swiper keep-reading-swiper">
           <div className="swiper-wrapper">
             {items.map((story, index) => {
               const href = `/storyvisualizer/${story.storyId}/${story.nodeId}`;
@@ -58,8 +57,8 @@ const KeepReading = () => {
                 index === 0
                   ? "swiper-slide swiper-first-slide"
                   : index === items.length - 1
-                  ? "swiper-slide swiper-last-slide"
-                  : "swiper-slide";
+                    ? "swiper-slide swiper-last-slide"
+                    : "swiper-slide";
               return (
                 <div className={slideClass} key={`${story.storyId}-${story.nodeId}`}>
                   <Link href={href} className="swiper-link">

@@ -68,8 +68,9 @@ const MainPageClient = ({ user, recentStories = [] }) => {
   }, []);
 
   useGSAP(() => {
+    var landingPageSeen = false;
     document.body.style.overflow = "hidden";
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ paused: true });
 
     tl.set(".main-logo", {
       opacity: 0,
@@ -120,7 +121,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
 
     tl.set(".loader-logo-container ", {
       height: "100%",
-    }, );
+    },);
 
     tl.to(loaderLogoRef.current, {
       top: "40px",
@@ -164,7 +165,18 @@ const MainPageClient = ({ user, recentStories = [] }) => {
     tl.to(".loader-logo", {
       opacity: 0,
     });
+
+    //Checker si l'utilisateur a déjà vu la landing page dans le storage?
+    if (landingPageSeen) {
+      tl.progress(1).pause();
+      gsap.set(document.body, { overflow: "auto" });
+    } else {
+      tl.play(0);
+      landingPageSeen = true;
+      //Ajouter au local storage?
+    }
   })
+
 
   //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {

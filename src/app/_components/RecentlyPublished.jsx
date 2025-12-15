@@ -33,7 +33,7 @@ const RecemmentPubliees = ({ stories = [] }) => {
     <section className="recentlypublished-section" >
       <h2 className="section-title recently-published-h2" id="stories">Récemment publiées</h2>
       <div className="swiper-container">
-        <div className="swiper">
+        <div className="swiper recently-swiper">
           <div className="swiper-wrapper">
             {stories.map((story, index) => (
               <div
