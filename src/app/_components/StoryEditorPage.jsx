@@ -630,45 +630,48 @@ const StoryEditorPage = ({ story }) => {
                 <X />
               </button>
               <h2 className="">Parcourir la banque d'images</h2>
-              {userImages.length > 0 && (
-                <>
-                  <p className="user-images-label">Vos tÃ©lÃ©versements</p>
-                  <div className="banner-grid">
-                    {userImages.map((img) => (
-                      <button
-                        type="button"
-                        key={img.id}
-                        className="img-wrapper"
-                        onClick={() => setSelectedTempImg(img.url)}
-                      >
-                        <img className="" src={img.url} alt={img.description || "Image"} />
-                      </button>
-                    ))}
+              <div className="banners-container">
+                {userImages.length > 0 && (
+                  <>
+                    <p className="user-images-label">Vos tÃ©lÃ©versements</p>
+                    <div className="banner-grid">
+                      {userImages.map((img) => (
+                        <button
+                          type="button"
+                          key={img.id}
+                          className="img-wrapper"
+                          onClick={() => setSelectedTempImg(img.url)}
+                        >
+                          <img className="" src={img.url} alt={img.description || "Image"} />
+                        </button>
+                      ))}
+                    </div>
+                    <hr className="popup-banner-hr" />
+                  </>
+                )}
+                {isLoadingUserImages && <p>Chargement de vos images...</p>}
+                {userImagesError && <p className="upload-error">{userImagesError}</p>}
+                   <p className="user-images-label">Notre banque d'images</p>
+                <div className="banner-grid">
+                  <div className="img-wrapper">
+                    <img className="" src="../../../img/banniere_1.jpg" alt="" />
                   </div>
-                  <hr className="popup-banner-hr" />
-                </>
-              )}
-              {isLoadingUserImages && <p>Chargement de vos images...</p>}
-              {userImagesError && <p className="upload-error">{userImagesError}</p>}
-              <div className="banner-grid">
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_1.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_2.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_3.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_4.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_5.jpg" alt="" />
-                </div>
-                <div className="img-wrapper">
-                  <img className="" src="../../../img/banniere_6.jpg" alt="" />
-                </div>
+                  <div className="img-wrapper">
+                    <img className="" src="../../../img/banniere_2.jpg" alt="" />
+                  </div>
+                  <div className="img-wrapper">
+                    <img className="" src="../../../img/banniere_3.jpg" alt="" />
+                  </div>
+                  <div className="img-wrapper">
+                    <img className="" src="../../../img/banniere_4.jpg" alt="" />
+                  </div>
+                  <div className="img-wrapper">
+                    <img className="" src="../../../img/banniere_5.jpg" alt="" />
+                  </div>
+                  <div className="img-wrapper">
+                    <img className="" src="../../../img/banniere_6.jpg" alt="" />
+                  </div>
+              </div>
               </div>
               <hr className="popup-banner-hr" />
               <Link href="../upload">

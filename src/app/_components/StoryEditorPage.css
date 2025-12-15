@@ -344,8 +344,8 @@ label {
 }
 
 .user-images-label {
-  font-weight: 700;
   margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .upload-error {
@@ -595,9 +595,9 @@ label {
 
 .banner-grid {
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  /* grid-template-rows: repeat(2, 1fr); */
   grid-template-columns: repeat(3, 1fr);
-  border-radius: 25px;
+  border-radius: 5px;
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -616,6 +616,28 @@ label {
     }
   }
 }
+.banners-container {
+  padding-right: 15px;
+  height: 400px;
+  overflow-y: scroll;
+}
+.banners-container::-webkit-scrollbar {
+  width: 12px;
+}
+.banners-container::-webkit-scrollbar-track {
+  margin-left: 30px;
+  border-radius: 25px;
+  background: #f1f1f1;
+}
+.banners-container::-webkit-scrollbar-thumb {
+  border: 3px solid #f1f1f1;
+  border-radius: 6px;
+  background-color: var(--light-purple);
+}
+.banners-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--purple);
+}
+
 .img-wrapper {
   overflow: hidden;
 }

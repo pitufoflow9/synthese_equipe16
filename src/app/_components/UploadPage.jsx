@@ -134,7 +134,7 @@ const UploadPage = () => {
             onClick={onBrowseClick}
             disabled={isUploading}
           >
-            {isUploading ? "Televersement..." : "Parcourir"}
+            {isUploading ? "Téléversement..." : "Parcourir"}
           </button>
         </div>
       </div>
