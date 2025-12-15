@@ -28,6 +28,9 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [selectedBanner, setSelectedBanner] = useState(null);
     const [selectedAmbiance, setSelectedAmbiance] = useState(null);
     const [selectedTextEffect, setSelectedTextEffect] = useState(null);
+    const [userImages, setUserImages] = useState([]);
+    const [isLoadingUserImages, setIsLoadingUserImages] = useState(false);
+    const [userImagesError, setUserImagesError] = useState("");
     const searchParams = useSearchParams();
     const [title, setTitle] = useState(searchParams?.get("title") || "");
     const [synopsis, setSynopsis] = useState("");
@@ -143,6 +146,32 @@ const StoryFormPage = ({ formAction, user = null }) => {
         }
     }, [searchParams]);
 
+    useEffect(() => {
+        const controller = new AbortController();
+        const fetchUserImages = async () => {
+            setIsLoadingUserImages(true);
+            setUserImagesError("");
+            try {
+                const res = await fetch("/api/user-images", {
+                    signal: controller.signal,
+                });
+                if (!res.ok) {
+                    throw new Error("Impossible de recuperer vos images.");
+                }
+                const data = await res.json();
+                setUserImages(data?.images ?? []);
+            } catch (error) {
+                if (error.name !== "AbortError") {
+                    setUserImagesError(error.message);
+                }
+            } finally {
+                setIsLoadingUserImages(false);
+            }
+        };
+        fetchUserImages();
+        return () => controller.abort();
+    }, []);
+
     return (
         <div className="story-form-container">
             <img className="bg" src="../../../img/Background_2.jpg" alt="" />
@@ -193,6 +222,26 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <X />
                             </button>
                             <h2 className="">Parcourir la banque d'images</h2>
+                            {userImages.length > 0 && (
+                                <>
+                                    <p className="user-images-label">Vos téléversements</p>
+                                    <div className="banner-grid">
+                                        {userImages.map((img) => (
+                                            <button
+                                                type="button"
+                                                key={img.id}
+                                                className="img-wrapper"
+                                                onClick={() => selectBanner(img.url)}
+                                            >
+                                                <img className="" src={img.url} alt={img.description || "Image"} />
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <hr className="popup-banner-hr" />
+                                </>
+                            )}
+                            {isLoadingUserImages && <p>Chargement de vos images...</p>}
+                            {userImagesError && <p className="upload-error">{userImagesError}</p>}
                             <div className="banner-grid" >
                                 {bannerImages.map((img) => (
                                     <button

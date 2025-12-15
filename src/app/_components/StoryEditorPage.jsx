@@ -54,6 +54,9 @@ const StoryEditorPage = ({ story }) => {
   const [selectedTempEffect, setSelectedTempEffect] = useState(null);
   const [selectedTempAmbiance, setselectedTempAmbiance] = useState(null);
   const [selectedTempImg, setSelectedTempImg] = useState(null);
+  const [userImages, setUserImages] = useState([]);
+  const [isLoadingUserImages, setIsLoadingUserImages] = useState(false);
+  const [userImagesError, setUserImagesError] = useState("");
   const ambiancePopupRef = useRef();
   const effectPopupRef = useRef();
   const imagePickerPopupRef = useRef();
@@ -363,6 +366,30 @@ const StoryEditorPage = ({ story }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [imagePickerIsOpen, ambianceIsOpen, effectIsOpen]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchUserImages = async () => {
+      setIsLoadingUserImages(true);
+      setUserImagesError("");
+      try {
+        const res = await fetch("/api/user-images", { signal: controller.signal });
+        if (!res.ok) {
+          throw new Error("Impossible de recuperer vos images.");
+        }
+        const data = await res.json();
+        setUserImages(data?.images ?? []);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          setUserImagesError(error.message);
+        }
+      } finally {
+        setIsLoadingUserImages(false);
+      }
+    };
+    fetchUserImages();
+    return () => controller.abort();
+  }, []);
+
   const nodeTypes = useMemo(
     () => ({
       default: ({ data }) => {
@@ -574,6 +601,26 @@ const StoryEditorPage = ({ story }) => {
                 <X />
               </button>
               <h2 className="">Parcourir la banque d'images</h2>
+              {userImages.length > 0 && (
+                <>
+                  <p className="user-images-label">Vos tÃ©lÃ©versements</p>
+                  <div className="banner-grid">
+                    {userImages.map((img) => (
+                      <button
+                        type="button"
+                        key={img.id}
+                        className="img-wrapper"
+                        onClick={() => setSelectedTempImg(img.url)}
+                      >
+                        <img className="" src={img.url} alt={img.description || "Image"} />
+                      </button>
+                    ))}
+                  </div>
+                  <hr className="popup-banner-hr" />
+                </>
+              )}
+              {isLoadingUserImages && <p>Chargement de vos images...</p>}
+              {userImagesError && <p className="upload-error">{userImagesError}</p>}
               <div className="banner-grid">
                 <div className="img-wrapper">
                   <img className="" src="../../../img/banniere_1.jpg" alt="" />

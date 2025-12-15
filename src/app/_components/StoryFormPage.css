@@ -434,3 +434,12 @@
     background-position: right bottom;
   }
 }
+
+.user-images-label {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.upload-error {
+  color: #d22;
+}

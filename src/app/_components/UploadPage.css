@@ -55,6 +55,11 @@
   }
 }
 
+.upload-container-3.is-dragging {
+  border-color: var(--purple);
+  background-color: #faf4ff;
+}
+
 .btn-browse {
   display: flex;
   justify-content: center;
@@ -71,4 +76,24 @@
     background-image: linear-gradient(to right, #8e10e7, #dc82ff);
     color: white;
   }
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.upload-status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.upload-success a {
+  color: var(--purple);
+}
+
+.upload-error {
+  color: #d22;
 }

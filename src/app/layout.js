@@ -1,5 +1,8 @@
 import "./globals.css";
 import { AudioProvider } from "../app/_context/AudioContext.jsx";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 
 export const metadata = {
   title: "Create Next App",
@@ -20,6 +23,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <AudioProvider>{children}</AudioProvider>
       </body>
     </html>
