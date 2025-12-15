@@ -16,7 +16,7 @@ html {
   box-sizing: border-box;
   scrollbar-width: none;
   &::selection{
-    background: var(--blue);
+    background: var(--purple);
     color: white;
   }
 }
