@@ -55,8 +55,8 @@
   }
 }
 
-textarea,
-input {
+.signupin-page-container textarea,
+.signupin-page-container input {
   border: 1px solid var(--translucent-purple);
   border-radius: 15px;
   background-color: var(--white-gray);

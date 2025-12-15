@@ -226,7 +226,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
         </div>
       </header>
       <RecemmentPubliees stories={recentStories} />
-      <hr />
+      <hr className="main-hr"/>
       <ReprendreLecture />
       <Footer />
     </div>
