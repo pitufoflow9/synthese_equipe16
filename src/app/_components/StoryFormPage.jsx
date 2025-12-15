@@ -217,7 +217,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
 
                 {bannerIsOpen &&
                     <div className="popup-container" >
-                        <div className="storyform-popup" ref={bannerPopupRef}>
+                        <div className="storyform-popup popup-banner " ref={bannerPopupRef}>
                             <button type="button" onClick={closeBannerPopup} className="popup-close-icon">
                                 <X />
                             </button>
@@ -243,7 +243,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 )}
                                 {isLoadingUserImages && <p>Chargement de vos images...</p>}
                                 {userImagesError && <p className="upload-error">{userImagesError}</p>}
-                                    <p className="user-images-label">Notre banque d'images</p>
+                                <p className="user-images-label">Galerie d’images</p>
                                 <div className="banner-grid" >
                                     {bannerImages.map((img) => (
                                         <button
@@ -287,7 +287,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
 
                 {ambianceIsOpen &&
                     <div className="popup-container">
-                        <div className="popup popup-ambiance" ref={ambiancePopupRef}>
+                        <div className="storyform-popup popup-ambiance" ref={ambiancePopupRef}>
                             <button type="button" onClick={closeAmbiancePopup} className="popup-close-icon">
                                 <X />
                             </button>
@@ -318,7 +318,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                 }
                 {effectIsOpen &&
                     <div className="popup-container">
-                        <div className="popup popup-effect" ref={effectPopupRef}>
+                        <div className="storyform-popup popup-effect" ref={effectPopupRef}>
                             <button type="button" onClick={closeEffectPopup} className="popup-close-icon">
                                 <X />
                             </button>

@@ -182,10 +182,29 @@
   width: 100vw;
   height: 200vh;
 }
-.storyform-popup {
+.storyform-popup.popup-banner {
   position: relative;
   z-index: 11;
   margin: 110px auto;
+  border: 1px solid var(--translucent-purple);
+  border-radius: 35;
+  background-color: white;
+  padding: 28px;
+  width: 800px;
+  height: auto;
+
+  h2 {
+    margin: 20px 0 40px 0;
+    font-weight: 700;
+    font-size: 30px;
+    text-align: center;
+  }
+}
+.storyform-popup.popup-ambiance,
+.storyform-popup.popup-effect {
+  position: relative;
+  z-index: 11;
+  margin: 250px auto;
   border: 1px solid var(--translucent-purple);
   border-radius: 35;
   background-color: white;
