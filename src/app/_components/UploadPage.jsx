@@ -26,8 +26,16 @@ const UploadPage = () => {
       onClientUploadComplete: (res) => {
         setError("");
         const fileInfo = res?.[0];
+        const { name, size, type, key, ufsUrl } = fileInfo ?? {};
         const normalizedFile = fileInfo
-          ? { ...fileInfo, url: fileInfo.ufsUrl}
+          ? {
+              name,
+              size,
+              type,
+              key,
+              ufsUrl,
+              url: ufsUrl,
+            }
           : null;
         setUploadResult(normalizedFile);
         setUploadProgress(100);
