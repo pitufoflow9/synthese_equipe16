@@ -109,18 +109,18 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       y: "-100%",
       duration: 1,
       ease: "power4.in"
-    }, "-=0.9");
+    }, "-=1.9");
 
     tl.to(loaderLogoRef.current, {
       y: "0%",
       duration: 1,
       ease: "power4.out",
       delay: 3
-    }, "<-2.1",);
+    }, "<-2.2",);
 
     tl.set(".loader-logo-container ", {
       height: "100%",
-    });
+    }, );
 
     tl.to(loaderLogoRef.current, {
       top: "40px",
@@ -142,9 +142,9 @@ const MainPageClient = ({ user, recentStories = [] }) => {
 
     tl.to(".hero", {
       opacity: 1,
-      duration: 0.4,
+      duration: 0.7,
       ease: "power2.out"
-    }, "<"
+    }, "<-0.5"
     )
 
     tl.fromTo(".hero-container > *", {
@@ -155,7 +155,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       stagger: 0.07,
       duration: 0.6,
       ease: "power2.out"
-    }
+    }, "<0.1"
     )
     tl.set(".main-logo", {
       delay: 0.5,
@@ -165,6 +165,8 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       opacity: 0,
     });
   })
+
+  GSDevTools.create();
 
   //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {
