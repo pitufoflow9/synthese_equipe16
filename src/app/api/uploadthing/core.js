@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { createUploadthing } from "uploadthing/next";
-import { UploadThingError } from "uploadthing/server";
+
 import { db } from "@/db";
 import { UserImages } from "@/db/schemas/schema";
 import { getSession } from "@/lib/auth";
@@ -32,7 +32,7 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const fileUrl = file.ufsUrl ?? file.url;
+      const fileUrl = file.ufsUrl;
       const description = file.name ?? "Image televersee";
 
       try {
