@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import { useAudio } from "../_context/AudioContext.jsx";
+import { useRouter } from "next/navigation";
 
 import Nav from "@/app/_components/Nav.jsx";
 import CloseIcon from '@mui/icons-material/Close';
@@ -44,6 +45,7 @@ const StoryVisualizerPage = ({
     const backgroundRef = useRef();
     const timelineRef = useRef(null);
     const { changeSource, play, isReady, changeVolume, pause } = useAudio(false);
+    const router = useRouter();
 
 
     //Change le background, l'effet de texte et la musique.
@@ -198,15 +200,24 @@ const StoryVisualizerPage = ({
         })
     };
 
+    const handleBack = () => {
+        pause();
+        if (typeof window !== "undefined" && window.history.length > 1) {
+            router.back();
+            return;
+        }
+        router.push("/#stories");
+    };
+
     return (
         <div className="storyvisualizer-page" ref={backgroundRef}>
             <Nav />
-            <Link href="/#stories">
-                <button className="storyvisualizer-btn-back btn"
-                    onClick={() => pause()}>
-                    <WestIcon />Retour
-                </button>
-            </Link>
+            <button
+                className="storyvisualizer-btn-back btn"
+                type="button"
+                onClick={handleBack}>
+                <WestIcon />Retour
+            </button>
             <h1 className="storyvisualizer-title">{story.title}</h1>
             {isNodeImg && (
                 <img src={nodeImgUrl} className="storyvisualizer-node-img" />

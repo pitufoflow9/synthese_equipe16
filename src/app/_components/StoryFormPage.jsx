@@ -11,6 +11,7 @@ import gsap from "gsap";
 import SplitText from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import { useAudio } from "@/app/_context/AudioContext";
+import { useSearchParams } from "next/navigation";
 
 import Footer from "./Footer.jsx"
 import Nav from "./Nav.jsx"
@@ -27,7 +28,8 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [selectedBanner, setSelectedBanner] = useState(null);
     const [selectedAmbiance, setSelectedAmbiance] = useState(null);
     const [selectedTextEffect, setSelectedTextEffect] = useState(null);
-    const [title, setTitle] = useState("");
+    const searchParams = useSearchParams();
+    const [title, setTitle] = useState(searchParams?.get("title") || "");
     const [synopsis, setSynopsis] = useState("");
     const bannerPopupRef = useRef();
     const ambiancePopupRef = useRef();
@@ -133,6 +135,13 @@ const StoryFormPage = ({ formAction, user = null }) => {
     useEffect(() => {
         pause();
     }, []);
+
+    useEffect(() => {
+        const incomingTitle = searchParams?.get("title") || "";
+        if (incomingTitle) {
+            setTitle(incomingTitle);
+        }
+    }, [searchParams]);
 
     return (
         <div className="story-form-container">

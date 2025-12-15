@@ -8,6 +8,7 @@ import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import WestIcon from "@mui/icons-material/West";
 import { useAudio } from "@/app/_context/AudioContext";
 import { useEffect } from 'react';
+import { useRouter } from "next/navigation";
 
 import "@/app/_components/Nav.css";
 import "@/app/_components/Footer.css";
@@ -29,6 +30,7 @@ const StoryOverviewPage = ({ story }) => {
   const readHref = startNodeId
     ? `/storyvisualizer/${id}/${startNodeId}`
     : `/storyvisualizer/${id}`;
+  const router = useRouter();
   const authorHref = authorId
     ? `/profiles/user/${authorId}`
     : "/profiles/user/unknown";
@@ -47,17 +49,23 @@ const StoryOverviewPage = ({ story }) => {
     pause();
   }, []);
 
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+      return;
+    }
+    router.push("/#stories");
+  };
+
   return (
     <div className="overview-page-container">
       <img className="bg" src="../../../img/Background_3.jpg" alt="" />
       <Nav />
       <div className="overview-flex-1">
-        <Link href="/#stories">
-          <button className="btn btn-back">
-            <WestIcon />
-            Retour
-          </button>
-        </Link>
+        <button className="btn btn-back" type="button" onClick={handleBack}>
+          <WestIcon />
+          Retour
+        </button>
         <div className="story-card-container">
           <div className="story-card">
             <div className="overview-flex-2">

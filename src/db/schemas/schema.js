@@ -42,6 +42,14 @@ export const Img = sqliteTable("images", {
   description: text("description"),
 });
 
+export const UserImages = sqliteTable("user_images", {
+  id: text("id").primaryKey(),
+  user_id: text("user_id").notNull(),
+  url: text("url").notNull(),
+  description: text("description"),
+  created_at: integer("created_at", { mode: "timestamp_ms" }).default(0),
+});
+
 export const Audio = sqliteTable("audios", {
   id: text("id").primaryKey(),
   url: text("url").notNull(),
