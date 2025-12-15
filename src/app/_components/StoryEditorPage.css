@@ -343,6 +343,15 @@ label {
   padding: 20px;
 }
 
+.user-images-label {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.upload-error {
+  color: #d22;
+}
+
 .ambiance-list {
   display: flex;
   flex-direction: column;

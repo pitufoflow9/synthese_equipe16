@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import { useAudio } from "../_context/AudioContext.jsx";
+import { useRouter } from "next/navigation";
 
 import Nav from "@/app/_components/Nav.jsx";
 import CloseIcon from '@mui/icons-material/Close';
@@ -27,12 +28,11 @@ const StoryVisualizerPage = ({
     isStoryEnd,
     isChoiceAsked,
     isFirstNode,
-    isNodeImg = true,
-    //PLACE HOLDERs (TODO: enlever avant la remise)
-    nodeImgUrl = "../../../img/blue-purple_gradient.png",
+    isNodeImg = false,
+    nodeImgUrl = null,
     isNodeTempCustom = false,
-    tempNodeAmbiance = "2",
-    tempNodeTextEffect = "2"
+    tempNodeAmbiance = null,
+    tempNodeTextEffect = null
 }) => {
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
@@ -44,6 +44,7 @@ const StoryVisualizerPage = ({
     const backgroundRef = useRef();
     const timelineRef = useRef(null);
     const { changeSource, play, isReady, changeVolume, pause } = useAudio(false);
+    const router = useRouter();
 
 
     //Change le background, l'effet de texte et la musique.
@@ -61,7 +62,7 @@ const StoryVisualizerPage = ({
             tempNodeTextEffect
         );
 
-    }, [textEffect, current?.id, ambiance]);
+    }, [textEffect, ambiance, isFirstNode, isNodeTempCustom, tempNodeAmbiance, tempNodeTextEffect]);
 
     //Change le volume de la musique
     useEffect(() => {
@@ -198,17 +199,26 @@ const StoryVisualizerPage = ({
         })
     };
 
+    const handleBack = () => {
+        pause();
+        if (typeof window !== "undefined" && window.history.length > 1) {
+            router.back();
+            return;
+        }
+        router.push("/#stories");
+    };
+
     return (
         <div className="storyvisualizer-page" ref={backgroundRef}>
             <Nav />
-            <Link href="/#stories">
-                <button className="storyvisualizer-btn-back btn"
-                    onClick={() => pause()}>
-                    <WestIcon />Retour
-                </button>
-            </Link>
+            <button
+                className="storyvisualizer-btn-back btn"
+                type="button"
+                onClick={handleBack}>
+                <WestIcon />Retour
+            </button>
             <h1 className="storyvisualizer-title">{story.title}</h1>
-            {isNodeImg && (
+            {isNodeImg && nodeImgUrl && (
                 <img src={nodeImgUrl} className="storyvisualizer-node-img" />
             )}
             <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>

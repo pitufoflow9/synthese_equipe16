@@ -77,6 +77,11 @@ const GridProvider = ({
         nodeType: newNode.type ?? "story",
         isEnding: !!newNode.isEnding,
         body: newNode.contenu ?? "",
+        tempAmbiance: newNode.tempAmbiance ?? null,
+        tempEffect: newNode.tempEffect ?? null,
+        tempImageUrl: newNode.tempImageUrl ?? null,
+        isNodeTempCustom: !!newNode.isNodeTempCustom,
+        isNodeImg: !!newNode.isNodeImg,
       },
       draggable: true,
       selectable: true,
@@ -121,4 +126,3 @@ const useGrid = () => {
 export { GridProvider, useGrid };
 
 export default gridContext;
-

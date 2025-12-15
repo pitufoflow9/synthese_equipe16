@@ -52,8 +52,11 @@ const StoryEditorPage = ({ story }) => {
   const [effectIsOpen, setEffectIsOpen] = useState(false);
   const [isPublished, setIsPublished] = useState(!!story.is_published);
   const [selectedTempEffect, setSelectedTempEffect] = useState(null);
-  const [selectedTempAmbiance, setselectedTempAmbiance] = useState(null);
+  const [selectedTempBG, setSelectedTempBG] = useState(null);
   const [selectedTempImg, setSelectedTempImg] = useState(null);
+  const [userImages, setUserImages] = useState([]);
+  const [isLoadingUserImages, setIsLoadingUserImages] = useState(false);
+  const [userImagesError, setUserImagesError] = useState("");
   const ambiancePopupRef = useRef();
   const effectPopupRef = useRef();
   const imagePickerPopupRef = useRef();
@@ -74,6 +77,9 @@ const StoryEditorPage = ({ story }) => {
       setNodeTitle(selection.node.data?.label ?? "");
       setNodeText(selection.node.data?.body ?? "");
       setIsEnding(!!selection.node.data?.isEnding);
+      setSelectedTempBG(selection.node.data?.tempAmbiance ?? null);
+      setSelectedTempEffect(selection.node.data?.tempEffect ?? null);
+      setSelectedTempImg(selection.node.data?.tempImageUrl ?? null);
       setEdgeTitle("");
     } else if (isEdgeSelected) {
       setEdgeTitle(selection.edge.label ?? "");
@@ -82,6 +88,9 @@ const StoryEditorPage = ({ story }) => {
       setNodeTitle("");
       setNodeText("");
       setIsEnding(false);
+      setSelectedTempBG(null);
+      setSelectedTempEffect(null);
+      setSelectedTempImg(null);
     } else {
       setNodeTitle("");
       setNodeText("");
@@ -89,6 +98,9 @@ const StoryEditorPage = ({ story }) => {
       setIsEnding(false);
       setEdgeType("regular");
       setHistoryKey("");
+      setSelectedTempBG(null);
+      setSelectedTempEffect(null);
+      setSelectedTempImg(null);
     }
   }, [isNodeSelected, isEdgeSelected, selection]);
 
@@ -123,6 +135,11 @@ const StoryEditorPage = ({ story }) => {
   const handleApply = async () => {
     if (isNodeSelected) {
       const id = selection.node.id;
+      const tempAmbiance = selectedTempBG;
+      const tempEffect = selectedTempEffect;
+      const tempImageUrl = selectedTempImg;
+      const hasTempCustom = !!(tempAmbiance || tempEffect || tempImageUrl);
+      const hasTempImg = !!tempImageUrl;
       const updatedNodes = nodes.map((n) =>
         n.id === id
           ? {
@@ -132,6 +149,11 @@ const StoryEditorPage = ({ story }) => {
               label: nodeTitle,
               body: nodeText,
               isEnding: isStartNode ? false : isEnding,
+              tempAmbiance,
+              tempEffect,
+              tempImageUrl,
+              isNodeTempCustom: hasTempCustom,
+              isNodeImg: hasTempImg,
             },
           }
           : n
@@ -143,6 +165,11 @@ const StoryEditorPage = ({ story }) => {
         contenu: nodeText,
         type: selection.node.data?.nodeType ?? "story",
         isEnding: isStartNode ? false : isEnding,
+        tempAmbiance,
+        tempEffect,
+        tempImageUrl,
+        isNodeTempCustom: hasTempCustom,
+        isNodeImg: hasTempImg,
       });
     } else if (isEdgeSelected) {
       const id = selection.edge.id;
@@ -210,6 +237,11 @@ const StoryEditorPage = ({ story }) => {
       type: "story",
       titre: "Nouveau noeud",
       position: { x: Math.random() * 400, y: Math.random() * 200 },
+      isNodeTempCustom: false,
+      isNodeImg: false,
+      tempAmbiance: null,
+      tempEffect: null,
+      tempImageUrl: null,
     });
   };
 
@@ -362,6 +394,30 @@ const StoryEditorPage = ({ story }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [imagePickerIsOpen, ambianceIsOpen, effectIsOpen]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const fetchUserImages = async () => {
+      setIsLoadingUserImages(true);
+      setUserImagesError("");
+      try {
+        const res = await fetch("/api/user-images", { signal: controller.signal });
+        if (!res.ok) {
+          throw new Error("Impossible de recuperer vos images.");
+        }
+        const data = await res.json();
+        setUserImages(data?.images ?? []);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          setUserImagesError(error.message);
+        }
+      } finally {
+        setIsLoadingUserImages(false);
+      }
+    };
+    fetchUserImages();
+    return () => controller.abort();
+  }, []);
 
   const nodeTypes = useMemo(
     () => ({
@@ -516,7 +572,7 @@ const StoryEditorPage = ({ story }) => {
                   <div className="inputs-flex-container-5">
                     <div className="form-btn-container">
 
-                      {selectedTempAmbiance === null ? (
+                      {selectedTempBG === null ? (
                         <button type="button" onClick={openAmbiancePopup} className="btn-form btn-form-add-ambiance">
                           Choisir une ambiance
                         </button>
@@ -574,6 +630,26 @@ const StoryEditorPage = ({ story }) => {
                 <X />
               </button>
               <h2 className="">Parcourir la banque d'images</h2>
+              {userImages.length > 0 && (
+                <>
+                  <p className="user-images-label">Vos tÃ©lÃ©versements</p>
+                  <div className="banner-grid">
+                    {userImages.map((img) => (
+                      <button
+                        type="button"
+                        key={img.id}
+                        className="img-wrapper"
+                        onClick={() => setSelectedTempImg(img.url)}
+                      >
+                        <img className="" src={img.url} alt={img.description || "Image"} />
+                      </button>
+                    ))}
+                  </div>
+                  <hr className="popup-banner-hr" />
+                </>
+              )}
+              {isLoadingUserImages && <p>Chargement de vos images...</p>}
+              {userImagesError && <p className="upload-error">{userImagesError}</p>}
               <div className="banner-grid">
                 <div className="img-wrapper">
                   <img className="" src="../../../img/banniere_1.jpg" alt="" />
@@ -612,23 +688,23 @@ const StoryEditorPage = ({ story }) => {
               <h2 className="">Parcourir nos choix d'ambiances</h2>
               <div className="ambiance-list">
                 <button type="button"
-                  className={"ambiance-button ambiance-horreur " + (selectedTempAmbiance === "1" ? "active-1" : "")}
-                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "1" ? null : "1")}
+                  className={"ambiance-button ambiance-horreur " + (selectedTempBG === "1" ? "active-1" : "")}
+                  onClick={() => setSelectedTempBG(selectedTempBG === "1" ? null : "1")}
                 >
                   <div
                     className="ambiance-title"
                   >Ambiance d'horreur</div>
                 </button>
                 <button type="button"
-                  className={"ambiance-button ambiance-magique " + (selectedTempAmbiance === "2" ? "active-2" : "")}
-                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "2" ? null : "2")}
+                  className={"ambiance-button ambiance-magique " + (selectedTempBG === "2" ? "active-2" : "")}
+                  onClick={() => setSelectedTempBG(selectedTempBG === "2" ? null : "2")}
                 >
                   <div
                     className="ambiance-title">Ambiance magique</div>
                 </button>
                 <button type="button"
-                  className={"ambiance-button ambiance-medieval " + (selectedTempAmbiance === "3" ? "active-3" : "")}
-                  onClick={() => setselectedTempAmbiance(selectedTempAmbiance === "3" ? null : "3")}
+                  className={"ambiance-button ambiance-medieval " + (selectedTempBG === "3" ? "active-3" : "")}
+                  onClick={() => setSelectedTempBG(selectedTempBG === "3" ? null : "3")}
                 >
                   <div className="ambiance-title">Ambiance médiéval</div>
                 </button>

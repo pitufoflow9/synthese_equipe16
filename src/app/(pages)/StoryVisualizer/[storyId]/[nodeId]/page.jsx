@@ -39,17 +39,29 @@ const NodeView = async ({ params }) => {
   const isChoiceAsked = edges.length === 1;
   //Est-ce que c'est le dernier noeud?
   const isStoryEnd = (current.is_ending === true);
+
+  const isNodeTempCustom = !!current.is_node_temp_custom;
+  const tempNodeAmbiance = current.temp_ambiance || null;
+  const tempNodeTextEffect = current.temp_effect || null;
+  const isNodeImg = !!current.is_node_img;
+  const nodeImgUrl = current.temp_image_url || null;
+
   return (
     <StoryVisualizerPage
       story={story}
       current={current}
       edges={edges}
       storyId={storyId}
-      ambiance={story.ambiance}
-      textEffect={story.textEffect}
+      ambiance={isNodeTempCustom ? tempNodeAmbiance || story.ambiance : story.ambiance}
+      textEffect={isNodeTempCustom ? tempNodeTextEffect || story.textEffect : story.textEffect}
       isStoryEnd={isStoryEnd}
       isChoiceAsked={isChoiceAsked}
       isFirstNode={isFirstNode}
+      isNodeTempCustom={isNodeTempCustom}
+      tempNodeAmbiance={tempNodeAmbiance || story.ambiance}
+      tempNodeTextEffect={tempNodeTextEffect || story.textEffect}
+      isNodeImg={isNodeImg && !!nodeImgUrl}
+      nodeImgUrl={nodeImgUrl || "../../../img/placeholder.png"}
     />
   );
 };

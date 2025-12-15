@@ -40,6 +40,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
   const loaderNumberRef = useRef();
   const loaderLogoRef = useRef();
   const { pause } = useAudio(false);
+  const [draftTitle, setDraftTitle] = useState("");
   const {
     nodes,
     edges,
@@ -166,6 +167,10 @@ const MainPageClient = ({ user, recentStories = [] }) => {
     pause();
   }, []);
 
+  const storyFormHref = draftTitle.trim()
+    ? `/storyform?title=${encodeURIComponent(draftTitle.trim())}`
+    : "/storyform";
+
   return (
 
     <div className="main-page">
@@ -185,14 +190,17 @@ const MainPageClient = ({ user, recentStories = [] }) => {
               Donnez vie à votre récit
             </h1>
             <h3 className="h3-header">
-              Créez des chapitres comme des scènes de film : choisissez vos ambiances, ajoutez des effets et faites vibrer chaque moment.
+              Créez des chapitres comme des scènes de film : choisissez vos ambiances, ajoutez des effets et faites vibrer chaque moment.
             </h3>
             <div className="main-input-container">
               <input
                 className="main-input"
                 placeholder="Le titre de votre histoire..."
-                required />
-              <Link href="/storyform">
+                required
+                value={draftTitle}
+                onChange={(e) => setDraftTitle(e.target.value)}
+              />
+              <Link href={storyFormHref}>
                 <div className="btn-input">
                   <EastIcon />
                 </div>
