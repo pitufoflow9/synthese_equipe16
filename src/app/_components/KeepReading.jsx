@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BookOpen } from "lucide-react";
 import Link from "next/link";
+import Swiper from "swiper";
+import "swiper/css";
 import "@/app/_components/KeepReading.css";
 
 const resolveImage = (theme) => {
@@ -20,6 +22,7 @@ const truncate = (value, max = 180) => {
 
 const KeepReading = () => {
   const [items, setItems] = useState([]);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -30,6 +33,30 @@ const KeepReading = () => {
       setItems([]);
     }
   }, []);
+
+  useEffect(() => {
+    if (!items.length) {
+      swiperRef.current?.destroy?.(true, true);
+      swiperRef.current = null;
+      return undefined;
+    }
+    const el = document.querySelector(".keep-reading-swiper");
+    if (!el) return undefined;
+
+    swiperRef.current?.destroy?.(true, true);
+    swiperRef.current = new Swiper(el, {
+      slidesPerView: 2.5,
+      spaceBetween: 30,
+      speed: 400,
+      grabCursor: true,
+      slidesOffsetAfter: 200,
+    });
+
+    return () => {
+      swiperRef.current?.destroy?.(true, true);
+      swiperRef.current = null;
+    };
+  }, [items.length]);
 
   if (!items.length) {
     return (
@@ -50,7 +77,7 @@ const KeepReading = () => {
         Reprenez votre aventure
       </h2>
       <div className="swiper-container">
-        <div className="swiper">
+        <div className="swiper keep-reading-swiper">
           <div className="swiper-wrapper">
             {items.map((story, index) => {
               const href = `/storyvisualizer/${story.storyId}/${story.nodeId}`;
