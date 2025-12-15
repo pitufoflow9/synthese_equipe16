@@ -8,11 +8,12 @@ export const Histoires = sqliteTable("histoires", {
   theme: text("theme"),
   musique: text("musique"),
   animation: text("animation"),
+  likes: integer("likes").default(0).notNull(),
+  dislikes: integer("dislikes").default(0).notNull(),
   is_published: integer("is_published", { mode: "boolean" })
     .default(false)
     .notNull(),
   created_at: integer("created_at", { mode: "timestamp_ms" }).default(0),
-  // likes: integer("likes").default(0).notNull(),
 });
 
 export const Nodes = sqliteTable("nodes", {
