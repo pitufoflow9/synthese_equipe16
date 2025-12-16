@@ -218,6 +218,11 @@ const StoryEditorPage = ({ story }) => {
         )
       );
       updateSelectionData();
+      updateEdge(story.id, selection.edge.id, {
+        texte: edgeTitle,
+        edgeType: value,
+        historyKey: historyKey?.trim() || null,
+      });
     }
   };
 
@@ -232,6 +237,11 @@ const StoryEditorPage = ({ story }) => {
         )
       );
       updateSelectionData();
+      updateEdge(story.id, selection.edge.id, {
+        texte: edgeTitle,
+        edgeType,
+        historyKey: value?.trim() || null,
+      });
     }
   };
 
@@ -497,8 +507,7 @@ const StoryEditorPage = ({ story }) => {
                     placeholder="Ecrire..."
                     value={edgeTitle}
                     onChange={(e) => {
-                      setEdgeTitle(e.target.value);
-                      handleNodeTitleChange(e.target.value);
+                      handleEdgeTitleChange(e.target.value);
                     }}
                   />
                 </div>
@@ -507,7 +516,7 @@ const StoryEditorPage = ({ story }) => {
                     <label className="storyvisualizer-label" htmlFor="node-text">Type de choix</label>
                     <EdgeTypeToggle
                       value={edgeType}
-                      onChange={setEdgeType}
+                      onChange={handleEdgeTypeChange}
                     />
                   </div>
                 </div>
@@ -518,6 +527,8 @@ const StoryEditorPage = ({ story }) => {
                       <input
                         className="choice-name"
                         placeholder="Ecrire..."
+                        value={historyKey}
+                        onChange={(e) => handleHistoryKeyChange(e.target.value)}
                       />
                       <p className="storyvisualization-history-conditional-fields">     Ce choix sera seulement offert au lecteur si celui-ci a préalablement sélectionné un choix du type <span>Historique </span>avec le même identifiant.</p>
                     </div>
@@ -530,6 +541,8 @@ const StoryEditorPage = ({ story }) => {
                       <input
                         className="choice-name"
                         placeholder="Ecrire..."
+                        value={historyKey}
+                        onChange={(e) => handleHistoryKeyChange(e.target.value)}
                       />
                       <p className="storyvisualization-history-conditional-fields"> Ce choix enregistrera cet identifiant dans l'historique du joueur. Vous pourrez ensuite utiliser ce même identifiant dans un choix <span>Conditionnel</span> pour créer des conséquences.</p>
                     </div>
