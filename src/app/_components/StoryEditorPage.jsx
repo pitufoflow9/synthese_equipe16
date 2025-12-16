@@ -626,47 +626,56 @@ const StoryEditorPage = ({ story }) => {
                 <X />
               </button>
               <h2 className="">Parcourir la banque d'images</h2>
-              <div className="banners-container">
-                {userImages.length > 0 && (
-                  <>
-                    <p className="user-images-label">Vos téléversements</p>
-                    <div className="banner-grid">
-                      {userImages.map((img) => (
+              <div className={userImages.length !== 0 ? ("banners-container-1") : ("")}>
+                <div className="banners-container-2">
+                  {userImages.length > 0 && (
+                    <>
+                      <p className="user-images-label">Vos téléversements</p>
+                      <div className="banner-grid">
+                        {userImages.map((img) => (
+                          <button
+                            type="button"
+                            key={img.id}
+                            className={"img-wrapper " + (selectedTempImg === img.url ? "active" : "")}
+                            onClick={() =>
+                              setSelectedTempImg((prev) => (prev === img.url ? null : img.url))
+                            }
+                          >
+                            <img src={img.url} alt={img.description || "Image"} />
+                          </button>
+                        ))}
+                      </div>
+                      <hr className="popup-banner-hr" />
+                    </>
+                  )}
+                  {isLoadingUserImages && <p>Chargement de vos images...</p>}
+                  <p className="user-images-label">Galerie d’images</p>
+                  {userImagesError && <p className="upload-error">{userImagesError}</p>}
+                  <div className="banner-grid">
+                    {[
+                      "banniere_1.jpg",
+                      "banniere_2.jpg",
+                      "banniere_3.jpg",
+                      "banniere_4.jpg",
+                      "banniere_5.jpg",
+                      "banniere_6.jpg",
+                    ].map((img) => {
+                      const url = `../../../img/${img}`;
+
+                      return (
                         <button
                           type="button"
-                          key={img.id}
-                          className="img-wrapper"
-                          onClick={() => {
-                            setSelectedTempImg(img.url);
-                            setImagePickerIsOpen(false);
-                          }}
+                          key={img}
+                          className={"img-wrapper " + (selectedTempImg === url ? "active" : "")}
+                          onClick={() =>
+                            setSelectedTempImg((prev) => (prev === url ? null : url))
+                          }
                         >
-                          <img className="" src={img.url} alt={img.description || "Image"} />
+                          <img src={url} alt={img} />
                         </button>
-                      ))}
-                    </div>
-                    <hr className="popup-banner-hr" />
-                  </>
-                )}
-                {isLoadingUserImages && <p>Chargement de vos images...</p>}
-                <p className="user-images-label">Galerie d’images</p>
-                {userImagesError && <p className="upload-error">{userImagesError}</p>}
-                <div className="banner-grid">
-                  {["banniere_1.jpg", "banniere_2.jpg", "banniere_3.jpg", "banniere_4.jpg", "banniere_5.jpg", "banniere_6.jpg"].map(
-                    (img) => (
-                      <button
-                        type="button"
-                        key={img}
-                        className="img-wrapper"
-                        onClick={() => {
-                          setSelectedTempImg(`../../../img/${img}`);
-                          setImagePickerIsOpen(false);
-                        }}
-                      >
-                        <img className="" src={`../../../img/${img}`} alt={img} />
-                      </button>
-                    )
-                  )}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
               <hr className="popup-banner-hr" />
@@ -793,7 +802,7 @@ const StoryEditorPage = ({ story }) => {
         <button
           className="draft-button"
           onClick={handleSaveDraft}
-          // disabled={!isPublished}
+        // disabled={!isPublished}
         >
           {isPublished ? "Sauvegarder en brouillon" : "Sauvegarder le brouillon"}
         </button>
@@ -801,7 +810,7 @@ const StoryEditorPage = ({ story }) => {
           <button
             className="publish-button"
             onClick={handlePublishStory}
-            // disabled={isPublished}
+          // disabled={isPublished}
           >
             {isPublished ? "Sauvegarder" : "Publier"}
           </button>

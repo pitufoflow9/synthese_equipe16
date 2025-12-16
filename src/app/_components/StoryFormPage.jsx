@@ -222,39 +222,39 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <X />
                             </button>
                             <h2 className="">Parcourir la banque d'images</h2>
-                            <div className="banners-container">
-                                {userImages.length > 0 && (
-                                    <>
-                                        <p className="user-images-label">Vos téléversements</p>
-                                        <div className="banner-grid">
-                                            {userImages.map((img) => (
-                                                <button
-                                                    type="button"
-                                                    key={img.id}
-                                                    className="img-wrapper"
-                                                    onClick={() => selectBanner(img.url)}
-                                                >
-                                                    <img className="" src={img.url} alt={img.description || "Image"} />
-                                                </button>
-                                            ))}
-                                        </div>
-                                        <hr className="popup-banner-hr" />
-                                    </>
-                                )}
-                                {isLoadingUserImages && <p>Chargement de vos images...</p>}
-                                {userImagesError && <p className="upload-error">{userImagesError}</p>}
-                                <p className="user-images-label">Galerie d’images</p>
-                                <div className="banner-grid" >
-                                    {bannerImages.map((img) => (
-                                        <button
-                                            type="button"
-                                            key={img}
-                                            className="img-wrapper"
-                                            onClick={() => selectBanner(img)}
-                                        >
-                                            <img className="" src={`../../../img/${img}`} alt={img} />
-                                        </button>
-                                    ))}
+                            <div className={userImages.length !== 0 ? ("banners-container-1") : ("")}>
+                                <div className="banners-container-2">
+                                    {userImages.length > 0 && (
+                                        <>
+                                            <p className="user-images-label">Vos téléversements</p>
+                                            <div className="banner-grid">
+                                                {userImages.map((img) => (
+                                                    <button
+                                                        type="button"
+                                                        key={img.id}
+                                                        className={"img-wrapper " + (selectedBanner === img.url ? "active" : "")}
+                                                        onClick={() => setSelectedBanner(img.url)}>
+                                                        <img src={img.url} alt={img.description || "Image"} />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <hr className="popup-banner-hr" />
+                                        </>
+                                    )}
+                                    {isLoadingUserImages && <p>Chargement de vos images...</p>}
+                                    {userImagesError && <p className="upload-error">{userImagesError}</p>}
+                                    <p className="user-images-label">Galerie d’images</p>
+                                    <div className="banner-grid" >
+                                        {bannerImages.map((img) => (
+                                            <button
+                                                type="button"
+                                                key={img}
+                                                className={"img-wrapper " + (selectedBanner === img ? "active" : "")}
+                                                onClick={() => setSelectedBanner((prev) => (prev === img ? null : img))}>
+                                                <img src={`../../../img/${img}`} alt={img} />
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <hr className="popup-banner-hr" />
