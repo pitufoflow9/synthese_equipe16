@@ -177,12 +177,13 @@ const StoryEditorPage = ({ story }) => {
       });
     } else if (isEdgeSelected) {
       const id = selection.edge.id;
+      const nextHistoryKey = historyKey?.trim() || null;
       const updatedEdges = edges.map((e) =>
         e.id === id
           ? {
             ...e,
             label: edgeTitle,
-            data: { ...e.data, edgeType, historyKey },
+            data: { ...e.data, edgeType, historyKey: nextHistoryKey },
             edgeType,
           }
           : e
@@ -192,57 +193,21 @@ const StoryEditorPage = ({ story }) => {
       updateEdge(story.id, id, {
         texte: edgeTitle,
         edgeType,
-        historyKey: historyKey?.trim() || null,
+        historyKey: nextHistoryKey,
       });
     }
   };
 
   const handleEdgeTitleChange = (value) => {
     setEdgeTitle(value);
-    if (isEdgeSelected) {
-      setEdgesState((current) =>
-        current.map((e) => (e.id === selection.edge.id ? { ...e, label: value } : e))
-      );
-      updateSelectionData();
-    }
   };
 
   const handleEdgeTypeChange = (value) => {
     setEdgeType(value);
-    if (isEdgeSelected) {
-      setEdgesState((current) =>
-        current.map((e) =>
-          e.id === selection.edge.id
-            ? { ...e, data: { ...e.data, edgeType: value }, edgeType: value }
-            : e
-        )
-      );
-      updateSelectionData();
-      updateEdge(story.id, selection.edge.id, {
-        texte: edgeTitle,
-        edgeType: value,
-        historyKey: historyKey?.trim() || null,
-      });
-    }
   };
 
   const handleHistoryKeyChange = (value) => {
     setHistoryKey(value);
-    if (isEdgeSelected) {
-      setEdgesState((current) =>
-        current.map((e) =>
-          e.id === selection.edge.id
-            ? { ...e, data: { ...e.data, historyKey: value || null } }
-            : e
-        )
-      );
-      updateSelectionData();
-      updateEdge(story.id, selection.edge.id, {
-        texte: edgeTitle,
-        edgeType,
-        historyKey: value?.trim() || null,
-      });
-    }
   };
 
   const handleAddNode = () => {
