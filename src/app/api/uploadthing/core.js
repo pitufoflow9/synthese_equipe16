@@ -3,13 +3,15 @@ import { createUploadthing } from "uploadthing/next";
 
 import { db } from "@/db";
 import { UserImages } from "@/db/schemas/schema";
-import { getSession } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 const f = createUploadthing();
 
-const authenticateRequest = async () => {
+const authenticateRequest = async (req) => {
   try {
-    const session = await getSession();
+    const session = await auth.api.getSession({
+      headers: req?.headers,
+    });
     if (session?.user?.id) {
       return { id: session.user.id };
     }
@@ -26,8 +28,8 @@ export const ourFileRouter = {
       maxFileCount: 1,
     },
   })
-    .middleware(async () => {
-      const user = await authenticateRequest();
+    .middleware(async ({ req }) => {
+      const user = await authenticateRequest(req);
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
