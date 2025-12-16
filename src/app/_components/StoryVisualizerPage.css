@@ -12,7 +12,7 @@
 .storyvisualizer-title {
   margin: 100 auto 0 auto;
   width: 80vw;
-  color: white;
+  color: var(--white);
   font-size: 40px;
   text-align: center;
 }
@@ -23,7 +23,7 @@
   z-index: 0;
   margin: 50 auto 0 auto;
   width: 75vw;
-  color: white;
+  color: var(--white);
   font-weight: 200;
   font-size: 30px;
   hyphens: manual;
@@ -40,15 +40,15 @@
   transition: color 0.3s ease-out;
   margin-top: 50px;
   margin: 60px 0 60px 0;
-  border: solid 1px white;
+  border: solid 1px var(--white);
   border-radius: 25px;
   padding: 10px 20px;
   width: auto;
-  color: white;
+  color: var(--white);
   font-size: 18px;
 
   &:hover {
-    background-color: white;
+    background-color: var(--white);
     color: var(--texte-histoire);
   }
 }
@@ -64,16 +64,16 @@
   transition: color 0.3s ease-out;
   margin-top: 50px;
   margin: 60px auto;
-  border: solid 1px white;
+  border: solid 1px var(--white);
   border-radius: 100%;
   padding: 15px;
   width: auto;
   height: auto;
-  color: white;
+  color: var(--white);
   font-size: 18px;
 
   &:hover {
-    background-color: white;
+    background-color: var(--white);
     color: var(--texte-histoire);
   }
 }
@@ -84,13 +84,13 @@
   left: 20px;
   transition: all 0.3s ease;
   cursor: pointer;
-  border: solid 1px white;
+  border: solid 1px var(--white);
   border-radius: 25px;
   padding: 10px 20px;
-  color: white;
+  color: var(--white);
 
   &:hover {
-    background-color: white;
+    background-color: var(--white);
     color: var(--texte-histoire);
   }
 }
@@ -122,7 +122,7 @@
   .storyvisualizer-choices:nth-child(2)::after {
     top: 50%;
     align-self: center;
-    background: white;
+    background: var(--white);
     width: 1px;
     height: 80%;
     content: "";
@@ -143,7 +143,7 @@
   /* padding: 30px; */
   width: 100%;
   height: 100%;
-  color: white;
+  color: var(--white);
   font-size: 30px;
   text-align: center;
   &:hover {
@@ -157,10 +157,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 6;
-  border: 1px solid white;
+  border: 1px solid var(--white);
   height: calc(100% - 140px);
   height: 50%;
-  color: white;
+  color: var(--white);
 }
 
 .storyvisualizer-btn-back {
@@ -172,13 +172,13 @@
   gap: 10px;
   transition: all 0.3s ease;
   margin: 0px 40px 40px 4vw;
-  border: solid 1px white;
+  border: solid 1px var(--white);
   border-radius: 25px;
   padding: 8px 15px;
-  color: white;
+  color: var(--white);
 
   &:hover {
-    background-color: white;
+    background-color: var(--white);
     color: var(--primary-text-color);
   }
 }
@@ -243,14 +243,14 @@
   margin-top: 100px;
   width: 100%;
   pointer-events: none;
-  color: white;
+  color: var(--white);
   font-size: 18px;
   text-align: center;
 }
 
 .storyvisualizer-node-img {
   margin: 50px auto;
-  outline: 1px solid white;
+  outline: 1px solid var(--white);
   outline-offset: 9px;
   border-radius: 35px;
   max-width: 900px;

@@ -1,8 +1,5 @@
 "use client";
 
-// Faire:
-//  npm install lenis gsap
-
 import Lenis from "lenis";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";

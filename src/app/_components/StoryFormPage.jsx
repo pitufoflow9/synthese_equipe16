@@ -4,8 +4,7 @@ import "@/app/_components/Nav.css"
 import "@/app/_components/Footer.css"
 import "@/app/_components/MainPageClient.css"
 import "@/app/_components/StoryFormPage.css"
-import { useEffect, useState } from "react";
-import { useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import SplitText from "gsap/SplitText";
@@ -28,6 +27,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [selectedBanner, setSelectedBanner] = useState(null);
     const [selectedAmbiance, setSelectedAmbiance] = useState(null);
     const [selectedTextEffect, setSelectedTextEffect] = useState(null);
+    const [hasLoadedDraft, setHasLoadedDraft] = useState(false);
     const [userImages, setUserImages] = useState([]);
     const [isLoadingUserImages, setIsLoadingUserImages] = useState(false);
     const [userImagesError, setUserImagesError] = useState("");
@@ -118,6 +118,12 @@ const StoryFormPage = ({ formAction, user = null }) => {
         setEffectIsOpen(false);
     };
 
+    const rememberUploadReturnPath = () => {
+        if (typeof window === "undefined") return;
+        const path = window.location.pathname + window.location.search + window.location.hash;
+        sessionStorage.setItem("upload-return-path", path);
+    };
+
     useEffect(() => {
         function handleClickOutside(e) {
             if (bannerIsOpen && bannerPopupRef.current && !bannerPopupRef.current.contains(e.target)) {
@@ -134,7 +140,6 @@ const StoryFormPage = ({ formAction, user = null }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [bannerIsOpen, ambianceIsOpen, effectIsOpen]);
 
-    //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
     useEffect(() => {
         pause();
     }, []);
@@ -145,6 +150,52 @@ const StoryFormPage = ({ formAction, user = null }) => {
             setTitle(incomingTitle);
         }
     }, [searchParams]);
+
+    // Restore any draft the user had when navigating back from upload or elsewhere.
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        try {
+            const raw = sessionStorage.getItem("storyform-draft");
+            if (raw) {
+                const draft = JSON.parse(raw);
+                if (draft.title) setTitle(draft.title);
+                if (draft.synopsis) setSynopsis(draft.synopsis);
+                if (draft.selectedBanner) setSelectedBanner(draft.selectedBanner);
+                if (draft.selectedAmbiance) setSelectedAmbiance(draft.selectedAmbiance);
+                if (draft.selectedTextEffect) setSelectedTextEffect(draft.selectedTextEffect);
+            }
+        } catch (err) {
+            // Ignore restoration errors
+        } finally {
+            setHasLoadedDraft(true);
+        }
+    }, []);
+
+    // Persist draft fields so leaving the page (upload, etc.) keeps user input.
+    useEffect(() => {
+        if (!hasLoadedDraft || typeof window === "undefined") return;
+        const payload = {
+            title,
+            synopsis,
+            selectedBanner,
+            selectedAmbiance,
+            selectedTextEffect,
+        };
+        try {
+            sessionStorage.setItem("storyform-draft", JSON.stringify(payload));
+        } catch (err) {
+            // Ignore persistence errors
+        }
+    }, [title, synopsis, selectedBanner, selectedAmbiance, selectedTextEffect, hasLoadedDraft]);
+
+    const handleSubmit = () => {
+        if (typeof window === "undefined") return;
+        try {
+            sessionStorage.removeItem("storyform-draft");
+        } catch (err) {
+            // Ignore cleanup errors
+        }
+    };
 
     useEffect(() => {
         const controller = new AbortController();
@@ -178,7 +229,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
             <Nav user={user} />
 
             <h1 className="h1-story-form">Nouvelle histoire</h1>
-            <form className="story-form" action={formAction} >
+            <form className="story-form" action={formAction} onSubmit={handleSubmit}>
                 <div className="form-input-container title-input">
                     <label htmlFor="title">Titre</label>
                     <input
@@ -222,43 +273,43 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 <X />
                             </button>
                             <h2 className="">Parcourir la banque d'images</h2>
-                            <div className="banners-container">
-                                {userImages.length > 0 && (
-                                    <>
-                                        <p className="user-images-label">Vos téléversements</p>
-                                        <div className="banner-grid">
-                                            {userImages.map((img) => (
-                                                <button
-                                                    type="button"
-                                                    key={img.id}
-                                                    className="img-wrapper"
-                                                    onClick={() => selectBanner(img.url)}
-                                                >
-                                                    <img className="" src={img.url} alt={img.description || "Image"} />
-                                                </button>
-                                            ))}
-                                        </div>
-                                        <hr className="popup-banner-hr" />
-                                    </>
-                                )}
-                                {isLoadingUserImages && <p>Chargement de vos images...</p>}
-                                {userImagesError && <p className="upload-error">{userImagesError}</p>}
-                                <p className="user-images-label">Galerie d’images</p>
-                                <div className="banner-grid" >
-                                    {bannerImages.map((img) => (
-                                        <button
-                                            type="button"
-                                            key={img}
-                                            className="img-wrapper"
-                                            onClick={() => selectBanner(img)}
-                                        >
-                                            <img className="" src={`../../../img/${img}`} alt={img} />
-                                        </button>
-                                    ))}
+                            <div className={userImages.length !== 0 ? ("banners-container-1") : ("")}>
+                                <div className="banners-container-2">
+                                    {userImages.length > 0 && (
+                                        <>
+                                            <p className="user-images-label">Vos téléversements</p>
+                                            <div className="banner-grid">
+                                                {userImages.map((img) => (
+                                                    <button
+                                                        type="button"
+                                                        key={img.id}
+                                                        className={"img-wrapper " + (selectedBanner === img.url ? "active" : "")}
+                                                        onClick={() => setSelectedBanner(img.url)}>
+                                                        <img src={img.url} alt={img.description || "Image"} />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <hr className="popup-banner-hr" />
+                                        </>
+                                    )}
+                                    {isLoadingUserImages && <p>Chargement de vos images...</p>}
+                                    {userImagesError && <p className="upload-error">{userImagesError}</p>}
+                                    <p className="user-images-label">Galerie d’images</p>
+                                    <div className="banner-grid" >
+                                        {bannerImages.map((img) => (
+                                            <button
+                                                type="button"
+                                                key={img}
+                                                className={"img-wrapper " + (selectedBanner === img ? "active" : "")}
+                                                onClick={() => setSelectedBanner((prev) => (prev === img ? null : img))}>
+                                                <img src={`../../../img/${img}`} alt={img} />
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <hr className="popup-banner-hr" />
-                            <Link href="../upload" ><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
+                            <Link href="../upload" onClick={rememberUploadReturnPath}><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
                         </div>
                     </div>
                 }

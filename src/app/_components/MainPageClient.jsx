@@ -30,9 +30,7 @@ import Nav from "@/app/_components/Nav.jsx";
 import RecemmentPubliees from "@/app/_components/RecentlyPublished.jsx";
 import ReprendreLecture from "@/app/_components/KeepReading.jsx";
 
-gsap.registerPlugin(useGSAP, GSDevTools, SplitText,
-  // CustomEase
-);
+gsap.registerPlugin(useGSAP, GSDevTools, SplitText);
 
 const MainPageClient = ({ user, recentStories = [] }) => {
   const loaderNumberRef = useRef();
@@ -52,8 +50,9 @@ const MainPageClient = ({ user, recentStories = [] }) => {
   }, [selection]);
 
   useGSAP(() => {
+    var landingPageSeen = false;
     document.body.style.overflow = "hidden";
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ paused: true });
 
     tl.set(".main-logo", {
       opacity: 0,
@@ -104,7 +103,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
 
     tl.set(".loader-logo-container ", {
       height: "100%",
-    }, );
+    },);
 
     tl.to(loaderLogoRef.current, {
       top: "40px",
@@ -148,9 +147,16 @@ const MainPageClient = ({ user, recentStories = [] }) => {
     tl.to(".loader-logo", {
       opacity: 0,
     });
+
+    if (landingPageSeen) {
+      tl.progress(1).pause();
+      gsap.set(document.body, { overflow: "auto" });
+    } else {
+      tl.play(0);
+      landingPageSeen = true;
+    }
   })
 
-  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {
     pause();
   }, []);
@@ -198,7 +204,7 @@ const MainPageClient = ({ user, recentStories = [] }) => {
         </div>
       </header>
       <RecemmentPubliees stories={recentStories} />
-      <hr />
+      <hr className="main-hr"/>
       <ReprendreLecture />
       <Footer />
     </div>

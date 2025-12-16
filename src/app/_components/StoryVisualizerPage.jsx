@@ -46,8 +46,6 @@ const StoryVisualizerPage = ({
     const { changeSource, play, isReady, changeVolume, pause } = useAudio(false);
     const router = useRouter();
 
-
-    //Change le background, l'effet de texte et la musique.
     useEffect(() => {
         StoryCustomization(
             storyTextRef.current,
@@ -89,7 +87,6 @@ const StoryVisualizerPage = ({
         }
     }, [storyId, current?.id, story?.title, story?.synopsis, story?.authorName, story?.theme, nodeImgUrl]);
 
-    //Change le volume de la musique
     useEffect(() => {
         if (isReady) {
             changeVolume(0.03);
@@ -97,7 +94,6 @@ const StoryVisualizerPage = ({
     }, [isReady, changeVolume]);
 
 
-    //Click handlers pour le popup de confirmation de choix
     const openChoicePopup = (e) => {
         e.preventDefault();
         setChoiceIsOpen(true);
@@ -108,7 +104,6 @@ const StoryVisualizerPage = ({
         setChoiceIsOpen(false);
     };
 
-    //Ouvre le popup de confirmation de choix
     const openChoiceConfirmation = (e, edgeId) => {
         if (selectedChoice === edgeId) return;
         e.preventDefault();
@@ -176,7 +171,6 @@ const StoryVisualizerPage = ({
         }, "<")
     }
 
-    //Ferme le popup de confirmation de choix
     const closeChoiceConfirmation = () => {
         setChoiceConfirmationIsOpen(false);
 

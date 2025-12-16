@@ -47,8 +47,6 @@ const StoryOverviewPage = ({ story }) => {
     return `../../../img/${theme}`;
   })();
 
-
-  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {
     pause();
   }, []);

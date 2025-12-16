@@ -1,23 +1,18 @@
 import { randomUUID } from "crypto";
 import { createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+
 import { db } from "@/db";
 import { UserImages } from "@/db/schemas/schema";
-import { getSession } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 const f = createUploadthing();
 
-const authenticateRequest = async () => {
-  // Auth best-effort to avoid 400s on prod if cookies/sessions are missing.
-  try {
-    const session = await getSession();
-    if (session?.user?.id) {
-      return { id: session.user.id };
-    }
-  } catch (error) {
-    console.error("Upload auth error", error);
-  }
-  return { id: "anonymous" };
+const authenticateRequest = async (req) => {
+  const session = await auth.api.getSession({
+    headers: req?.headers,
+  });
+  return session?.user ? { id: session.user.id } : null;
 };
 
 export const ourFileRouter = {
@@ -27,16 +22,25 @@ export const ourFileRouter = {
       maxFileCount: 1,
     },
   })
-    .middleware(async () => {
-      const user = await authenticateRequest();
+    .middleware(async ({ req }) => {
+      const user = await authenticateRequest(req);
+      if (!user) {
+        throw new UploadThingError("Unauthorized");
+      }
+      console.log("uploadthing.middleware user", { userId: user.id });
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const fileUrl = file.url ?? file.ufsUrl;
+      console.log("uploadthing.onUploadComplete start", {
+        userId: metadata?.userId,
+        key: file.key,
+      });
+
+      const fileUrl = file.ufsUrl;
       const description = file.name ?? "Image televersee";
 
       try {
-        if (metadata.userId && metadata.userId !== "anonymous") {
+        if (metadata.userId) {
           await db.insert(UserImages).values({
             id: randomUUID(),
             user_id: metadata.userId,
@@ -47,7 +51,6 @@ export const ourFileRouter = {
         }
       } catch (error) {
         console.error("Failed to persist uploaded image (continuing anyway)", error);
-        // Ne bloque pas l'upload si la table n'existe pas (ex: migrations non appliquées en prod).
       }
 
       console.log("Upload complete for userId:", metadata.userId);
@@ -55,6 +58,7 @@ export const ourFileRouter = {
       return {
         uploadedBy: metadata.userId,
         fileUrl,
+        ufsUrl: fileUrl,
         fileKey: file.key,
       };
     }),

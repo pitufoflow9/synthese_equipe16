@@ -73,9 +73,7 @@ const KeepReading = () => {
 
   return (
     <section>
-      <h2 className="section-title keep-reading-h2" id="stories-1">
-        Reprenez votre aventure
-      </h2>
+      <h2 className="section-title keep-reading-h2" id="stories-1">Reprenez votre aventure</h2>
       <div className="swiper-container">
         <div className="swiper keep-reading-swiper">
           <div className="swiper-wrapper">
@@ -85,8 +83,8 @@ const KeepReading = () => {
                 index === 0
                   ? "swiper-slide swiper-first-slide"
                   : index === items.length - 1
-                  ? "swiper-slide swiper-last-slide"
-                  : "swiper-slide";
+                    ? "swiper-slide swiper-last-slide"
+                    : "swiper-slide";
               return (
                 <div className={slideClass} key={`${story.storyId}-${story.nodeId}`}>
                   <Link href={href} className="swiper-link">

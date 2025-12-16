@@ -58,7 +58,6 @@ const MyProfilePage = ({
 
   const { pause } = useAudio(false);
 
-  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {
     pause();
   }, []);
@@ -170,6 +169,11 @@ const MyProfilePage = ({
                     key={story.id}
                   >
                     <div className="card">
+                      <Link
+                        href={editHref}
+                        className="card-overlay"
+                        aria-label={`Modifier ${story.title}`}
+                       />
                       <div className="img-container">
                         <img
                           src={resolveImage(story.theme)}
@@ -179,7 +183,7 @@ const MyProfilePage = ({
                         <div className="swiper-buttons-flex-container">
                           <Link
                             href={editHref}
-                            className="edit-button"
+                            className="edit-button card-overlay"
                             aria-label={`Modifier ${story.title}`}
                           >
                             <EditIcon />

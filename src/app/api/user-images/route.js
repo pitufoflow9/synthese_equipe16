@@ -20,5 +20,10 @@ export async function GET() {
     .where(eq(UserImages.user_id, userId))
     .orderBy(desc(UserImages.created_at));
 
-  return Response.json({ images });
+  const normalizedImages = images.map((image) => ({
+    ...image,
+    ufsUrl: image.url,
+  }));
+
+  return Response.json({ images: normalizedImages });
 }
