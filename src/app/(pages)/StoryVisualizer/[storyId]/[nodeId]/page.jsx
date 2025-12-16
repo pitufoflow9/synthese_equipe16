@@ -29,6 +29,7 @@ const NodeView = async ({ params }) => {
     id: branch.id,
     texte: branch.texte,
     type: branch.type,
+    historyKey: branch.history_key,
     target: branch.targetNodeId,
   }));
 

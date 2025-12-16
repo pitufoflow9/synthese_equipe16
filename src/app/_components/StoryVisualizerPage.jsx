@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import { useAudio } from "../_context/AudioContext.jsx";
@@ -37,6 +37,7 @@ const StoryVisualizerPage = ({
     const [choiceIsOpen, setChoiceIsOpen] = useState(false);
     const [choiceConfirmationIsOpen, setChoiceConfirmationIsOpen] = useState(false);
     const [selectedChoice, setSelectedChoice] = useState(null);
+    const [historyKeys, setHistoryKeys] = useState(new Set());
     const clonedRef = useRef(null);
     const choiceRefs = useRef({});
     const choicePopupRef = useRef();
@@ -61,6 +62,18 @@ const StoryVisualizerPage = ({
         );
 
     }, [textEffect, ambiance, isFirstNode, isNodeTempCustom, tempNodeAmbiance, tempNodeTextEffect]);
+
+    // Load stored history keys (local only)
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        try {
+            const stored = JSON.parse(localStorage.getItem("inkveil-history") || "[]");
+            const next = Array.isArray(stored) ? new Set(stored) : new Set();
+            setHistoryKeys(next);
+        } catch (err) {
+            setHistoryKeys(new Set());
+        }
+    }, []);
 
     // Persist last-read info for KeepReading (localStorage only)
     useEffect(() => {
@@ -94,6 +107,17 @@ const StoryVisualizerPage = ({
     }, [isReady, changeVolume]);
 
 
+    const filteredEdges = useMemo(() => {
+        return edges.filter((edge) => {
+            if (edge.type === "conditional") {
+                const requiredKey = edge.historyKey || edge.history_key;
+                if (!requiredKey) return true;
+                return historyKeys.has(requiredKey);
+            }
+            return true;
+        });
+    }, [edges, historyKeys]);
+
     const openChoicePopup = (e) => {
         e.preventDefault();
         setChoiceIsOpen(true);
@@ -109,7 +133,7 @@ const StoryVisualizerPage = ({
         e.preventDefault();
 
         const clickedElement = choiceRefs.current[edgeId];
-        const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
+        const allChoices = filteredEdges.map(edge => choiceRefs.current[edge.id]);
         const clone = clickedElement.cloneNode(true);
 
         setSelectedChoice(edgeId);
@@ -174,7 +198,7 @@ const StoryVisualizerPage = ({
     const closeChoiceConfirmation = () => {
         setChoiceConfirmationIsOpen(false);
 
-        const allChoices = edges.map(edge => choiceRefs.current[edge.id]);
+        const allChoices = filteredEdges.map(edge => choiceRefs.current[edge.id]);
         const reverseTl = gsap.timeline({
             onComplete: () => {
                 if (clonedRef.current) {
@@ -227,6 +251,27 @@ const StoryVisualizerPage = ({
         router.push("/#stories");
     };
 
+    const persistHistoryKey = (key) => {
+        if (!key) return;
+        setHistoryKeys((current) => {
+            const next = new Set(current);
+            next.add(key);
+            if (typeof window !== "undefined") {
+                localStorage.setItem("inkveil-history", JSON.stringify(Array.from(next)));
+            }
+            return next;
+        });
+    };
+
+    const handleEdgeFollow = (edgeId) => {
+        const edge = filteredEdges.find((e) => e.id === edgeId);
+        if (edge?.type === "history") {
+            const key = edge.historyKey || edge.history_key;
+            persistHistoryKey(key);
+        }
+        pause();
+    };
+
     return (
         <div className="storyvisualizer-page" ref={backgroundRef}>
             <Nav />
@@ -242,9 +287,9 @@ const StoryVisualizerPage = ({
             )}
             <p className="storyvisualizer-text" ref={storyTextRef}>{current.contenu || "Contenu du nœud"}</p>
             <div className={choiceIsOpen ? "backdrop-blur open" : "backdrop-blur"} />
-            <div className={"storyvisualizer-choices-container " + (choiceIsOpen ? "opened " : "") + "choice-" + edges.length}
+            <div className={"storyvisualizer-choices-container " + (choiceIsOpen ? "opened " : "") + "choice-" + filteredEdges.length}
                 ref={choicePopupRef}>
-                {edges.map((edge) => (
+                {filteredEdges.map((edge) => (
                     <div
                         className={`storyvisualizer-choices ${selectedChoice === edge.id ? 'selected' : ''}`}
                         key={edge.id}
@@ -256,7 +301,7 @@ const StoryVisualizerPage = ({
                         {edge.texte || "Choix"}
                     </div>
                 ))}
-                {edges.length < 3 && <hr className="storyvisualizer-hr" />
+                {filteredEdges.length < 3 && <hr className="storyvisualizer-hr" />
                 }
             </div>
             {choiceIsOpen && choiceConfirmationIsOpen ? (
@@ -278,16 +323,16 @@ const StoryVisualizerPage = ({
             <p className="choice-confirmation-indication">Appuyez à nouveau pour confirmer votre choix</p>
             {isStoryEnd ? (
                 <div className="storyvisualizer-flex-container">
-                    <Link href={"/storyvisualizer/" + storyId + "/" + (edges[0]?.target || "")} onClick={() => pause()} className="storyvisualizer-continue-btn btn">
+                    <Link href={"/storyvisualizer/" + storyId + "/" + (filteredEdges[0]?.target || "")} onClick={() => pause()} className="storyvisualizer-continue-btn btn">
                         Relire
                     </Link>
                     <Link href="/#stories" className="storyvisualizer-continue-btn btn" onClick={() => pause()}>
                         Retourner aux publications
                     </Link>
                 </div>
-            ) : isChoiceAsked ? (
+            ) : (filteredEdges.length === 1) ? (
                 <div className="storyvisualizer-flex-container">
-                    <Link href={"/storyvisualizer/" + storyId + "/" + edges[0].target} className="storyvisualizer-continue-btn btn">
+                    <Link href={"/storyvisualizer/" + storyId + "/" + filteredEdges[0].target} className="storyvisualizer-continue-btn btn" onClick={() => handleEdgeFollow(filteredEdges[0].id)}>
                         Continuer
                     </Link>
                 </div>
@@ -301,7 +346,7 @@ const StoryVisualizerPage = ({
 
             {selectedChoice && (
                 <Link
-                    href={"/storyvisualizer/" + storyId + "/" + edges.find(edge => edge.id === selectedChoice)?.target}
+                    href={"/storyvisualizer/" + storyId + "/" + filteredEdges.find(edge => edge.id === selectedChoice)?.target}
                     className="overlay-navigation-link"
                     style={{
                         position: 'fixed',
@@ -312,7 +357,8 @@ const StoryVisualizerPage = ({
                         zIndex: 9999,
                         cursor: 'pointer',
                         pointerEvents: 'all'
-                    }}>
+                    }}
+                    onClick={() => handleEdgeFollow(selectedChoice)}>
                 </Link>
             )}
         </div>

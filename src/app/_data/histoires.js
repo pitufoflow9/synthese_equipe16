@@ -189,6 +189,7 @@ export async function getNodeInfoById(nodeId) {
       id: Branches.id,
       texte: Branches.texte,
       type: Branches.type,
+      history_key: Branches.history_key,
       targetNodeId: Branches.target,
     })
     .from(Branches)
