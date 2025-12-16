@@ -19,8 +19,7 @@ const AudioProvider = ({ children }) => {
   const [ready, setReady] = useState(false);
   const [autoplayRequested, setAutoplayRequested] = useState(false);
   const [stopCount, setStopCount] = useState(0);
-
-  // Crée l'objet Audio uniquement côté client
+  
   useEffect(() => {
     if (!audioRef.current) {
       audioRef.current = new Audio();

@@ -112,7 +112,6 @@ const StoryEditorPage = ({ story }) => {
           n.id === selection.node.id ? { ...n, data: { ...n.data, label: value } } : n
         )
       );
-      // updateSelectionData();
     }
   };
 
@@ -801,7 +800,6 @@ const StoryEditorPage = ({ story }) => {
         <button
           className="draft-button"
           onClick={handleSaveDraft}
-        // disabled={!isPublished}
         >
           {isPublished ? "Sauvegarder en brouillon" : "Sauvegarder le brouillon"}
         </button>
@@ -809,7 +807,6 @@ const StoryEditorPage = ({ story }) => {
           <button
             className="publish-button"
             onClick={handlePublishStory}
-          // disabled={isPublished}
           >
             {isPublished ? "Sauvegarder" : "Publier"}
           </button>

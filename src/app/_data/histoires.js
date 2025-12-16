@@ -133,8 +133,6 @@ export async function getStoryInfoById(storyId) {
     .select()
     .from(Histoires)
     .where(eq(Histoires.id, storyId));
-    //J'ai enlevé le is_pusblished check car je ne pouvais pas afficher le titre dans l'éditeur sinon (car l'histoire n'est pas encore publiée) - Alex
-  // if (!story || !story.is_published) return null;
   if (!story) return null;
 
   // Auteur

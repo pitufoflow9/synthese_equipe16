@@ -134,7 +134,6 @@ const StoryFormPage = ({ formAction, user = null }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [bannerIsOpen, ambianceIsOpen, effectIsOpen]);
 
-    //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
     useEffect(() => {
         pause();
     }, []);
