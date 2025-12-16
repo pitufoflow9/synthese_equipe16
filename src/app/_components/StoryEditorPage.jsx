@@ -641,11 +641,11 @@ const StoryEditorPage = ({ story }) => {
                           key={img.id}
                           className="img-wrapper"
                           onClick={() => {
-                            setSelectedTempImg(img.url);
+                            setSelectedTempImg(img.ufsUrl);
                             setImagePickerIsOpen(false);
                           }}
                         >
-                          <img className="" src={img.url} alt={img.description || "Image"} />
+                          <img className="" src={img.ufsUrl} alt={img.description || "Image"} />
                         </button>
                       ))}
                     </div>

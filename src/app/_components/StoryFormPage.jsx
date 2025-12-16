@@ -232,9 +232,9 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                                     type="button"
                                                     key={img.id}
                                                     className="img-wrapper"
-                                                    onClick={() => selectBanner(img.url)}
+                                                    onClick={() => selectBanner(img.ufsUrl)}
                                                 >
-                                                    <img className="" src={img.url} alt={img.description || "Image"} />
+                                                    <img className="" src={img.ufsUrl} alt={img.description || "Image"} />
                                                 </button>
                                             ))}
                                         </div>

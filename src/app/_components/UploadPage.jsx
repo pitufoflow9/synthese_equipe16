@@ -115,10 +115,10 @@ const UploadPage = () => {
                   Televersement en cours... {Math.round(uploadProgress)}%
                 </p>
               )}
-              {!isUploading && uploadResult?.url && (
+              {!isUploading && uploadResult?.ufsUrl && (
                 <p className="upload-success">
                   Fichier pret :{" "}
-                  <a href={uploadResult.url} target="_blank" rel="noreferrer">
+                  <a href={uploadResult.ufsUrl} target="_blank" rel="noreferrer">
                     ouvrir le lien
                   </a>
                 </p>
