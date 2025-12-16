@@ -63,7 +63,7 @@
   span {
     margin-right: 20px;
     border-radius: 15px;
-    background-color: white;
+    background-color: var(--white);
     padding: 8px 20px;
   }
 }
@@ -94,7 +94,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 100%;
-  background-color: white;
+  background-color: var(--white);
   width: 50px;
   height: 50px;
 
@@ -102,10 +102,10 @@
     transition: all 0.3s;
     border: transparent;
     background-image: linear-gradient(to right, #8e10e7, #dc82ff);
-    color: white;
+    color: var(--white);
 
     p {
-      color: white;
+      color: var(--white);
     }
   }
 }
@@ -117,7 +117,7 @@
   transition: all 0.3s ease-out;
   cursor: pointer;
   border-radius: 25px;
-  background-color: white;
+  background-color: var(--white);
   padding: 0 20px;
   width: auto;
   height: 50px;
@@ -134,10 +134,10 @@
     transition: all 0.3s;
     border: transparent;
     background-image: linear-gradient(to right, #8e10e7, #dc82ff);
-    color: white;
+    color: var(--white);
 
     p {
-      color: white;
+      color: var(--white);
     }
   }
 }

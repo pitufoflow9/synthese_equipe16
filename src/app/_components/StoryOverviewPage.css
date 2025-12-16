@@ -11,7 +11,7 @@
   margin: 200px 0 300px 0;
   border: 1px solid var(--purple);
   border-radius: 25px;
-  background-color: white;
+  background-color: var(--white);
   padding: 30px;
   width: 1125px;
   height: 100%;
@@ -111,7 +111,7 @@
   transition: background-position 0.6s ease;
   cursor: pointer;
   margin: 0 auto;
-  border: 1px solid white;
+  border: 1px solid var(--white);
   border-radius: 25px;
   background: linear-gradient(
     90deg,
@@ -125,9 +125,9 @@
   width: 100%;
   height: 60px;
   overflow: hidden;
-  color: white;
-  color: white;
-  color: white;
+  color: var(--white);
+  color: var(--white);
+  color: var(--white);
   font-weight: 500;
 
   &:hover {
@@ -196,6 +196,6 @@ hr {
 
   &:hover {
     background-color: var(--primary-text-color);
-    color: white;
+    color: var(--white);
   }
 }

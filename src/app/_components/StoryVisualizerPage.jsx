@@ -46,8 +46,6 @@ const StoryVisualizerPage = ({
     const { changeSource, play, isReady, changeVolume, pause } = useAudio(false);
     const router = useRouter();
 
-
-    //Change le background, l'effet de texte et la musique.
     useEffect(() => {
         StoryCustomization(
             storyTextRef.current,

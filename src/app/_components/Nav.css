@@ -18,7 +18,7 @@
 
 .header-nav.is-not-at-top {
   border-bottom: solid 1px var(--light-gray);
-  background: white;
+  background: var(--white);
 }
 
 .account-actions-container {
@@ -49,9 +49,9 @@
   gap: 40px;
 }
 .nav-list-connected.white li {
-  color: white;
+  color: var(--white);
   & a {
-    color: white;
+    color: var(--white);
   }
 }
 .nav-list-connected li:first-child {
@@ -96,7 +96,7 @@
   background-position: left bottom;
   background-size: 200% 100%;
   padding: 12px 20px;
-  color: white;
+  color: var(--white);
   &:hover {
     background-position: right bottom;
   }
@@ -104,12 +104,12 @@
 
 .btn-create.white {
   transition: all 0.3s ease;
-  border: 1px solid white;
+  border: 1px solid var(--white);
   background-image: none;
-  color: white;
+  color: var(--white);
 
   &:hover {
-    background-color: white;
+    background-color: var(--white);
     color: var(--primary-text-color);
   }
 }
@@ -131,5 +131,5 @@
 }
 
 .btn-compte.white {
-  color: white;
+  color: var(--white);
 }

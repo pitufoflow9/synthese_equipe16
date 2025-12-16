@@ -112,7 +112,7 @@ const StoryEditorPage = ({ story }) => {
           n.id === selection.node.id ? { ...n, data: { ...n.data, label: value } } : n
         )
       );
-      updateSelectionData();
+      // updateSelectionData();
     }
   };
 
@@ -286,10 +286,6 @@ const StoryEditorPage = ({ story }) => {
     });
     setIsPublished(false);
   };
-
-
-
-
 
   const openImagePickerPopup = (e) => {
     e.preventDefault();
@@ -467,7 +463,6 @@ const StoryEditorPage = ({ story }) => {
           panOnDrag
           selectionOnDrag
           zoomOnScroll
-          panOnScroll
           multiSelectionKeyCode={null}
           deleteKeyCode={null}
           nodeTypes={nodeTypes}
@@ -630,47 +625,56 @@ const StoryEditorPage = ({ story }) => {
                 <X />
               </button>
               <h2 className="">Parcourir la banque d'images</h2>
-              <div className="banners-container">
-                {userImages.length > 0 && (
-                  <>
-                    <p className="user-images-label">Vos téléversements</p>
-                    <div className="banner-grid">
-                      {userImages.map((img) => (
+              <div className={userImages.length !== 0 ? ("banners-container-1") : ("")}>
+                <div className="banners-container-2">
+                  {userImages.length > 0 && (
+                    <>
+                      <p className="user-images-label">Vos téléversements</p>
+                      <div className="banner-grid">
+                        {userImages.map((img) => (
+                          <button
+                            type="button"
+                            key={img.id}
+                            className={"img-wrapper " + (selectedTempImg === img.url ? "active" : "")}
+                            onClick={() =>
+                              setSelectedTempImg((prev) => (prev === img.url ? null : img.url))
+                            }
+                          >
+                            <img src={img.url} alt={img.description || "Image"} />
+                          </button>
+                        ))}
+                      </div>
+                      <hr className="popup-banner-hr" />
+                    </>
+                  )}
+                  {isLoadingUserImages && <p>Chargement de vos images...</p>}
+                  <p className="user-images-label">Galerie d’images</p>
+                  {userImagesError && <p className="upload-error">{userImagesError}</p>}
+                  <div className="banner-grid">
+                    {[
+                      "banniere_1.jpg",
+                      "banniere_2.jpg",
+                      "banniere_3.jpg",
+                      "banniere_4.jpg",
+                      "banniere_5.jpg",
+                      "banniere_6.jpg",
+                    ].map((img) => {
+                      const url = `../../../img/${img}`;
+
+                      return (
                         <button
                           type="button"
-                          key={img.id}
-                          className="img-wrapper"
-                          onClick={() => {
-                            setSelectedTempImg(img.ufsUrl);
-                            setImagePickerIsOpen(false);
-                          }}
+                          key={img}
+                          className={"img-wrapper " + (selectedTempImg === url ? "active" : "")}
+                          onClick={() =>
+                            setSelectedTempImg((prev) => (prev === url ? null : url))
+                          }
                         >
-                          <img className="" src={img.ufsUrl} alt={img.description || "Image"} />
+                          <img src={url} alt={img} />
                         </button>
-                      ))}
-                    </div>
-                    <hr className="popup-banner-hr" />
-                  </>
-                )}
-                {isLoadingUserImages && <p>Chargement de vos images...</p>}
-                <p className="user-images-label">Galerie d’images</p>
-                {userImagesError && <p className="upload-error">{userImagesError}</p>}
-                <div className="banner-grid">
-                  {["banniere_1.jpg", "banniere_2.jpg", "banniere_3.jpg", "banniere_4.jpg", "banniere_5.jpg", "banniere_6.jpg"].map(
-                    (img) => (
-                      <button
-                        type="button"
-                        key={img}
-                        className="img-wrapper"
-                        onClick={() => {
-                          setSelectedTempImg(`../../../img/${img}`);
-                          setImagePickerIsOpen(false);
-                        }}
-                      >
-                        <img className="" src={`../../../img/${img}`} alt={img} />
-                      </button>
-                    )
-                  )}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
               <hr className="popup-banner-hr" />
@@ -797,19 +801,25 @@ const StoryEditorPage = ({ story }) => {
         <button
           className="draft-button"
           onClick={handleSaveDraft}
-          disabled={!isPublished}
+        // disabled={!isPublished}
         >
-          {isPublished ? "Mettre en brouillon" : "Déjà en brouillon"}
+          {isPublished ? "Sauvegarder en brouillon" : "Sauvegarder le brouillon"}
         </button>
         <Link href="/profiles/myprofile">
           <button
             className="publish-button"
             onClick={handlePublishStory}
-            disabled={isPublished}
+          // disabled={isPublished}
           >
-            {isPublished ? "Histoire déjà publiée" : "Publier"}
+            {isPublished ? "Sauvegarder" : "Publier"}
           </button>
         </Link>
+      </div>
+
+      <div className="storyeditor-legend">
+        <p><span className="storyeditor-h3">Zoomer:</span> molette de la souris</p>
+        <p><span className="storyeditor-h3">Déplacer la vue:</span> clic gauche + glisser</p>
+        <p><span className="storyeditor-h3">Ouvrir le panneau d’édition:</span> cliquez sur un nœud (node) ou un lien (edge)</p>
       </div>
     </div>
   );

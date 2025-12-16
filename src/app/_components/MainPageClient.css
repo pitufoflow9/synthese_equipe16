@@ -24,7 +24,7 @@ html {
 .h1-header {
   margin-bottom: 50px;
   width: 100%;
-  color: white;
+  color: var(--white);
   font-weight: 500;
   font-size: 100px;
   line-height: 100%;
@@ -35,7 +35,7 @@ html {
   margin-top: 170px;
   margin-bottom: 35px;
   width: 100%;
-  color: white;
+  color: var(--white);
   font-weight: 500;
   font-size: 30px;
   text-align: center;
@@ -44,8 +44,8 @@ html {
 .h3-header {
   margin: 0 auto 50px auto;
   width: 50%;
-  color: white;
-  color: white;
+  color: var(--white);
+  color: var(--white);
   font-weight: 300;
   font-size: 20px;
   text-align: center;
@@ -103,7 +103,7 @@ html {
 .btn-input {
   transition: background-position 0.6s ease;
   margin: 8px;
-  border: 1px solid white;
+  border: 1px solid var(--white);
   border-radius: 1000px;
   background: linear-gradient(
     90deg,
@@ -114,8 +114,8 @@ html {
   background-position: left bottom;
   background-size: 200% 100%;
   padding: 10px 20px;
-  color: white;
-  color: white;
+  color: var(--white);
+  color: var(--white);
   &:hover {
     background-position: right bottom;
   }
@@ -131,7 +131,7 @@ html {
   top: 0;
   left: 0;
   z-index: 10;
-  /* background-color: white; */
+  /* background-color: var(--white); */
   width: 100vw;
   height: 100vh;
 }
