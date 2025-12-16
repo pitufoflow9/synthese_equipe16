@@ -27,9 +27,15 @@ export const ourFileRouter = {
       if (!user) {
         throw new UploadThingError("Unauthorized");
       }
+      console.log("uploadthing.middleware user", { userId: user.id });
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+      console.log("uploadthing.onUploadComplete start", {
+        userId: metadata?.userId,
+        key: file.key,
+      });
+
       const fileUrl = file.ufsUrl;
       const description = file.name ?? "Image televersee";
 
