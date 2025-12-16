@@ -21,7 +21,7 @@
   margin: 60px auto 0 auto;
   border: 1px solid var(--translucent-purple);
   border-radius: 25px;
-  background-color: white;
+  background-color: var(--white);
   padding: 28px;
   width: 550px;
 }
@@ -91,7 +91,7 @@
   );
   background-position: left bottom;
   background-size: 200% 100%;
-  color: white;
+  color: var(--white);
   &:hover {
     background-position: right bottom;
   }
@@ -113,7 +113,7 @@
   );
   background-position: left bottom;
   background-size: 200% 100%;
-  color: white;
+  color: var(--white);
   &:hover {
     background-position: right bottom;
   }

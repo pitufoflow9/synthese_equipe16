@@ -112,7 +112,7 @@ const StoryEditorPage = ({ story }) => {
           n.id === selection.node.id ? { ...n, data: { ...n.data, label: value } } : n
         )
       );
-      updateSelectionData();
+      // updateSelectionData();
     }
   };
 
@@ -463,7 +463,6 @@ const StoryEditorPage = ({ story }) => {
           panOnDrag
           selectionOnDrag
           zoomOnScroll
-          panOnScroll
           multiSelectionKeyCode={null}
           deleteKeyCode={null}
           nodeTypes={nodeTypes}
@@ -815,6 +814,12 @@ const StoryEditorPage = ({ story }) => {
             {isPublished ? "Sauvegarder" : "Publier"}
           </button>
         </Link>
+      </div>
+
+      <div className="storyeditor-legend">
+        <p><span className="storyeditor-h3">Zoomer:</span> molette de la souris</p>
+        <p><span className="storyeditor-h3">Déplacer la vue:</span> clic gauche + glisser</p>
+        <p><span className="storyeditor-h3">Ouvrir le panneau d’édition:</span> cliquez sur un nœud (node) ou un lien (edge)</p>
       </div>
     </div>
   );

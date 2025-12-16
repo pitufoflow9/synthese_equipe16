@@ -58,7 +58,6 @@ const MyProfilePage = ({
 
   const { pause } = useAudio(false);
 
-  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {
     pause();
   }, []);

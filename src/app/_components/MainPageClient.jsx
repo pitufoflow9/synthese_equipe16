@@ -30,9 +30,7 @@ import Nav from "@/app/_components/Nav.jsx";
 import RecemmentPubliees from "@/app/_components/RecentlyPublished.jsx";
 import ReprendreLecture from "@/app/_components/KeepReading.jsx";
 
-gsap.registerPlugin(useGSAP, GSDevTools, SplitText,
-  // CustomEase
-);
+gsap.registerPlugin(useGSAP, GSDevTools, SplitText);
 
 const MainPageClient = ({ user, recentStories = [] }) => {
   const loaderNumberRef = useRef();
@@ -150,19 +148,15 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       opacity: 0,
     });
 
-    //Checker si l'utilisateur a déjà vu la landing page dans le storage?
     if (landingPageSeen) {
       tl.progress(1).pause();
       gsap.set(document.body, { overflow: "auto" });
     } else {
       tl.play(0);
       landingPageSeen = true;
-      //Ajouter au local storage?
     }
   })
 
-
-  //Pause la musique si l'utilisateur viens d'une page de visualisation d'histoire.
   useEffect(() => {
     pause();
   }, []);
