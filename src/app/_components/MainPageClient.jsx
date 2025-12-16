@@ -50,7 +50,9 @@ const MainPageClient = ({ user, recentStories = [] }) => {
   }, [selection]);
 
   useGSAP(() => {
-    var landingPageSeen = false;
+    const hasSeenLanding =
+      typeof window !== "undefined" &&
+      localStorage.getItem("landingPageSeen") === "1";
     document.body.style.overflow = "hidden";
     const tl = gsap.timeline({ paused: true });
 
@@ -148,12 +150,14 @@ const MainPageClient = ({ user, recentStories = [] }) => {
       opacity: 0,
     });
 
-    if (landingPageSeen) {
+    if (hasSeenLanding) {
       tl.progress(1).pause();
       gsap.set(document.body, { overflow: "auto" });
     } else {
       tl.play(0);
-      landingPageSeen = true;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("landingPageSeen", "1");
+      }
     }
   })
 

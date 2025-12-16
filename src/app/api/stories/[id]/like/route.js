@@ -2,8 +2,17 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { Histoires } from "@/db/schemas/schema";
 import { eq, sql } from "drizzle-orm";
+import { getSession } from "@/lib/auth";
 
 export async function POST(_request, { params }) {
+  const session = await getSession();
+  if (!session?.user?.id) {
+    return NextResponse.json(
+      { error: "Non authentifie." },
+      { status: 401 }
+    );
+  }
+
   const storyId = params?.id;
   if (!storyId) {
     return NextResponse.json(
