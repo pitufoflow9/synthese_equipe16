@@ -6,11 +6,11 @@ import "@/app/_components/MainPageClient.css";
 import "@/app/_components/UploadPage.css";
 import { useRef, useState, useCallback } from "react";
 import { useUploadThing } from "@/lib/uploadthing/client";
+import { useRouter } from "next/navigation";
 import WestIcon from "@mui/icons-material/West";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Footer from "./Footer.jsx";
 import Nav from "./Nav.jsx";
-import Link from "next/link";
 
 const UploadPage = () => {
   const [dragActive, setDragActive] = useState(false);
@@ -18,6 +18,7 @@ const UploadPage = () => {
   const [uploadResult, setUploadResult] = useState(null);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
+  const router = useRouter();
 
   const { startUpload, isUploading, permittedFileInfo } = useUploadThing(
     "imageUploader",
@@ -74,6 +75,34 @@ const UploadPage = () => {
   const acceptedTypes =
     permittedFileInfo?.config?.image?.mimeTypes?.join(",") ?? "image/*";
 
+  const handleBack = useCallback(() => {
+    if (typeof window !== "undefined") {
+      const savedReturnPath = sessionStorage.getItem("upload-return-path");
+      if (savedReturnPath) {
+        sessionStorage.removeItem("upload-return-path");
+        router.push(savedReturnPath);
+        return;
+      }
+      if (window.history.length > 1) {
+        router.back();
+        return;
+      }
+      const referrer = document.referrer;
+      if (referrer) {
+        try {
+          const refUrl = new URL(referrer);
+          if (refUrl.origin === window.location.origin) {
+            router.push(refUrl.pathname + refUrl.search + refUrl.hash);
+            return;
+          }
+        } catch {
+          // Ignore malformed referrer values
+        }
+      }
+    }
+    router.push("/");
+  }, [router]);
+
   return (
     <div className="page-container">
       <img className="bg" src="../../../img/Background_2.jpg" alt="" />
@@ -82,12 +111,10 @@ const UploadPage = () => {
 
       <h1 className="upload-h1">Televersement de fichier</h1>
       <div className="upload-container-1">
-        <Link href="/storyform">
-          <button className="btn btn-back">
-            <WestIcon />
-            Retour
-          </button>
-        </Link>
+        <button className="btn btn-back" type="button" onClick={handleBack}>
+          <WestIcon />
+          Retour
+        </button>
         <div className="upload-container-2">
           <div
             className={`upload-container-3 ${dragActive ? "is-dragging" : ""}`}
