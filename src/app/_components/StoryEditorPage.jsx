@@ -65,6 +65,11 @@ const StoryEditorPage = ({ story }) => {
   const preview3Ref = useRef(null);
   const previewTlRef = useRef(null);
   const toolbarRef = useRef();
+  const rememberUploadReturnPath = () => {
+    if (typeof window === "undefined") return;
+    const path = window.location.pathname + window.location.search + window.location.hash;
+    sessionStorage.setItem("upload-return-path", path);
+  };
 
   const isNodeSelected = selection?.type === "node" && selection.node;
   const isEdgeSelected = selection?.type === "edge" && selection.edge;
@@ -677,7 +682,7 @@ const StoryEditorPage = ({ story }) => {
                 </div>
               </div>
               <hr className="popup-banner-hr" />
-              <Link href="../upload">
+              <Link href="../upload" onClick={rememberUploadReturnPath}>
                 <button type="button" className="btn-popup">
                   Téléverser à partir de l'appareil
                 </button>

@@ -4,8 +4,7 @@ import "@/app/_components/Nav.css"
 import "@/app/_components/Footer.css"
 import "@/app/_components/MainPageClient.css"
 import "@/app/_components/StoryFormPage.css"
-import { useEffect, useState } from "react";
-import { useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import SplitText from "gsap/SplitText";
@@ -28,6 +27,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
     const [selectedBanner, setSelectedBanner] = useState(null);
     const [selectedAmbiance, setSelectedAmbiance] = useState(null);
     const [selectedTextEffect, setSelectedTextEffect] = useState(null);
+    const [hasLoadedDraft, setHasLoadedDraft] = useState(false);
     const [userImages, setUserImages] = useState([]);
     const [isLoadingUserImages, setIsLoadingUserImages] = useState(false);
     const [userImagesError, setUserImagesError] = useState("");
@@ -118,6 +118,12 @@ const StoryFormPage = ({ formAction, user = null }) => {
         setEffectIsOpen(false);
     };
 
+    const rememberUploadReturnPath = () => {
+        if (typeof window === "undefined") return;
+        const path = window.location.pathname + window.location.search + window.location.hash;
+        sessionStorage.setItem("upload-return-path", path);
+    };
+
     useEffect(() => {
         function handleClickOutside(e) {
             if (bannerIsOpen && bannerPopupRef.current && !bannerPopupRef.current.contains(e.target)) {
@@ -144,6 +150,52 @@ const StoryFormPage = ({ formAction, user = null }) => {
             setTitle(incomingTitle);
         }
     }, [searchParams]);
+
+    // Restore any draft the user had when navigating back from upload or elsewhere.
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        try {
+            const raw = sessionStorage.getItem("storyform-draft");
+            if (raw) {
+                const draft = JSON.parse(raw);
+                if (draft.title) setTitle(draft.title);
+                if (draft.synopsis) setSynopsis(draft.synopsis);
+                if (draft.selectedBanner) setSelectedBanner(draft.selectedBanner);
+                if (draft.selectedAmbiance) setSelectedAmbiance(draft.selectedAmbiance);
+                if (draft.selectedTextEffect) setSelectedTextEffect(draft.selectedTextEffect);
+            }
+        } catch (err) {
+            // Ignore restoration errors
+        } finally {
+            setHasLoadedDraft(true);
+        }
+    }, []);
+
+    // Persist draft fields so leaving the page (upload, etc.) keeps user input.
+    useEffect(() => {
+        if (!hasLoadedDraft || typeof window === "undefined") return;
+        const payload = {
+            title,
+            synopsis,
+            selectedBanner,
+            selectedAmbiance,
+            selectedTextEffect,
+        };
+        try {
+            sessionStorage.setItem("storyform-draft", JSON.stringify(payload));
+        } catch (err) {
+            // Ignore persistence errors
+        }
+    }, [title, synopsis, selectedBanner, selectedAmbiance, selectedTextEffect, hasLoadedDraft]);
+
+    const handleSubmit = () => {
+        if (typeof window === "undefined") return;
+        try {
+            sessionStorage.removeItem("storyform-draft");
+        } catch (err) {
+            // Ignore cleanup errors
+        }
+    };
 
     useEffect(() => {
         const controller = new AbortController();
@@ -177,7 +229,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
             <Nav user={user} />
 
             <h1 className="h1-story-form">Nouvelle histoire</h1>
-            <form className="story-form" action={formAction} >
+            <form className="story-form" action={formAction} onSubmit={handleSubmit}>
                 <div className="form-input-container title-input">
                     <label htmlFor="title">Titre</label>
                     <input
@@ -257,7 +309,7 @@ const StoryFormPage = ({ formAction, user = null }) => {
                                 </div>
                             </div>
                             <hr className="popup-banner-hr" />
-                            <Link href="../upload" ><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
+                            <Link href="../upload" onClick={rememberUploadReturnPath}><button type="button" className="btn-popup">Téléverser à partir de l'appareil</button></Link>
                         </div>
                     </div>
                 }
