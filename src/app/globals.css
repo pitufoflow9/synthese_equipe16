@@ -40,8 +40,21 @@ body {
 .react-flow__node {
   border: 0.5px solid var(--primary-text-color) !important;
   border-radius: 20px !important;
+  transition: all 0.3 ease !important;
+  &:hover {
+    transition: all 0.3 ease !important;
+    cursor: pointer !important;
+    background-color: var(--white-gray);
+  }
 }
 
+.react-flow__edge-path {
+  stroke: var(--light-gray) !important;
+}
+.react-flow__edge:hover .react-flow__edge-path {
+  transition: all 0.3 ease !important;
+  stroke: var(--primary-text-color-lighter) !important;
+}
 
 .btn {
   cursor: pointer;
