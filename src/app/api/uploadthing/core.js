@@ -53,6 +53,7 @@ export const ourFileRouter = {
       return {
         uploadedBy: metadata.userId,
         fileUrl,
+        ufsUrl: fileUrl,
         fileKey: file.key,
       };
     }),
