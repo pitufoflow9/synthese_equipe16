@@ -29,7 +29,7 @@ const RecemmentPubliees = ({ stories = [] }) => {
       return undefined;
     }
 
-    const el = document.querySelector(".recently-published-swiper");
+    const el = document.querySelector(".recently-swiper");
     if (!el) return undefined;
 
     swiperRef.current?.destroy?.(true, true);
