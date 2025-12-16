@@ -67,17 +67,14 @@ const ClientPage = ({ story }) => {
 
   const onDeleteNode = async () => {
     if (selection?.type !== "node" || !selection.node?.id) return;
-    if (selection.node.data?.nodeType === "start") return; // ne pas supprimer le départ
+    if (selection.node.data?.nodeType === "start") return;
     const id = selection.node.id;
-    // remove local edges attached
     const filteredEdges = edges.filter(
       (e) => e.source !== id && e.target !== id
     );
     setEdgesState(filteredEdges);
-    // remove node locally
     const filteredNodes = nodes.filter((n) => n.id !== id);
     setNodesState(filteredNodes);
-    // fire-and-forget serveur
     deleteNodeAndEdges(story.id, id);
   };
 

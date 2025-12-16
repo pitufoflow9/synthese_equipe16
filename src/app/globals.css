@@ -5,6 +5,7 @@
   --primary-text-color-lighter: #494949;
   --secondary-text-color: #656565;
   --light-gray: #b8b8b8;
+  --white: #ffffff;
   --white-gray: #f5f5f5;
   --purple: #bc61fe;
   --light-purple: #cf8bff;
@@ -16,9 +17,9 @@
 html {
   box-sizing: border-box;
   scrollbar-width: none;
-  &::selection{
+  &::selection {
     background: var(--purple);
-    color: white;
+    color: var(--white);
   }
 }
 body {
@@ -41,11 +42,10 @@ body {
   border-radius: 20px !important;
 }
 
+
 .btn {
   cursor: pointer;
 }
-
-
 
 @font-face {
   font-style: normal;
