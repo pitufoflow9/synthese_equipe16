@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { createUploadthing } from "uploadthing/next";
+import { UploadThingError } from "uploadthing/server";
 
 import { db } from "@/db";
 import { UserImages } from "@/db/schemas/schema";
@@ -8,17 +9,10 @@ import { auth } from "@/lib/auth";
 const f = createUploadthing();
 
 const authenticateRequest = async (req) => {
-  try {
-    const session = await auth.api.getSession({
-      headers: req?.headers,
-    });
-    if (session?.user?.id) {
-      return { id: session.user.id };
-    }
-  } catch (error) {
-    console.error("Upload auth error", error);
-  }
-  return { id: "anonymous" };
+  const session = await auth.api.getSession({
+    headers: req?.headers,
+  });
+  return session?.user ? { id: session.user.id } : null;
 };
 
 export const ourFileRouter = {
@@ -30,6 +24,9 @@ export const ourFileRouter = {
   })
     .middleware(async ({ req }) => {
       const user = await authenticateRequest(req);
+      if (!user) {
+        throw new UploadThingError("Unauthorized");
+      }
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
@@ -37,7 +34,7 @@ export const ourFileRouter = {
       const description = file.name ?? "Image televersee";
 
       try {
-        if (metadata.userId && metadata.userId !== "anonymous") {
+        if (metadata.userId) {
           await db.insert(UserImages).values({
             id: randomUUID(),
             user_id: metadata.userId,
