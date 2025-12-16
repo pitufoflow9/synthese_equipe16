@@ -76,9 +76,14 @@ const Nav = ({ user: initialUser }) => {
   return (
     <nav className={pathname === "/" ? ("header-nav no-opacity") : ("header-nav")}>
       {!isAuthenticated && (
-        <ul className="nav-list">
+        <ul className="nav-list not-connected">
 
-          <li onClick={() => pause()}><a href="/"><img className="logo main-logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" /></a></li>
+          <li className="li-logo" onClick={() => pause()}>
+            <Link href="/">
+              <img className="logo main-logo" src={isVisualizerPage ? "../../../img/logo_inkveil_white.png" : "../../../img/logo_inkveil.png"} alt="" />
+            </Link>
+
+          </li>
           <div className="account-actions-container">
             <li onClick={() => pause()}>
               <Link href="/auth/signin" className={isVisualizerPage ? "btn-nav btn-compte white" : "btn-nav btn-compte"}>

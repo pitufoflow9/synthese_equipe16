@@ -41,7 +41,19 @@
       opacity: 1;
       transition: all 0.3s ease;
     }
+    a {
+      font-weight: 500;
+    }
   }
+
+  &.not-connected {
+    align-items: center;
+  }
+}
+
+.li-logo {
+  width: 120px;
+  height: 30px;
 }
 
 .nav-list-connected {
