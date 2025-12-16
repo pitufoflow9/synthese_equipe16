@@ -20,7 +20,6 @@ html {
   &::selection {
     background: var(--purple);
     color: var(--white);
-    color: var(--white);
   }
 }
 body {
